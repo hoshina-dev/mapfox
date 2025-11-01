@@ -1,20 +1,22 @@
 {
   "name": "mapfox",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --continue=dependencies-successful",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "lint": "turbo run lint --continue=dependencies-successful",
+    "format": "turbo run format --continue=dependencies-successful",
+    "check-types": "turbo run check-types --continue=dependencies-successful"
   },
   "devDependencies": {
+    "@repo/config": "workspace:*",
     "prettier": "^3.6.2",
     "turbo": "^2.6.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.2.0",
   "engines": {
-    "node": ">=18"
+    "node": "^24.11"
   }
 }
