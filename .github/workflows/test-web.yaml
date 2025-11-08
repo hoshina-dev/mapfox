@@ -1,4 +1,4 @@
-name: test-web.yaml
+name: test-web
 on:
   workflow_call:
   workflow_dispatch:
