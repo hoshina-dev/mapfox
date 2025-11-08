@@ -32,7 +32,7 @@ jobs:
         run: pnpm lint
         continue-on-error: false
 
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
