@@ -3,5 +3,16 @@
     {
       "mode": "auto"
     }
+  ],
+  // Do not show red squiggles for auto-fixable rules
+  "eslint.rules.customizations": [
+    {
+      "rule": "prettier/prettier",
+      "severity": "off"
+    },
+    {
+      "rule": "simple-import-sort/*",
+      "severity": "off"
+    }
   ]
 }
