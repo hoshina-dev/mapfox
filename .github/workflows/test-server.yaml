@@ -24,3 +24,72 @@ jobs:
         working-directory: apps/server
         run: |
             go test -v -cover ./...
+
+  postgres-contract-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mapfox_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+
+      - name: Set up Atlas
+        uses: ariga/setup-atlas@v0
+
+      - name: Set up dependencies
+        working-directory: apps/server
+        run: |
+            go mod download
+
+      - name: Generate migration schema (dry-run)
+        working-directory: apps/server
+        run: |
+            go run ./cmd/gen-migration/main.go
+
+      - name: Validate migrations are in sync with Atlas
+        working-directory: apps/server
+        env:
+          ATLAS_URL: postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
+        run: |
+            # Apply generated migrations to database
+            atlas migrate apply --dir file://tmps/migrations --url $ATLAS_URL
+            
+            # Get schema from applied migrations
+            atlas schema inspect --url $ATLAS_URL --format '{{ json . }}' > /tmp/applied_schema.json
+            
+            # Reset database
+            PGPASSWORD=postgres psql -h localhost -U postgres -d mapfox_test -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+            
+            # Apply hand-written migrations
+            atlas migrate apply --dir file://migrations --url $ATLAS_URL
+            
+            # Get schema from hand-written migrations
+            atlas schema inspect --url $ATLAS_URL --format '{{ json . }}' > /tmp/handwritten_schema.json
+            
+            # Compare schemas - if different, schemas are out of sync
+            if diff /tmp/applied_schema.json /tmp/handwritten_schema.json > /dev/null 2>&1; then
+              echo "✓ Schemas are in sync"
+            else
+              echo "✗ Schemas are out of sync"
+              echo "Differences found between generated and hand-written migrations:"
+              diff /tmp/applied_schema.json /tmp/handwritten_schema.json || true
+              exit 1
+            fi
+
