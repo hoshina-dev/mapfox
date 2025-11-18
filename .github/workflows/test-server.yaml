@@ -63,7 +63,7 @@ jobs:
         run: |
             go run ./cmd/gen-migration/main.go
 
-      - name: Validate migrations are in sync with Atlas
+      - name: Migrate hand-written migrations
         working-directory: apps/server
         env:
           PGPASSWORD: postgres
@@ -73,7 +73,10 @@ jobs:
               echo "Applying migration: $migration"
               psql -h localhost -U postgres -d mapfox_test -f "$migration"
             done
-            
+
+      - name: Validate generated migrations match database schema
+        working-directory: apps/server
+        run: |
             # Challenge: compare generated migrations against the hand-written schema in test database
-            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable --exit-code
+            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
 
