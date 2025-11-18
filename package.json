@@ -10,9 +10,11 @@
     "check-types": "turbo run check-types --continue=dependencies-successful"
   },
   "devDependencies": {
+    "@hakxel/mantine-ui-server": "^0.1.0",
     "@repo/config": "workspace:*",
     "next-devtools-mcp": "^0.3.3",
     "prettier": "^3.6.2",
+    "puppeteer": "^24.30.0",
     "turbo": "^2.6.1",
     "typescript": "5.9.3"
   },
