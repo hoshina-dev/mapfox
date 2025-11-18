@@ -68,6 +68,10 @@ jobs:
         env:
           ATLAS_URL: postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
         run: |
+            # Generate checksums for migrations
+            atlas migrate hash --dir file://tmps/migrations
+            atlas migrate hash --dir file://migrations
+            
             # Apply generated migrations to database
             atlas migrate apply --dir file://tmps/migrations --url $ATLAS_URL
             
