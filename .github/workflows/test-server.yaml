@@ -85,5 +85,14 @@ jobs:
             atlas migrate hash --dir file://migrations
             
             # Challenge: compare generated migrations against the hand-written schema in separate database
-            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_handwritten?sslmode=disable --dev-url postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
+            # Capture output and exit with error if there are any differences
+            output=$(atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_handwritten?sslmode=disable --dev-url postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable 2>&1)
+            
+            if echo "$output" | grep -q "ALTER TABLE\|CREATE\|DROP"; then
+              echo "❌ Schema mismatch detected!"
+              echo "$output"
+              exit 1
+            else
+              echo "✅ Schemas are in sync"
+            fi
 
