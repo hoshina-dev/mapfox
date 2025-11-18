@@ -66,34 +66,14 @@ jobs:
       - name: Validate migrations are in sync with Atlas
         working-directory: apps/server
         env:
-          ATLAS_URL: postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
+          PGPASSWORD: postgres
         run: |
-            # Generate checksums for migrations
-            atlas migrate hash --dir file://tmps/migrations
-            atlas migrate hash --dir file://migrations
+            # Apply hand-written migrations to test database (source of truth)
+            for migration in migrations/*.sql; do
+              echo "Applying migration: $migration"
+              psql -h localhost -U postgres -d mapfox_test -f "$migration"
+            done
             
-            # Apply generated migrations to database
-            atlas migrate apply --dir file://tmps/migrations --url $ATLAS_URL
-            
-            # Get schema from applied migrations
-            atlas schema inspect --url $ATLAS_URL --format '{{ json . }}' > /tmp/applied_schema.json
-            
-            # Reset database
-            PGPASSWORD=postgres psql -h localhost -U postgres -d mapfox_test -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
-            
-            # Apply hand-written migrations
-            atlas migrate apply --dir file://migrations --url $ATLAS_URL
-            
-            # Get schema from hand-written migrations
-            atlas schema inspect --url $ATLAS_URL --format '{{ json . }}' > /tmp/handwritten_schema.json
-            
-            # Compare schemas - if different, schemas are out of sync
-            if diff /tmp/applied_schema.json /tmp/handwritten_schema.json > /dev/null 2>&1; then
-              echo "✓ Schemas are in sync"
-            else
-              echo "✗ Schemas are out of sync"
-              echo "Differences found between generated and hand-written migrations:"
-              diff /tmp/applied_schema.json /tmp/handwritten_schema.json || true
-              exit 1
-            fi
+            # Challenge: compare generated migrations against the hand-written schema in test database
+            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable --exit-code
 
