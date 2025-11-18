@@ -78,5 +78,5 @@ jobs:
         working-directory: apps/server
         run: |
             # Challenge: compare generated migrations against the hand-written schema in test database
-            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
+            atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable --dev-url postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
 
