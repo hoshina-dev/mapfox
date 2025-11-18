@@ -80,6 +80,10 @@ jobs:
       - name: Validate generated migrations match database schema
         working-directory: apps/server
         run: |
+            # Generate checksums for migrations
+            atlas migrate hash --dir file://tmps/migrations
+            atlas migrate hash --dir file://migrations
+            
             # Challenge: compare generated migrations against the hand-written schema in separate database
             atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_handwritten?sslmode=disable --dev-url postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable
 
