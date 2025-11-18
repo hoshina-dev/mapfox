@@ -24,3 +24,75 @@ jobs:
         working-directory: apps/server
         run: |
             go test -v -cover ./...
+
+  postgres-contract-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mapfox_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+
+      - name: Set up Atlas
+        uses: ariga/setup-atlas@v0
+
+      - name: Set up dependencies
+        working-directory: apps/server
+        run: |
+            go mod download
+
+      - name: Generate migration schema (dry-run)
+        working-directory: apps/server
+        run: |
+            go run ./cmd/gen-migration/main.go
+
+      - name: Migrate hand-written migrations
+        working-directory: apps/server
+        env:
+          PGPASSWORD: postgres
+        run: |
+            # Create separate database for hand-written migrations
+            psql -h localhost -U postgres -c "CREATE DATABASE mapfox_handwritten;" 2>/dev/null || true
+            
+            # Apply hand-written migrations to separate database (source of truth)
+            for migration in migrations/*.sql; do
+              echo "Applying migration: $migration"
+              psql -h localhost -U postgres -d mapfox_handwritten -f "$migration"
+            done
+
+      - name: Validate generated migrations match database schema
+        working-directory: apps/server
+        run: |
+            # Generate checksums for migrations
+            atlas migrate hash --dir file://tmps/migrations
+            atlas migrate hash --dir file://migrations
+            
+            # Challenge: compare generated migrations against the hand-written schema in separate database
+            # Capture output and exit with error if there are any differences
+            output=$(atlas schema diff --from file://tmps/migrations --to postgres://postgres:postgres@localhost:5432/mapfox_handwritten?sslmode=disable --dev-url postgres://postgres:postgres@localhost:5432/mapfox_test?sslmode=disable 2>&1)
+            
+            if echo "$output" | grep -q "ALTER TABLE\|CREATE\|DROP"; then
+              echo "❌ Schema mismatch detected!"
+              echo "$output"
+              exit 1
+            else
+              echo "✅ Schemas are in sync"
+            fi
+
