@@ -7,7 +7,9 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint --continue=dependencies-successful",
     "format": "turbo run format --continue=dependencies-successful",
-    "check-types": "turbo run check-types --continue=dependencies-successful"
+    "check-types": "turbo run check-types --continue=dependencies-successful",
+    "codegen": "turbo run codegen",
+    "codegen:watch": "pnpm --filter @repo/graphql codegen:watch"
   },
   "devDependencies": {
     "@hakxel/mantine-ui-server": "^0.1.0",
@@ -18,7 +20,7 @@
     "turbo": "^2.6.1",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.26.2",
   "engines": {
     "node": "^24.11"
   }

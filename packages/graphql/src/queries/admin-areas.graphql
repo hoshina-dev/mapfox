@@ -1,0 +1,10 @@
+query AdminAreas($adminLevel: Int!) {
+  adminAreas(adminLevel: $adminLevel) {
+    id
+    name
+    isoCode
+    geometry
+    adminLevel
+    parentCode
+  }
+}

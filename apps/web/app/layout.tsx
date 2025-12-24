@@ -1,13 +1,9 @@
 import "@mantine/core/styles.css";
 
-import {
-  ColorSchemeScript,
-  mantineHtmlProps,
-  MantineProvider,
-} from "@mantine/core";
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import type { Metadata } from "next";
 
-import { theme } from "@/libs/theme";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Mapfox",
@@ -25,7 +21,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -19,6 +19,10 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "codegen": {
+      "cache": false,
+      "inputs": ["src/**/*.graphql", "codegen.ts"]
     }
   }
 }
