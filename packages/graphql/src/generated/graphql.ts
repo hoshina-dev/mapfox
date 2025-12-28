@@ -86,6 +86,24 @@ export type AdminAreasQuery = {
   }>;
 };
 
+export type ChildrenByCodeQueryVariables = Exact<{
+  parentCode: Scalars["String"]["input"];
+  childLevel: Scalars["Int"]["input"];
+}>;
+
+export type ChildrenByCodeQuery = {
+  __typename?: "Query";
+  childrenByCode: Array<{
+    __typename?: "AdminArea";
+    id: string;
+    name: string;
+    isoCode: string;
+    geometry: any;
+    adminLevel: number;
+    parentCode: string | null;
+  }>;
+};
+
 export const AdminAreasDocument = gql`
   query AdminAreas($adminLevel: Int!) {
     adminAreas(adminLevel: $adminLevel) {
@@ -191,4 +209,113 @@ export type AdminAreasSuspenseQueryHookResult = ReturnType<
 export type AdminAreasQueryResult = Apollo.QueryResult<
   AdminAreasQuery,
   AdminAreasQueryVariables
+>;
+export const ChildrenByCodeDocument = gql`
+  query ChildrenByCode($parentCode: String!, $childLevel: Int!) {
+    childrenByCode(parentCode: $parentCode, childLevel: $childLevel) {
+      id
+      name
+      isoCode
+      geometry
+      adminLevel
+      parentCode
+    }
+  }
+`;
+
+/**
+ * __useChildrenByCodeQuery__
+ *
+ * To run a query within a React component, call `useChildrenByCodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChildrenByCodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChildrenByCodeQuery({
+ *   variables: {
+ *      parentCode: // value for 'parentCode'
+ *      childLevel: // value for 'childLevel'
+ *   },
+ * });
+ */
+export function useChildrenByCodeQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  > &
+    (
+      | { variables: ChildrenByCodeQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  >(ChildrenByCodeDocument, options);
+}
+export function useChildrenByCodeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  >(ChildrenByCodeDocument, options);
+}
+// @ts-ignore
+export function useChildrenByCodeSuspenseQuery(
+  baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  >,
+): ApolloReactHooks.UseSuspenseQueryResult<
+  ChildrenByCodeQuery,
+  ChildrenByCodeQueryVariables
+>;
+export function useChildrenByCodeSuspenseQuery(
+  baseOptions?:
+    | ApolloReactHooks.SkipToken
+    | ApolloReactHooks.SuspenseQueryHookOptions<
+        ChildrenByCodeQuery,
+        ChildrenByCodeQueryVariables
+      >,
+): ApolloReactHooks.UseSuspenseQueryResult<
+  ChildrenByCodeQuery | undefined,
+  ChildrenByCodeQueryVariables
+>;
+export function useChildrenByCodeSuspenseQuery(
+  baseOptions?:
+    | ApolloReactHooks.SkipToken
+    | ApolloReactHooks.SuspenseQueryHookOptions<
+        ChildrenByCodeQuery,
+        ChildrenByCodeQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === ApolloReactHooks.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSuspenseQuery<
+    ChildrenByCodeQuery,
+    ChildrenByCodeQueryVariables
+  >(ChildrenByCodeDocument, options);
+}
+export type ChildrenByCodeQueryHookResult = ReturnType<
+  typeof useChildrenByCodeQuery
+>;
+export type ChildrenByCodeLazyQueryHookResult = ReturnType<
+  typeof useChildrenByCodeLazyQuery
+>;
+export type ChildrenByCodeSuspenseQueryHookResult = ReturnType<
+  typeof useChildrenByCodeSuspenseQuery
+>;
+export type ChildrenByCodeQueryResult = Apollo.QueryResult<
+  ChildrenByCodeQuery,
+  ChildrenByCodeQueryVariables
 >;
