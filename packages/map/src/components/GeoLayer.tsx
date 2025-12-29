@@ -7,7 +7,7 @@ import type {
 import { useMemo } from "react";
 import { Layer, Source } from "react-map-gl/maplibre";
 
-import type { GeoJSONFeatureCollection, LayerVariant } from "@/libs/map/types";
+import type { GeoJSONFeatureCollection, LayerVariant } from "../core/types";
 
 interface GeoLayerProps {
   id: string;

@@ -31,18 +31,6 @@ export interface FocusedEntity {
 
 export type LayerVariant = "country" | "default";
 
-export interface LevelConfig {
-  layerId: string;
-  highlightProperty: string;
-  variant: LayerVariant;
-}
-
-export interface LevelConfigWithLoader extends LevelConfig {
-  getDataLoader: (
-    parentIsoCode?: string,
-  ) => Promise<GeoJSONFeatureCollection | null>;
-}
-
 export interface MapViewState {
   longitude: number;
   latitude: number;
@@ -54,3 +42,9 @@ export const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 20,
   zoom: 1.5,
 };
+
+export interface SelectedFeature {
+  name: string;
+  isoCode?: string;
+  level: number;
+}

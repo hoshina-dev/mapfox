@@ -20,6 +20,7 @@
     "@mantine/hooks": "^8.3.8",
     "@math.gl/web-mercator": "^4.1.0",
     "@repo/graphql": "workspace:*",
+    "@repo/map": "workspace:*",
     "@tabler/icons-react": "^3.36.0",
     "graphql": "^16.9.0",
     "maplibre-gl": "^5.15.0",

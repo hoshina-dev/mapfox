@@ -16,61 +16,77 @@ import Map, {
   type MapRef,
 } from "react-map-gl/maplibre";
 
-import { loadAdminBoundaries, loadWorldMap } from "@/libs/map/geoDataProvider";
-import { calculateBounds } from "@/libs/map/geoUtils";
+import type { LevelConfig } from "../adapters/types";
 import {
+  calculateBounds,
   type FocusedEntity,
   type GeoJSONFeatureCollection,
   INITIAL_VIEW_STATE,
-  type LevelConfigWithLoader,
   type MapViewState,
-} from "@/libs/map/types";
+  type SelectedFeature,
+} from "../core";
 
 import { GeoLayer } from "./GeoLayer";
-
-// Level configurations for drill-down navigation
-const LEVEL_CONFIGS: Record<number, LevelConfigWithLoader> = {
-  0: {
-    layerId: "world-countries",
-    highlightProperty: "name",
-    variant: "country",
-    getDataLoader: async () => loadWorldMap(),
-  },
-  1: {
-    layerId: "admin-boundaries-1",
-    highlightProperty: "name",
-    variant: "default",
-    getDataLoader: async (isoCode) =>
-      isoCode ? loadAdminBoundaries(isoCode) : null,
-  },
-};
-
-const MAX_LEVEL = 1;
 
 export interface SiteMapHandle {
   goBack: () => void;
   exitFocus: () => void;
 }
 
-interface SiteMapProps {
+export interface SiteMapProps {
+  /**
+   * Configuration for each map level with injected data loaders
+   */
+  levelConfigs: Record<number, LevelConfig>;
+
+  /**
+   * Maximum drill-down level (default: 1)
+   */
+  maxLevel?: number;
+
+  /**
+   * Initial view state for the map
+   */
+  initialViewState?: MapViewState;
+
+  /**
+   * Map style URL (default: Carto Positron)
+   */
+  mapStyle?: string;
+
+  /**
+   * Callback when focused entity changes
+   */
   onEntityChange?: (entity: FocusedEntity | null) => void;
+
+  /**
+   * Callback when hovering over features
+   */
   onHover?: (featureName: string | null) => void;
-  onFeatureSelect?: (feature: {
-    name: string;
-    isoCode?: string;
-    level: number;
-  }) => void;
+
+  /**
+   * Callback when a feature is selected
+   */
+  onFeatureSelect?: (feature: SelectedFeature) => void;
 }
 
 export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
-  { onEntityChange, onHover, onFeatureSelect },
+  {
+    levelConfigs,
+    maxLevel = 1,
+    initialViewState = INITIAL_VIEW_STATE,
+    mapStyle = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+    onEntityChange,
+    onHover,
+    onFeatureSelect,
+  },
   ref,
 ) {
   const mapRef = useRef<MapRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // View state
-  const [viewState, setViewState] = useState<MapViewState>(INITIAL_VIEW_STATE);
+  const [viewState, setViewState] = useState<MapViewState>(initialViewState);
 
   // Layer data cache
   const [layerData, setLayerData] = useState<
@@ -90,7 +106,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Current level config
-  const currentConfig = LEVEL_CONFIGS[focusLevel];
+  const currentConfig = levelConfigs[focusLevel];
 
   // Current data to display
   const currentData = layerData[focusLevel];
@@ -99,8 +115,15 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
   useEffect(() => {
     async function loadInitialData() {
       setIsLoading(true);
+      const level0Config = levelConfigs[0];
+      if (!level0Config) {
+        console.error("Level 0 configuration is required");
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const worldData = await LEVEL_CONFIGS[0]!.getDataLoader();
+        const worldData = await level0Config.dataLoader.loadWorldMap();
         if (worldData) {
           setLayerData({ 0: worldData });
         }
@@ -111,7 +134,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
       }
     }
     loadInitialData();
-  }, []);
+  }, [levelConfigs]);
 
   // Fit map to bounds with smooth animation
   const fitToBounds = useCallback((data: GeoJSONFeatureCollection) => {
@@ -186,7 +209,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
       if (!name) return;
 
       // If at max level, just select the feature without drilling down
-      if (focusLevel >= MAX_LEVEL) {
+      if (focusLevel >= maxLevel) {
         setIsTransitioning(true);
         setSelectedFeature(name);
         zoomToFeature(name);
@@ -200,7 +223,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
       }
 
       const nextLevel = focusLevel + 1;
-      const nextConfig = LEVEL_CONFIGS[nextLevel];
+      const nextConfig = levelConfigs[nextLevel];
 
       if (!nextConfig) return;
 
@@ -208,7 +231,9 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
       setIsLoading(true);
       try {
         // Load data for the next level using isoCode
-        const data = await nextConfig.getDataLoader(isoCode);
+        const data = await nextConfig.dataLoader.loadAdminBoundaries(
+          isoCode ?? name,
+        );
 
         if (data && data.features.length > 0) {
           // Update layer data
@@ -239,6 +264,8 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
       isTransitioning,
       isLoading,
       focusLevel,
+      maxLevel,
+      levelConfigs,
       fitToBounds,
       onEntityChange,
       onFeatureSelect,
@@ -298,8 +325,8 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
     if (newLevel === 0) {
       // Fly back to world view
       map?.flyTo({
-        center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
-        zoom: INITIAL_VIEW_STATE.zoom,
+        center: [initialViewState.longitude, initialViewState.latitude],
+        zoom: initialViewState.zoom,
         duration: 500,
       });
     } else if (newLevel > 0 && layerData[newLevel]) {
@@ -313,6 +340,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
     isTransitioning,
     entityStack,
     layerData,
+    initialViewState,
     fitToBounds,
     onEntityChange,
   ]);
@@ -331,14 +359,14 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
     // Fly back to default world view
     const map = mapRef.current?.getMap();
     map?.flyTo({
-      center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
-      zoom: INITIAL_VIEW_STATE.zoom,
+      center: [initialViewState.longitude, initialViewState.latitude],
+      zoom: initialViewState.zoom,
       duration: 500,
     });
 
     onEntityChange?.(null);
     setTimeout(() => setIsTransitioning(false), 500);
-  }, [isTransitioning, onEntityChange]);
+  }, [isTransitioning, initialViewState, onEntityChange]);
 
   // Expose methods via ref
   useImperativeHandle(
@@ -373,7 +401,7 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
         onMouseLeave={handleMouseLeave}
         interactiveLayerIds={interactiveLayerIds}
         style={{ width: "100%", height: "100%" }}
-        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+        mapStyle={mapStyle}
         cursor={
           isTransitioning ? "default" : highlightedFeature ? "pointer" : "grab"
         }
@@ -412,7 +440,3 @@ export const SiteMap = forwardRef<SiteMapHandle, SiteMapProps>(function SiteMap(
     </div>
   );
 });
-
-// Export navigation functions for external use
-export type { SiteMapProps };
-export { LEVEL_CONFIGS, MAX_LEVEL };

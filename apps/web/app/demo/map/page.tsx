@@ -3,8 +3,18 @@
 import { Box, Container, Stack, Text, Title } from "@mantine/core";
 import { useRef, useState } from "react";
 
-import { MapInfoBar, SiteMap, type SiteMapHandle } from "@/components/map";
-import type { FocusedEntity } from "@/libs/map/types";
+import {
+  createStandardLevelConfigs,
+  type FocusedEntity,
+  MapInfoBar,
+  SiteMap,
+  type SiteMapHandle,
+} from "@repo/map";
+
+import { mapDataLoader } from "@/libs/map/geoDataLoader";
+
+// Create level configurations with injected data loader
+const LEVEL_CONFIGS = createStandardLevelConfigs(mapDataLoader, 1);
 
 export default function MapDemoPage() {
   const mapRef = useRef<SiteMapHandle>(null);
@@ -41,6 +51,8 @@ export default function MapDemoPage() {
         <Box style={{ flex: 1, position: "relative" }}>
           <SiteMap
             ref={mapRef}
+            levelConfigs={LEVEL_CONFIGS}
+            maxLevel={1}
             onEntityChange={setFocusedEntity}
             onHover={setHoveredFeature}
             onFeatureSelect={setSelectedFeature}

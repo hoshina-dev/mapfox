@@ -3,16 +3,17 @@
 import { ActionIcon, Badge, Group, Paper, Text, Tooltip } from "@mantine/core";
 import { IconArrowLeft, IconX } from "@tabler/icons-react";
 
-import type { FocusedEntity } from "@/libs/map/types";
+import type { FocusedEntity } from "../core/types";
 
 interface MapInfoBarProps {
   focusedEntity: FocusedEntity | null;
   hoveredFeature: string | null;
   onBack?: () => void;
   onExit?: () => void;
+  levelNames?: Record<number, string>;
 }
 
-const LEVEL_NAMES: Record<number, string> = {
+const DEFAULT_LEVEL_NAMES: Record<number, string> = {
   0: "World",
   1: "Country",
 };
@@ -22,6 +23,7 @@ export function MapInfoBar({
   hoveredFeature,
   onBack,
   onExit,
+  levelNames = DEFAULT_LEVEL_NAMES,
 }: MapInfoBarProps) {
   return (
     <Paper
@@ -64,7 +66,7 @@ export function MapInfoBar({
           )}
         </Group>
         <Badge size="sm" variant="light">
-          {LEVEL_NAMES[focusedEntity?.level ?? 0] ??
+          {levelNames[focusedEntity?.level ?? 0] ??
             `Level ${focusedEntity?.level ?? 0}`}
         </Badge>
       </Group>
