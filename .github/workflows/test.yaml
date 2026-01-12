@@ -1,0 +1,33 @@
+name: test
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Lint, Format Check, Type Check and Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Lint
+        run: pnpm lint
+
+      - name: Type Check
+        run: pnpm check
+
+      - name: Build Test
+        run: pnpm build
