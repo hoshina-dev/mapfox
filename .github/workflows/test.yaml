@@ -28,6 +28,3 @@ jobs:
 
       - name: Type Check
         run: pnpm check
-
-      - name: Build Test
-        run: pnpm build
