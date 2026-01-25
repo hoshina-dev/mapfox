@@ -1,0 +1,14 @@
+.openapi-generator-ignore
+apis/OrganizationsApi.ts
+apis/UsersApi.ts
+apis/index.ts
+index.ts
+models/GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequest.ts
+models/GithubComHoshinaDevCustapiInternalModelsErrorResponse.ts
+models/GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequest.ts
+models/GithubComHoshinaDevCustapiInternalModelsOrganizationCoord.ts
+models/GithubComHoshinaDevCustapiInternalModelsOrganizationResponse.ts
+models/GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequest.ts
+models/GithubComHoshinaDevCustapiInternalModelsUserResponse.ts
+models/index.ts
+runtime.ts

@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.16.0",
+    "generators": {
+      "custapi": {
+        "generatorName": "typescript-fetch",
+        "output": "src/libs/generated/custapi",
+        "inputSpec": "http://custapi.mapfox.svc.cluster.local:8080/swagger/doc.json",
+        "additionalProperties": {
+          "disallowAdditionalPropertiesIfNotPresent": false,
+          "supportsES6": true,
+          "useSingleRequestParameter": false
+        },
+        "enablePostProcessFile": true,
+        "removeOperationIdPrefix": true
+      }
+    }
+  }
+}
