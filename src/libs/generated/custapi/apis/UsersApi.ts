@@ -15,22 +15,46 @@
 
 import * as runtime from '../runtime';
 import type {
-  GithubComHoshinaDevCustapiInternalModelsErrorResponse,
-  GithubComHoshinaDevCustapiInternalModelsUserResponse,
+  CreateUserRequest,
+  ErrorResponse,
+  UpdateUserRequest,
+  UserResponse,
 } from '../models/index';
 import {
-    GithubComHoshinaDevCustapiInternalModelsErrorResponseFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsErrorResponseToJSON,
-    GithubComHoshinaDevCustapiInternalModelsUserResponseFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsUserResponseToJSON,
+    CreateUserRequestFromJSON,
+    CreateUserRequestToJSON,
+    ErrorResponseFromJSON,
+    ErrorResponseToJSON,
+    UpdateUserRequestFromJSON,
+    UpdateUserRequestToJSON,
+    UserResponseFromJSON,
+    UserResponseToJSON,
 } from '../models/index';
+
+export interface UsersIdDeleteRequest {
+    id: string;
+}
 
 export interface UsersIdGetRequest {
     id: string;
 }
 
+export interface UsersIdPatchRequest {
+    id: string;
+    user: UpdateUserRequest;
+}
+
 export interface UsersOrganizationOrgIdGetRequest {
     orgId: string;
+}
+
+export interface UsersPostRequest {
+    user: CreateUserRequest;
+}
+
+export interface UsersSearchGetRequest {
+    q: string;
+    limit?: number;
 }
 
 /**
@@ -42,7 +66,7 @@ export class UsersApi extends runtime.BaseAPI {
      * Get a list of all users
      * Get all users
      */
-    async usersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GithubComHoshinaDevCustapiInternalModelsUserResponse>>> {
+    async usersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -57,23 +81,61 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GithubComHoshinaDevCustapiInternalModelsUserResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserResponseFromJSON));
     }
 
     /**
      * Get a list of all users
      * Get all users
      */
-    async usersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GithubComHoshinaDevCustapiInternalModelsUserResponse>> {
+    async usersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
         const response = await this.usersGetRaw(initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Soft delete a user by ID
+     * Delete a user
+     */
+    async usersIdDeleteRaw(requestParameters: UsersIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling usersIdDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/users/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Soft delete a user by ID
+     * Delete a user
+     */
+    async usersIdDelete(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.usersIdDeleteRaw({ id: id }, initOverrides);
     }
 
     /**
      * Get a single user by their ID
      * Get a user by ID
      */
-    async usersIdGetRaw(requestParameters: UsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GithubComHoshinaDevCustapiInternalModelsUserResponse>> {
+    async usersIdGetRaw(requestParameters: UsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -96,15 +158,64 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GithubComHoshinaDevCustapiInternalModelsUserResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));
     }
 
     /**
      * Get a single user by their ID
      * Get a user by ID
      */
-    async usersIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GithubComHoshinaDevCustapiInternalModelsUserResponse> {
+    async usersIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
         const response = await this.usersIdGetRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update an existing user by ID (partial updates supported)
+     * Update a user
+     */
+    async usersIdPatchRaw(requestParameters: UsersIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling usersIdPatch().'
+            );
+        }
+
+        if (requestParameters['user'] == null) {
+            throw new runtime.RequiredError(
+                'user',
+                'Required parameter "user" was null or undefined when calling usersIdPatch().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/users/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUserRequestToJSON(requestParameters['user']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update an existing user by ID (partial updates supported)
+     * Update a user
+     */
+    async usersIdPatch(id: string, user: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
+        const response = await this.usersIdPatchRaw({ id: id, user: user }, initOverrides);
         return await response.value();
     }
 
@@ -112,7 +223,7 @@ export class UsersApi extends runtime.BaseAPI {
      * Get all users in a specific organization
      * Get users by organization
      */
-    async usersOrganizationOrgIdGetRaw(requestParameters: UsersOrganizationOrgIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GithubComHoshinaDevCustapiInternalModelsUserResponse>>> {
+    async usersOrganizationOrgIdGetRaw(requestParameters: UsersOrganizationOrgIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
         if (requestParameters['orgId'] == null) {
             throw new runtime.RequiredError(
                 'orgId',
@@ -135,15 +246,102 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GithubComHoshinaDevCustapiInternalModelsUserResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserResponseFromJSON));
     }
 
     /**
      * Get all users in a specific organization
      * Get users by organization
      */
-    async usersOrganizationOrgIdGet(orgId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GithubComHoshinaDevCustapiInternalModelsUserResponse>> {
+    async usersOrganizationOrgIdGet(orgId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
         const response = await this.usersOrganizationOrgIdGetRaw({ orgId: orgId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create a new user with email, name, organization, and optional details
+     * Create a new user
+     */
+    async usersPostRaw(requestParameters: UsersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
+        if (requestParameters['user'] == null) {
+            throw new runtime.RequiredError(
+                'user',
+                'Required parameter "user" was null or undefined when calling usersPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/users`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateUserRequestToJSON(requestParameters['user']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new user with email, name, organization, and optional details
+     * Create a new user
+     */
+    async usersPost(user: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
+        const response = await this.usersPostRaw({ user: user }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Search users by name or email using ILIKE query
+     * Search users
+     */
+    async usersSearchGetRaw(requestParameters: UsersSearchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
+        if (requestParameters['q'] == null) {
+            throw new runtime.RequiredError(
+                'q',
+                'Required parameter "q" was null or undefined when calling usersSearchGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['q'] != null) {
+            queryParameters['q'] = requestParameters['q'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/users/search`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserResponseFromJSON));
+    }
+
+    /**
+     * Search users by name or email using ILIKE query
+     * Search users
+     */
+    async usersSearchGet(q: string, limit?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
+        const response = await this.usersSearchGetRaw({ q: q, limit: limit }, initOverrides);
         return await response.value();
     }
 

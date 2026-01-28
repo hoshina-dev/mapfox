@@ -6,10 +6,10 @@ import { Welcome } from "@/components/demo/Welcome";
 
 const DEMOS = [
   {
-    title: "Admin Areas GraphQL",
-    href: "/demo/admin-areas",
+    title: "Organization List Demo",
+    href: "/organizations",
     description:
-      "View raw GraphQL query results for admin areas at different levels. Useful for debugging and understanding the API response structure.",
+      "View list of all organizations and map that show marker of each organization",
   },
 ];
 

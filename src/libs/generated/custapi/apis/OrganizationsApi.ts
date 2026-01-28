@@ -15,30 +15,30 @@
 
 import * as runtime from '../runtime';
 import type {
-  GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequest,
-  GithubComHoshinaDevCustapiInternalModelsErrorResponse,
-  GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequest,
-  GithubComHoshinaDevCustapiInternalModelsOrganizationCoord,
-  GithubComHoshinaDevCustapiInternalModelsOrganizationResponse,
-  GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequest,
+  CreateOrganizationRequest,
+  ErrorResponse,
+  GetOrganizationsByIDsRequest,
+  OrganizationCoord,
+  OrganizationResponse,
+  UpdateOrganizationRequest,
 } from '../models/index';
 import {
-    GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequestFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequestToJSON,
-    GithubComHoshinaDevCustapiInternalModelsErrorResponseFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsErrorResponseToJSON,
-    GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequestFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequestToJSON,
-    GithubComHoshinaDevCustapiInternalModelsOrganizationCoordFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsOrganizationCoordToJSON,
-    GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsOrganizationResponseToJSON,
-    GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequestFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequestToJSON,
+    CreateOrganizationRequestFromJSON,
+    CreateOrganizationRequestToJSON,
+    ErrorResponseFromJSON,
+    ErrorResponseToJSON,
+    GetOrganizationsByIDsRequestFromJSON,
+    GetOrganizationsByIDsRequestToJSON,
+    OrganizationCoordFromJSON,
+    OrganizationCoordToJSON,
+    OrganizationResponseFromJSON,
+    OrganizationResponseToJSON,
+    UpdateOrganizationRequestFromJSON,
+    UpdateOrganizationRequestToJSON,
 } from '../models/index';
 
 export interface OrganizationsBatchPostRequest {
-    request: GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequest;
+    request: GetOrganizationsByIDsRequest;
 }
 
 export interface OrganizationsIdDeleteRequest {
@@ -51,11 +51,16 @@ export interface OrganizationsIdGetRequest {
 
 export interface OrganizationsIdPatchRequest {
     id: string;
-    organization: GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequest;
+    organization: UpdateOrganizationRequest;
 }
 
 export interface OrganizationsPostRequest {
-    organization: GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequest;
+    organization: CreateOrganizationRequest;
+}
+
+export interface OrganizationsSearchGetRequest {
+    q: string;
+    limit?: number;
 }
 
 /**
@@ -67,7 +72,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Get multiple organizations by their UUIDs in a single request
      * Get organizations by multiple IDs (batch)
      */
-    async organizationsBatchPostRaw(requestParameters: OrganizationsBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>>> {
+    async organizationsBatchPostRaw(requestParameters: OrganizationsBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OrganizationResponse>>> {
         if (requestParameters['request'] == null) {
             throw new runtime.RequiredError(
                 'request',
@@ -89,17 +94,17 @@ export class OrganizationsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequestToJSON(requestParameters['request']),
+            body: GetOrganizationsByIDsRequestToJSON(requestParameters['request']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrganizationResponseFromJSON));
     }
 
     /**
      * Get multiple organizations by their UUIDs in a single request
      * Get organizations by multiple IDs (batch)
      */
-    async organizationsBatchPost(request: GithubComHoshinaDevCustapiInternalModelsGetOrganizationsByIDsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>> {
+    async organizationsBatchPost(request: GetOrganizationsByIDsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OrganizationResponse>> {
         const response = await this.organizationsBatchPostRaw({ request: request }, initOverrides);
         return await response.value();
     }
@@ -108,7 +113,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Get ID and coordinates of all organizations
      * Get all organization coordinates
      */
-    async organizationsCoordinatesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationCoord>>> {
+    async organizationsCoordinatesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OrganizationCoord>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -123,14 +128,14 @@ export class OrganizationsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GithubComHoshinaDevCustapiInternalModelsOrganizationCoordFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrganizationCoordFromJSON));
     }
 
     /**
      * Get ID and coordinates of all organizations
      * Get all organization coordinates
      */
-    async organizationsCoordinatesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationCoord>> {
+    async organizationsCoordinatesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OrganizationCoord>> {
         const response = await this.organizationsCoordinatesGetRaw(initOverrides);
         return await response.value();
     }
@@ -139,7 +144,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Get a list of all organizations
      * Get all organizations
      */
-    async organizationsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>>> {
+    async organizationsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OrganizationResponse>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -154,14 +159,14 @@ export class OrganizationsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrganizationResponseFromJSON));
     }
 
     /**
      * Get a list of all organizations
      * Get all organizations
      */
-    async organizationsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>> {
+    async organizationsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OrganizationResponse>> {
         const response = await this.organizationsGetRaw(initOverrides);
         return await response.value();
     }
@@ -208,7 +213,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Get a single organization by their ID
      * Get an organization by ID
      */
-    async organizationsIdGetRaw(requestParameters: OrganizationsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>> {
+    async organizationsIdGetRaw(requestParameters: OrganizationsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OrganizationResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -231,14 +236,14 @@ export class OrganizationsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrganizationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get a single organization by their ID
      * Get an organization by ID
      */
-    async organizationsIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse> {
+    async organizationsIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationResponse> {
         const response = await this.organizationsIdGetRaw({ id: id }, initOverrides);
         return await response.value();
     }
@@ -247,7 +252,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Update an existing organization by ID (partial updates supported)
      * Update an organization
      */
-    async organizationsIdPatchRaw(requestParameters: OrganizationsIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>> {
+    async organizationsIdPatchRaw(requestParameters: OrganizationsIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OrganizationResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -277,17 +282,17 @@ export class OrganizationsApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequestToJSON(requestParameters['organization']),
+            body: UpdateOrganizationRequestToJSON(requestParameters['organization']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrganizationResponseFromJSON(jsonValue));
     }
 
     /**
      * Update an existing organization by ID (partial updates supported)
      * Update an organization
      */
-    async organizationsIdPatch(id: string, organization: GithubComHoshinaDevCustapiInternalModelsUpdateOrganizationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse> {
+    async organizationsIdPatch(id: string, organization: UpdateOrganizationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationResponse> {
         const response = await this.organizationsIdPatchRaw({ id: id, organization: organization }, initOverrides);
         return await response.value();
     }
@@ -296,7 +301,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
      * Create a new organization with name, location, and optional details
      * Create a new organization
      */
-    async organizationsPostRaw(requestParameters: OrganizationsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse>> {
+    async organizationsPostRaw(requestParameters: OrganizationsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OrganizationResponse>> {
         if (requestParameters['organization'] == null) {
             throw new runtime.RequiredError(
                 'organization',
@@ -318,18 +323,64 @@ export class OrganizationsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequestToJSON(requestParameters['organization']),
+            body: CreateOrganizationRequestToJSON(requestParameters['organization']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GithubComHoshinaDevCustapiInternalModelsOrganizationResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrganizationResponseFromJSON(jsonValue));
     }
 
     /**
      * Create a new organization with name, location, and optional details
      * Create a new organization
      */
-    async organizationsPost(organization: GithubComHoshinaDevCustapiInternalModelsCreateOrganizationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GithubComHoshinaDevCustapiInternalModelsOrganizationResponse> {
+    async organizationsPost(organization: CreateOrganizationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationResponse> {
         const response = await this.organizationsPostRaw({ organization: organization }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Search organizations by name using ILIKE query
+     * Search organizations
+     */
+    async organizationsSearchGetRaw(requestParameters: OrganizationsSearchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OrganizationResponse>>> {
+        if (requestParameters['q'] == null) {
+            throw new runtime.RequiredError(
+                'q',
+                'Required parameter "q" was null or undefined when calling organizationsSearchGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['q'] != null) {
+            queryParameters['q'] = requestParameters['q'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/organizations/search`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrganizationResponseFromJSON));
+    }
+
+    /**
+     * Search organizations by name using ILIKE query
+     * Search organizations
+     */
+    async organizationsSearchGet(q: string, limit?: number, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OrganizationResponse>> {
+        const response = await this.organizationsSearchGetRaw({ q: q, limit: limit }, initOverrides);
         return await response.value();
     }
 

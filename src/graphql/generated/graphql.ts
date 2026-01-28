@@ -40,12 +40,24 @@ export type AdminArea = {
   parentCode?: Maybe<Scalars["String"]["output"]>;
 };
 
+export type Coordinate = {
+  __typename?: "Coordinate";
+  lat: Scalars["Float"]["output"];
+  lon: Scalars["Float"]["output"];
+};
+
+export type CoordinateInput = {
+  lat: Scalars["Float"]["input"];
+  lon: Scalars["Float"]["input"];
+};
+
 export type Query = {
   __typename?: "Query";
   adminArea?: Maybe<AdminArea>;
   adminAreaByCode?: Maybe<AdminArea>;
   adminAreas: Array<AdminArea>;
   childrenByCode: Array<AdminArea>;
+  filterCoordinatesByBoundary: Array<Coordinate>;
 };
 
 export type QueryAdminAreaArgs = {
@@ -71,11 +83,55 @@ export type QueryChildrenByCodeArgs = {
   tolerance?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
-export type AdminAreasQueryVariables = Exact<{
+export type QueryFilterCoordinatesByBoundaryArgs = {
+  boundaryId: Scalars["String"]["input"];
+  coordinates: Array<CoordinateInput>;
+};
+
+export type GetAdminAreaQueryVariables = Exact<{
+  id: Scalars["ID"]["input"];
   adminLevel: Scalars["Int"]["input"];
+  tolerance?: InputMaybe<Scalars["Float"]["input"]>;
 }>;
 
-export type AdminAreasQuery = {
+export type GetAdminAreaQuery = {
+  __typename?: "Query";
+  adminArea?: {
+    __typename?: "AdminArea";
+    id: string;
+    name: string;
+    isoCode: string;
+    geometry: any;
+    adminLevel: number;
+    parentCode?: string | null;
+  } | null;
+};
+
+export type GetAdminAreaByCodeQueryVariables = Exact<{
+  code: Scalars["String"]["input"];
+  adminLevel: Scalars["Int"]["input"];
+  tolerance?: InputMaybe<Scalars["Float"]["input"]>;
+}>;
+
+export type GetAdminAreaByCodeQuery = {
+  __typename?: "Query";
+  adminAreaByCode?: {
+    __typename?: "AdminArea";
+    id: string;
+    name: string;
+    isoCode: string;
+    geometry: any;
+    adminLevel: number;
+    parentCode?: string | null;
+  } | null;
+};
+
+export type GetAdminAreasQueryVariables = Exact<{
+  adminLevel: Scalars["Int"]["input"];
+  tolerance?: InputMaybe<Scalars["Float"]["input"]>;
+}>;
+
+export type GetAdminAreasQuery = {
   __typename?: "Query";
   adminAreas: Array<{
     __typename?: "AdminArea";
@@ -88,28 +144,13 @@ export type AdminAreasQuery = {
   }>;
 };
 
-export type AdminAreasNoGeoQueryVariables = Exact<{
-  adminLevel: Scalars["Int"]["input"];
-}>;
-
-export type AdminAreasNoGeoQuery = {
-  __typename?: "Query";
-  adminAreas: Array<{
-    __typename?: "AdminArea";
-    id: string;
-    name: string;
-    isoCode: string;
-    adminLevel: number;
-    parentCode?: string | null;
-  }>;
-};
-
-export type ChildrenByCodeQueryVariables = Exact<{
+export type GetChildrenByCodeQueryVariables = Exact<{
   parentCode: Scalars["String"]["input"];
   childLevel: Scalars["Int"]["input"];
+  tolerance?: InputMaybe<Scalars["Float"]["input"]>;
 }>;
 
-export type ChildrenByCodeQuery = {
+export type GetChildrenByCodeQuery = {
   __typename?: "Query";
   childrenByCode: Array<{
     __typename?: "AdminArea";
@@ -122,14 +163,22 @@ export type ChildrenByCodeQuery = {
   }>;
 };
 
-export const AdminAreasDocument = {
+export const GetAdminAreaDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "AdminAreas" },
+      name: { kind: "Name", value: "GetAdminArea" },
       variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
         {
           kind: "VariableDefinition",
           variable: {
@@ -141,20 +190,44 @@ export const AdminAreasDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "tolerance" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "adminAreas" },
+            name: { kind: "Name", value: "adminArea" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "adminLevel" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "adminLevel" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "tolerance" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "tolerance" },
                 },
               },
             ],
@@ -174,14 +247,105 @@ export const AdminAreasDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<AdminAreasQuery, AdminAreasQueryVariables>;
-export const AdminAreasNoGeoDocument = {
+} as unknown as DocumentNode<GetAdminAreaQuery, GetAdminAreaQueryVariables>;
+export const GetAdminAreaByCodeDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "AdminAreasNoGeo" },
+      name: { kind: "Name", value: "GetAdminAreaByCode" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "code" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "adminLevel" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "tolerance" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "adminAreaByCode" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "code" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "code" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "adminLevel" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "adminLevel" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "tolerance" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "tolerance" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "isoCode" } },
+                { kind: "Field", name: { kind: "Name", value: "geometry" } },
+                { kind: "Field", name: { kind: "Name", value: "adminLevel" } },
+                { kind: "Field", name: { kind: "Name", value: "parentCode" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAdminAreaByCodeQuery,
+  GetAdminAreaByCodeQueryVariables
+>;
+export const GetAdminAreasDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetAdminAreas" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -193,6 +357,14 @@ export const AdminAreasNoGeoDocument = {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "tolerance" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
         },
       ],
       selectionSet: {
@@ -210,6 +382,14 @@ export const AdminAreasNoGeoDocument = {
                   name: { kind: "Name", value: "adminLevel" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "tolerance" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "tolerance" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -217,6 +397,7 @@ export const AdminAreasNoGeoDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "isoCode" } },
+                { kind: "Field", name: { kind: "Name", value: "geometry" } },
                 { kind: "Field", name: { kind: "Name", value: "adminLevel" } },
                 { kind: "Field", name: { kind: "Name", value: "parentCode" } },
               ],
@@ -226,17 +407,14 @@ export const AdminAreasNoGeoDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  AdminAreasNoGeoQuery,
-  AdminAreasNoGeoQueryVariables
->;
-export const ChildrenByCodeDocument = {
+} as unknown as DocumentNode<GetAdminAreasQuery, GetAdminAreasQueryVariables>;
+export const GetChildrenByCodeDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "ChildrenByCode" },
+      name: { kind: "Name", value: "GetChildrenByCode" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -263,6 +441,14 @@ export const ChildrenByCodeDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "tolerance" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -287,6 +473,14 @@ export const ChildrenByCodeDocument = {
                   name: { kind: "Name", value: "childLevel" },
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "tolerance" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "tolerance" },
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -304,4 +498,7 @@ export const ChildrenByCodeDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<ChildrenByCodeQuery, ChildrenByCodeQueryVariables>;
+} as unknown as DocumentNode<
+  GetChildrenByCodeQuery,
+  GetChildrenByCodeQueryVariables
+>;
