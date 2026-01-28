@@ -1,0 +1,12 @@
+query FilterCoordinatesByBoundary(
+  $coordinates: [CoordinateInput!]!
+  $boundaryId: String!
+) {
+  filterCoordinatesByBoundary(
+    coordinates: $coordinates
+    boundaryId: $boundaryId
+  ) {
+    lat
+    lon
+  }
+}

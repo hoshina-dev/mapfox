@@ -11,6 +11,8 @@ interface BoundaryLayerProps {
   layerId?: string;
   selectedAreaCode?: string | null;
   isSelectedForFinal?: boolean;
+  currentLevel?: number;
+  onHoveredAreaChange?: (areaName: string | null) => void;
 }
 
 export function BoundaryLayer({
@@ -19,6 +21,8 @@ export function BoundaryLayer({
   layerId = "admin-boundaries",
   selectedAreaCode = null,
   isSelectedForFinal = false,
+  currentLevel = 0,
+  onHoveredAreaChange,
 }: BoundaryLayerProps) {
   const map = useMap();
   const hoveredFeatureIdRef = useRef<string | number | undefined>(undefined);
@@ -61,8 +65,8 @@ export function BoundaryLayer({
           ["boolean", ["feature-state", "selected"], false],
           0.8,
           ["boolean", ["feature-state", "hover"], false],
-          0.7,
-          0.4,
+          currentLevel === 0 ? 0.7 : 0.7, // At level 0, only show hovered
+          currentLevel === 0 ? 0 : 0.4, // At level 0, hide non-hovered
         ],
       },
     });
@@ -84,6 +88,14 @@ export function BoundaryLayer({
           ["boolean", ["feature-state", "selected"], false],
           style.lineWidth * 2,
           style.lineWidth,
+        ],
+        "line-opacity": [
+          "case",
+          ["boolean", ["feature-state", "selected"], false],
+          1,
+          ["boolean", ["feature-state", "hover"], false],
+          1,
+          currentLevel === 0 ? 0 : 1, // At level 0, hide non-hovered outlines
         ],
       },
     });
@@ -113,6 +125,11 @@ export function BoundaryLayer({
             { hover: true },
           );
         }
+
+        // Notify parent component of hovered area
+        const feature = e.features[0];
+        const areaName = feature.properties?.name || "Unknown Area";
+        onHoveredAreaChange?.(areaName);
       }
     };
 
@@ -124,6 +141,9 @@ export function BoundaryLayer({
         );
       }
       hoveredFeatureIdRef.current = undefined;
+
+      // Notify parent component that we're no longer hovering
+      onHoveredAreaChange?.(null);
     };
 
     // Setup hover effects
@@ -165,7 +185,16 @@ export function BoundaryLayer({
         map.removeSource(sourceId);
       }
     };
-  }, [map, data, style, layerId, selectedAreaCode, isSelectedForFinal]);
+  }, [
+    map,
+    data,
+    style,
+    layerId,
+    selectedAreaCode,
+    isSelectedForFinal,
+    currentLevel,
+    onHoveredAreaChange,
+  ]);
 
   return null;
 }

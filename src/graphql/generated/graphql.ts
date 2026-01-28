@@ -88,6 +88,20 @@ export type QueryFilterCoordinatesByBoundaryArgs = {
   coordinates: Array<CoordinateInput>;
 };
 
+export type FilterCoordinatesByBoundaryQueryVariables = Exact<{
+  coordinates: Array<CoordinateInput> | CoordinateInput;
+  boundaryId: Scalars["String"]["input"];
+}>;
+
+export type FilterCoordinatesByBoundaryQuery = {
+  __typename?: "Query";
+  filterCoordinatesByBoundary: Array<{
+    __typename?: "Coordinate";
+    lat: number;
+    lon: number;
+  }>;
+};
+
 export type GetAdminAreaQueryVariables = Exact<{
   id: Scalars["ID"]["input"];
   adminLevel: Scalars["Int"]["input"];
@@ -163,6 +177,89 @@ export type GetChildrenByCodeQuery = {
   }>;
 };
 
+export const FilterCoordinatesByBoundaryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "FilterCoordinatesByBoundary" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "coordinates" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "CoordinateInput" },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "boundaryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "filterCoordinatesByBoundary" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "coordinates" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "coordinates" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "boundaryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "boundaryId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "lat" } },
+                { kind: "Field", name: { kind: "Name", value: "lon" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  FilterCoordinatesByBoundaryQuery,
+  FilterCoordinatesByBoundaryQueryVariables
+>;
 export const GetAdminAreaDocument = {
   kind: "Document",
   definitions: [
