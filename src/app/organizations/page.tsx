@@ -1,4 +1,15 @@
-import { Alert, Container, Stack, Text, Title } from "@mantine/core";
+import {
+  Alert,
+  Container,
+  Stack,
+  Tabs,
+  TabsList,
+  TabsPanel,
+  TabsTab,
+  Text,
+  Title,
+} from "@mantine/core";
+import { IconBuildingCommunity, IconMap } from "@tabler/icons-react";
 
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi } from "@/libs/apiClient";
@@ -38,13 +49,37 @@ export default async function OrganizationsPage() {
           </Text>
         </div>
 
-        <OrganizationsList organizations={data || []} />
+        <Tabs defaultValue="all">
+          <TabsList>
+            <TabsTab
+              value="all"
+              leftSection={<IconBuildingCommunity size={14} />}
+            >
+              All Organizations
+            </TabsTab>
+            <TabsTab value="map" leftSection={<IconMap size={14} />}>
+              Map
+            </TabsTab>
+          </TabsList>
 
-        {data && data.length > 0 && (
-          <Text size="sm" c="dimmed" ta="center">
-            Showing {data.length} organization{data.length !== 1 ? "s" : ""}
-          </Text>
-        )}
+          <TabsPanel value="all">
+            <Stack gap="xl" pt="xl">
+              <OrganizationsList organizations={data || []} />
+
+              {data && data.length > 0 && (
+                <Text size="sm" c="dimmed" ta="center">
+                  Showing {data.length} organization
+                  {data.length !== 1 ? "s" : ""}
+                </Text>
+              )}
+            </Stack>
+          </TabsPanel>
+
+          <TabsPanel value="map">
+            {/* Map content will be added here */}
+            <div>Empty</div>
+          </TabsPanel>
+        </Tabs>
       </Stack>
     </Container>
   );

@@ -1,4 +1,4 @@
-import { Badge, Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
+import { Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
 
 import type { GithubComHoshinaDevCustapiInternalModelsOrganizationResponse } from "@/libs/generated/custapi";
 
@@ -27,11 +27,6 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
 
       <Stack gap="sm" mt="md">
         <Flex direction="column" align="flex-start">
-          {organization.id && (
-            <Badge color="blue" variant="light" size="sm">
-              ID: {organization.id}
-            </Badge>
-          )}
           <Text fw={500} size="lg">
             {organization.name}
           </Text>
@@ -61,13 +56,6 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
               {organization.lat.toFixed(4)}, {organization.lng.toFixed(4)}
             </Text>
           </Group>
-        )}
-
-        {organization.createdAt && (
-          <Text size="xs" c="dimmed">
-            Created:{" "}
-            {new Date(organization.createdAt).toLocaleDateString("en-GB")}
-          </Text>
         )}
       </Stack>
     </Card>
