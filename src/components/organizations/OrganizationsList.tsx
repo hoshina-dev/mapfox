@@ -2,12 +2,12 @@
 
 import { Alert, SimpleGrid, Text } from "@mantine/core";
 
-import type { GithubComHoshinaDevCustapiInternalModelsOrganizationResponse } from "@/libs/generated/custapi";
+import type { OrganizationResponse } from "@/libs/generated/custapi";
 
 import { OrganizationCard } from "./OrganizationCard";
 
 interface OrganizationsListProps {
-  organizations: GithubComHoshinaDevCustapiInternalModelsOrganizationResponse[];
+  organizations: OrganizationResponse[];
 }
 
 export function OrganizationsList({ organizations }: OrganizationsListProps) {

@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { IconBuildingCommunity, IconMap } from "@tabler/icons-react";
 
+import { AllOrgMap } from "@/components/map/AllOrg";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi } from "@/libs/apiClient";
 
@@ -76,8 +77,7 @@ export default async function OrganizationsPage() {
           </TabsPanel>
 
           <TabsPanel value="map">
-            {/* Map content will be added here */}
-            <div>Empty</div>
+            <AllOrgMap organizations={data || []} />
           </TabsPanel>
         </Tabs>
       </Stack>

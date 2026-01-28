@@ -1,9 +1,10 @@
 import { Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
+import Link from "next/link";
 
-import type { GithubComHoshinaDevCustapiInternalModelsOrganizationResponse } from "@/libs/generated/custapi";
+import type { OrganizationResponse } from "@/libs/generated/custapi";
 
 interface OrganizationCardProps {
-  organization: GithubComHoshinaDevCustapiInternalModelsOrganizationResponse;
+  organization: OrganizationResponse;
 }
 
 export function OrganizationCard({ organization }: OrganizationCardProps) {
@@ -13,7 +14,15 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
       : undefined;
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      component={Link}
+      href={`/organization/${organization.id}`}
+      style={{ cursor: "pointer", textDecoration: "none", color: "inherit" }}
+    >
       {imageUrl && (
         <Card.Section>
           <Image

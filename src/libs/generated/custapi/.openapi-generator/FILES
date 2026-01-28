@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/OrganizationsApi.ts
 apis/UsersApi.ts
 apis/index.ts
