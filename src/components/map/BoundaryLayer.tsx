@@ -174,6 +174,10 @@ export function BoundaryLayer({
       map.off("mousemove", fillLayerId, onMouseMove);
       map.off("mouseleave", fillLayerId, onMouseLeaveForHover);
 
+      if (!map.style) {
+        return;
+      }
+
       // Remove layers and source
       if (map.getLayer(fillLayerId)) {
         map.removeLayer(fillLayerId);

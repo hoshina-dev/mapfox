@@ -40,12 +40,6 @@ export function Marker({ lat, lng, organizationInfo }: MarkerProps) {
         organizationInfo.imageUrls && organizationInfo.imageUrls.length > 0
           ? organizationInfo.imageUrls[0]
           : undefined;
-      useEffect(() => {
-        console.log(`${lat}, ${lng} marker popup mounted`);
-        return () => {
-          console.log(`${lat}, ${lng} marker popup unmounted`);
-        };
-      });
 
       return (
         <MantineProvider>
