@@ -15,6 +15,8 @@ import { OrganizationMap } from "@/components/map/OrganizationMap";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi } from "@/libs/apiClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrganizationsPage() {
   let data;
   let error;
