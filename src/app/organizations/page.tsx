@@ -1,6 +1,8 @@
 import {
   Alert,
+  Button,
   Container,
+  Flex,
   Stack,
   Tabs,
   TabsList,
@@ -9,7 +11,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconBuildingCommunity, IconMap } from "@tabler/icons-react";
+import { IconBuildingCommunity, IconMap, IconPlus } from "@tabler/icons-react";
 
 import { OrganizationMap } from "@/components/map/OrganizationMap";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
@@ -43,14 +45,23 @@ export default async function OrganizationsPage() {
   return (
     <Container size="xl" py="xl">
       <Stack gap="xl">
-        <div>
-          <Title order={1} mb="xs">
-            Organizations
-          </Title>
-          <Text c="dimmed" size="lg">
-            Browse all organizations in the system
-          </Text>
-        </div>
+        <Flex justify="space-between" align="flex-start" gap="md" wrap="wrap">
+          <div>
+            <Title order={1} mb="xs">
+              Organizations
+            </Title>
+            <Text c="dimmed" size="lg">
+              Browse all organizations in the system
+            </Text>
+          </div>
+          <Button
+            component="a"
+            href="/organizations/create"
+            leftSection={<IconPlus size={16} />}
+          >
+            Create Organization
+          </Button>
+        </Flex>
 
         <Tabs defaultValue="all">
           <TabsList>
