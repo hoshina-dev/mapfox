@@ -1,3 +1,7 @@
+// API used here is not exposed to frontend, only used in server components and API routes
+
+import "server-only";
+
 import { GraphQLClient } from "graphql-request";
 
 import { Configuration, OrganizationsApi } from "./generated/custapi";

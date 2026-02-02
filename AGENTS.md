@@ -6,6 +6,8 @@ It is built using Next.js and Mantine for the UI components.
 
 The pattern is BFF, basically the backend is not exposed to the client directly.
 
+NEVER make any API calls directly from the frontend to the backend services, always use Server Actions or API routes as the proxy.
+
 ## Mantine UI
 
 To prevent error with server components in Mantine, Component compounds (such as `Component.XXX`) cannot be used, instead using `ComponentXXX` instead.

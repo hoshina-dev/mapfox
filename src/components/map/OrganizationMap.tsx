@@ -1,12 +1,13 @@
 "use client";
 
-import { Alert, SegmentedControl, Stack } from "@mantine/core";
+import { SegmentedControl, Stack } from "@mantine/core";
 import { useState } from "react";
 
 import { OrganizationResponse } from "@/libs/generated/custapi";
 
 import { AllOrgMap } from "./AllOrg";
 import { AreaModeMap } from "./AreaModeMap";
+import { SearchModeMap } from "./SearchModeMap";
 
 type OrganizationMapProps = {
   organizations: OrganizationResponse[];
@@ -34,11 +35,7 @@ export function OrganizationMap({ organizations }: OrganizationMapProps) {
       />
       {mode === "all" && <AllOrgMap organizations={organizations || []} />}
       {mode === "area" && <AreaModeMap organizations={organizations || []} />}
-      {mode === "search" && (
-        <Alert title="Coming Soon" color="blue">
-          Search mode will be implemented in the future.
-        </Alert>
-      )}
+      {mode === "search" && <SearchModeMap />}
     </Stack>
   );
 }
