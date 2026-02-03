@@ -1,7 +1,5 @@
-import { Button, Flex, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import { Button, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 
-import { ColorSchemeToggle } from "@/components/demo/ColorSchemeToggle";
-import { PopoverDemo } from "@/components/demo/PopoverDemo";
 import { Welcome } from "@/components/demo/Welcome";
 
 const DEMOS = [
@@ -48,14 +46,6 @@ export default function Home() {
           ))}
         </SimpleGrid>
       </Stack>
-
-      <Flex direction="column" align="center" gap="md">
-        <Title order={3}>Components</Title>
-        <Flex gap="md" wrap="wrap" justify="center">
-          <ColorSchemeToggle />
-          <PopoverDemo />
-        </Flex>
-      </Flex>
     </Stack>
   );
 }

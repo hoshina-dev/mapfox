@@ -1,4 +1,4 @@
-import { Anchor, Flex, Text, Title } from "@mantine/core";
+import { Flex, Text, Title } from "@mantine/core";
 
 import classes from "./Welcome.module.css";
 
@@ -13,17 +13,11 @@ export function Welcome() {
           component="span"
           gradient={{ from: "pink", to: "yellow" }}
         >
-          Mantine
+          Mapfox Demo
         </Text>
       </Title>
       <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-        This starter Next.js project includes a minimal setup for server side
-        rendering, if you want to learn more on Mantine + Next.js integration
-        follow{" "}
-        <Anchor href="https://mantine.dev/guides/next/" size="lg">
-          this guide
-        </Anchor>
-        . To get started edit page.tsx file.
+        Please see below for available feature demos.
       </Text>
     </Flex>
   );

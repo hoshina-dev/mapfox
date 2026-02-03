@@ -95,9 +95,23 @@ export function Marker({ lat, lng, organizationInfo }: MarkerProps) {
     markerElement.setAttribute("data-marker", "true");
     markerElement.style.cursor = "pointer";
 
+    // Add hover event listeners to show popup on hover
+    const handleMouseEnter = () => {
+      markerRef.current?.togglePopup();
+    };
+
+    const handleMouseLeave = () => {
+      markerRef.current?.togglePopup();
+    };
+
+    markerElement.addEventListener("mouseenter", handleMouseEnter);
+    markerElement.addEventListener("mouseleave", handleMouseLeave);
+
     const rootToCleanup = rootRef.current;
 
     return () => {
+      markerElement.removeEventListener("mouseenter", handleMouseEnter);
+      markerElement.removeEventListener("mouseleave", handleMouseLeave);
       markerRef.current?.remove();
 
       setTimeout(() => {
