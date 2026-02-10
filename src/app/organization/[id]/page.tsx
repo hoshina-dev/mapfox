@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { notFound } from "next/navigation";
 
+import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { organizationsApi } from "@/libs/apiClient";
 
 interface OrganizationPageProps {
@@ -85,29 +86,25 @@ export default async function OrganizationPage({
           </Card>
         )}
 
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Stack gap="md">
-            <Title order={3}>Details</Title>
-
-            {organization.address && (
-              <Group gap="xs">
-                <Text size="sm" fw={500}>
-                  📍 Address:
-                </Text>
-                <Text size="sm">{organization.address}</Text>
-              </Group>
-            )}
-
+        <OrganizationDetailSection organization={organization}>
+          {organization.address && (
             <Group gap="xs">
               <Text size="sm" fw={500}>
-                🌐 Coordinates:
+                📍 Address:
               </Text>
-              <Text size="sm" c="dimmed">
-                {organization.lat!.toFixed(6)}, {organization.lng!.toFixed(6)}
-              </Text>
+              <Text size="sm">{organization.address}</Text>
             </Group>
-          </Stack>
-        </Card>
+          )}
+
+          <Group gap="xs">
+            <Text size="sm" fw={500}>
+              🌐 Coordinates:
+            </Text>
+            <Text size="sm" c="dimmed">
+              {organization.lat!.toFixed(6)}, {organization.lng!.toFixed(6)}
+            </Text>
+          </Group>
+        </OrganizationDetailSection>
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Stack gap="md">

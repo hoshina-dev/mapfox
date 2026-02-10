@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 // Initialize S3 client for R2/S3
 const s3Client = new S3Client({
@@ -56,4 +60,27 @@ export async function uploadImageToS3(
   const publicUrl = `${process.env.S3_PUBLIC_URL || process.env.S3_ENDPOINT}/${key}`;
 
   return publicUrl;
+}
+
+/**
+ * Deletes an image from S3/R2 by its URL
+ */
+export async function deleteImageFromS3(imageUrl: string): Promise<void> {
+  const bucketName = process.env.S3_BUCKET_NAME;
+
+  if (!bucketName) {
+    throw new Error("S3_BUCKET_NAME is not configured");
+  }
+
+  // Extract the key from the URL
+  // For example: https://pub-account.r2.dev/organization-image/file.jpg -> organization-image/file.jpg
+  const baseUrl = process.env.S3_PUBLIC_URL || process.env.S3_ENDPOINT || "";
+  const key = imageUrl.replace(baseUrl + "/", "");
+
+  const command = new DeleteObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+
+  await s3Client.send(command);
 }

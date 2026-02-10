@@ -3,32 +3,45 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-import { createOrganization } from "@/app/actions/createOrganization";
-import type { CreateOrganizationRequest } from "@/libs/generated/custapi";
+import { updateOrganization } from "@/app/actions/updateOrganization";
+import type {
+  OrganizationResponse,
+  UpdateOrganizationRequest,
+} from "@/libs/generated/custapi";
 
 import { OrganizationFormFields } from "./OrganizationFormFields";
 
-export function CreateOrganizationForm() {
+interface OrganizationEditFormProps {
+  organization: OrganizationResponse;
+  onCancel: () => void;
+}
+
+export function OrganizationEditForm({
+  organization,
+  onCancel,
+}: OrganizationEditFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>(
+    organization.imageUrls || [],
+  );
   const [showMapPicker, setShowMapPicker] = useState(false);
   const resetFileInputRef = useRef<() => void>(null);
 
-  const [formData, setFormData] = useState<CreateOrganizationRequest>({
-    name: "",
-    lat: 13.7388,
-    lng: 100.5322,
-    address: "",
-    description: "",
-    imageUrls: [],
+  const [formData, setFormData] = useState<UpdateOrganizationRequest>({
+    name: organization.name || "",
+    lat: organization.lat || 13.7388,
+    lng: organization.lng || 100.5322,
+    address: organization.address || "",
+    description: organization.description || "",
   });
 
   const handleInputChange = (
-    field: keyof CreateOrganizationRequest,
+    field: keyof UpdateOrganizationRequest,
     value: unknown,
   ) => {
     setFormData((prev) => ({
@@ -80,10 +93,14 @@ export function CreateOrganizationForm() {
     resetFileInputRef.current?.();
   };
 
-  const handleRemoveFile = (index: number) => {
+  const handleRemoveNewFile = (index: number) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     setImagePreviewUrls((prev) => prev.filter((_, i) => i !== index));
     setFileError(null);
+  };
+
+  const handleRemoveExistingImage = (url: string) => {
+    setExistingImageUrls((prev) => prev.filter((u) => u !== url));
   };
 
   const handleLocationSelect = (lat: number, lng: number) => {
@@ -92,31 +109,58 @@ export function CreateOrganizationForm() {
     setShowMapPicker(false);
   };
 
-  // Validation: must have at least one image
-  const isSubmitDisabled = selectedFiles.length === 0;
+  // Check if any data has changed
+  const hasDataChanged =
+    formData.name !== (organization.name || "") ||
+    formData.lat !== (organization.lat || 13.7388) ||
+    formData.lng !== (organization.lng || 100.5322) ||
+    formData.address !== (organization.address || "") ||
+    formData.description !== (organization.description || "") ||
+    selectedFiles.length > 0 ||
+    existingImageUrls.length !== (organization.imageUrls?.length || 0) ||
+    !existingImageUrls.every(
+      (url, idx) => url === organization.imageUrls?.[idx],
+    );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Validation: must have at least one image and data must have changed
+  const hasImages = existingImageUrls.length > 0 || selectedFiles.length > 0;
+  const isSubmitDisabled = !hasImages || !hasDataChanged;
+
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+
+    // Validate that at least one image exists
+    if (existingImageUrls.length === 0 && selectedFiles.length === 0) {
+      setError("Organization must have at least one image");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const result = await createOrganization(
+      const result = await updateOrganization(
+        organization.id!,
         formData,
         selectedFiles.length > 0 ? selectedFiles : undefined,
+        existingImageUrls,
+        organization.imageUrls,
       );
 
       if (!result.success) {
-        setError(result.error || "Failed to create organization");
+        setError(result.error || "Failed to update organization");
         return;
       }
 
-      // Redirect to organizations page on success
-      router.push("/organizations");
+      // Refresh the page on success
       router.refresh();
+      onCancel(); // Close the edit form
+
+      // Scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Failed to create organization";
+        err instanceof Error ? err.message : "Failed to update organization";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -134,15 +178,18 @@ export function CreateOrganizationForm() {
       selectedFiles={selectedFiles}
       imagePreviewUrls={imagePreviewUrls}
       onFilesChange={handleFilesChange}
-      onRemoveNewFile={handleRemoveFile}
+      onRemoveNewFile={handleRemoveNewFile}
+      existingImageUrls={existingImageUrls}
+      onRemoveExistingImage={handleRemoveExistingImage}
       showMapPicker={showMapPicker}
       onShowMapPicker={setShowMapPicker}
       onLocationSelect={handleLocationSelect}
       resetFileInputRef={resetFileInputRef}
       onSubmit={handleSubmit}
-      onCancel={() => router.back()}
-      submitButtonText="Create Organization"
-      imageUploadLabel="Select Images"
+      onCancel={onCancel}
+      submitButtonText="Update Organization"
+      imageUploadLabel="Add More Images"
+      imageDescription="Upload images for the organization. Each image must be under 1MB. Supported formats: JPEG, PNG, WebP. At least one image is required."
       isSubmitDisabled={isSubmitDisabled}
     />
   );
