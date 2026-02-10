@@ -9,7 +9,7 @@ import { theme } from "../libs/theme";
 
 export function render(ui: ReactNode): RenderResult {
   return testingLibraryRender(<>{ui}</>, {
-    wrapper: ({ children }: { children: React.ReactNode }) => (
+    wrapper: ({ children }: { children: ReactNode }) => (
       <MantineProvider theme={theme} env="test">
         {children}
       </MantineProvider>
