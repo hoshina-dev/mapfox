@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { notFound } from "next/navigation";
 
+import { BackToOrganizationsButton } from "@/components/organizations/BackToOrganizationsButton";
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
 import { organizationsApi } from "@/libs/apiClient";
@@ -59,9 +60,10 @@ export default async function OrganizationPage({
     <Container size="lg" py="xl">
       <Stack gap="xl">
         <div>
-          <Title order={1} mb="xs">
-            {organization.name}
-          </Title>
+          <Group gap="sm" mb="xs">
+            <BackToOrganizationsButton />
+            <Title order={1}>{organization.name}</Title>
+          </Group>
           {organization.description && (
             <Text c="dimmed" size="lg">
               {organization.description}
