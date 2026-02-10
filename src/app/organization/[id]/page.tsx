@@ -2,10 +2,8 @@ import {
   Alert,
   AspectRatio,
   Card,
-  CardSection,
   Container,
   Group,
-  Image,
   Stack,
   Text,
   Title,
@@ -13,6 +11,7 @@ import {
 import { notFound } from "next/navigation";
 
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
+import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
 import { organizationsApi } from "@/libs/apiClient";
 
 interface OrganizationPageProps {
@@ -51,10 +50,7 @@ export default async function OrganizationPage({
     );
   }
 
-  const imageUrl =
-    organization.imageUrls && organization.imageUrls.length > 0
-      ? organization.imageUrls[0]
-      : undefined;
+  const imageUrls = organization.imageUrls || [];
 
   // Google Maps embed URL with marker
   const mapsEmbedUrl = `https://www.google.com/maps?q=${organization.lat},${organization.lng}&z=14&output=embed`;
@@ -73,17 +69,11 @@ export default async function OrganizationPage({
           )}
         </div>
 
-        {imageUrl && (
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
-            <CardSection>
-              <Image
-                src={imageUrl}
-                height={300}
-                alt={organization.name || "Organization"}
-                fallbackSrc="https://placehold.co/800x300?text=No+Image"
-              />
-            </CardSection>
-          </Card>
+        {imageUrls.length > 0 && (
+          <OrganizationImageCarousel
+            imageUrls={imageUrls}
+            organizationName={organization.name || "Organization"}
+          />
         )}
 
         <OrganizationDetailSection organization={organization}>
