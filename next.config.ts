@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   experimental: {
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
   },
 };
 
