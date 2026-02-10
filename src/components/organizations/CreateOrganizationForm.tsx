@@ -5,16 +5,18 @@ import {
   Alert,
   Button,
   Card,
+  FileButton,
   Group,
   NumberInput,
   Stack,
   Text,
   Textarea,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
-import { IconMapPin, IconTrash, IconUpload } from "@tabler/icons-react";
+import { IconMapPin, IconPhoto, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { createOrganization } from "@/app/actions/createOrganization";
 import type { CreateOrganizationRequest } from "@/libs/generated/custapi";
@@ -25,9 +27,11 @@ export function CreateOrganizationForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [newImageUrl, setNewImageUrl] = useState("");
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [showMapPicker, setShowMapPicker] = useState(false);
+  const resetFileInputRef = useRef<() => void>(null);
 
   const [formData, setFormData] = useState<CreateOrganizationRequest>({
     name: "",
@@ -49,15 +53,52 @@ export function CreateOrganizationForm() {
     setError(null);
   };
 
-  const handleAddImageUrl = () => {
-    if (newImageUrl.trim()) {
-      setImageUrls((prev) => [...prev, newImageUrl.trim()]);
-      setNewImageUrl("");
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
+  const handleFilesChange = (files: File[]) => {
+    setFileError(null);
+
+    // Validate file sizes
+    const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE);
+
+    if (oversizedFiles.length > 0) {
+      const errorMsg = `The following files exceed 1MB: ${oversizedFiles.map((f) => `${f.name} (${(f.size / 1024 / 1024).toFixed(2)}MB)`).join(", ")}`;
+      setFileError(errorMsg);
+      return;
     }
+
+    // Validate file types
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const invalidFiles = files.filter(
+      (file) => !allowedTypes.includes(file.type),
+    );
+
+    if (invalidFiles.length > 0) {
+      const errorMsg = `Invalid file types: ${invalidFiles.map((f) => f.name).join(", ")}. Only JPEG, PNG, and WebP are allowed.`;
+      setFileError(errorMsg);
+      return;
+    }
+
+    // Update selected files
+    setSelectedFiles((prev) => [...prev, ...files]);
+
+    // Create preview URLs
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrls((prev) => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset file input to allow re-selecting the same files
+    resetFileInputRef.current?.();
   };
 
-  const handleRemoveImageUrl = (index: number) => {
-    setImageUrls((prev) => prev.filter((_, i) => i !== index));
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviewUrls((prev) => prev.filter((_, i) => i !== index));
+    setFileError(null);
   };
 
   const handleLocationSelect = (lat: number, lng: number) => {
@@ -72,12 +113,10 @@ export function CreateOrganizationForm() {
     setError(null);
 
     try {
-      const payload: CreateOrganizationRequest = {
-        ...formData,
-        imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
-      };
-
-      const result = await createOrganization(payload);
+      const result = await createOrganization(
+        formData,
+        selectedFiles.length > 0 ? selectedFiles : undefined,
+      );
 
       if (!result.success) {
         setError(result.error || "Failed to create organization");
@@ -182,92 +221,117 @@ export function CreateOrganizationForm() {
             minRows={4}
           />
 
-          {/* Image URLs */}
+          {/* Image Upload */}
           <div>
             <Text fw={500} size="sm" mb="xs">
-              Image URLs
+              Images
             </Text>
             <Text size="xs" c="dimmed" mb="md">
-              Add image URLs for the organization (we&apos;ll add upload
-              functionality later)
+              Upload images for the organization. Each image must be under 1MB.
+              Supported formats: JPEG, PNG, WebP.
             </Text>
 
-            <Stack gap="sm" mb="lg">
-              <Group gap="xs">
-                <TextInput
-                  placeholder="https://example.com/image.jpg"
-                  value={newImageUrl}
-                  onChange={(e) => setNewImageUrl(e.currentTarget.value)}
-                  style={{ flex: 1 }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddImageUrl();
-                    }
-                  }}
-                />
+            {fileError && (
+              <Alert
+                color="red"
+                title="Upload Error"
+                mb="md"
+                withCloseButton
+                onClose={() => setFileError(null)}
+              >
+                {fileError}
+              </Alert>
+            )}
+
+            <FileButton
+              onChange={handleFilesChange}
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              multiple
+              resetRef={resetFileInputRef}
+            >
+              {(props) => (
                 <Button
-                  onClick={handleAddImageUrl}
-                  variant="default"
-                  leftSection={<IconUpload size={16} />}
+                  {...props}
+                  variant="light"
+                  leftSection={<IconPhoto size={16} />}
+                  disabled={loading}
                 >
-                  Add
+                  Select Images
                 </Button>
-              </Group>
+              )}
+            </FileButton>
 
-              {imageUrls.length > 0 && (
-                <Stack gap="xs">
-                  {imageUrls.map((url, index) => (
-                    <Group
+            {selectedFiles.length > 0 && (
+              <div style={{ marginTop: "1rem" }}>
+                <Text size="sm" fw={500} mb="xs">
+                  Selected Images ({selectedFiles.length})
+                </Text>
+                <Group gap="sm">
+                  {imagePreviewUrls.map((url, index) => (
+                    <Tooltip
                       key={index}
-                      justify="space-between"
-                      p="sm"
-                      bg="gray.1"
-                      style={{ borderRadius: "4px" }}
+                      label={`${selectedFiles[index].name} (${(selectedFiles[index].size / 1024).toFixed(2)} KB)`}
+                      withArrow
                     >
-                      <div style={{ flex: 1 }}>
-                        <Text size="sm" truncate>
-                          {url}
-                        </Text>
-                      </div>
-                      <ActionIcon
-                        color="red"
-                        variant="subtle"
-                        onClick={() => handleRemoveImageUrl(index)}
-                        title="Remove image"
-                      >
-                        <IconTrash size={16} />
-                      </ActionIcon>
-                    </Group>
-                  ))}
-                </Stack>
-              )}
-
-              {imageUrls.length > 0 && (
-                <div>
-                  <Text size="xs" fw={500} mb="xs">
-                    Preview ({imageUrls.length} image
-                    {imageUrls.length !== 1 ? "s" : ""})
-                  </Text>
-                  <Group gap="sm">
-                    {imageUrls.map((url, index) => (
                       <Card
-                        key={index}
-                        p="xs"
+                        p={0}
                         withBorder
-                        style={{ width: 100, height: 100 }}
+                        style={{
+                          width: 120,
+                          height: 120,
+                          overflow: "hidden",
+                          position: "relative",
+                          cursor: "pointer",
+                        }}
                       >
-                        <Card.Section
-                          component="img"
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
                           src={url}
-                          alt={`Preview ${index}`}
+                          alt={`Preview ${index + 1}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
                         />
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            opacity: 0,
+                            transition: "opacity 0.2s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.opacity = "1";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.opacity = "0";
+                          }}
+                        >
+                          <ActionIcon
+                            color="red"
+                            variant="filled"
+                            size="lg"
+                            onClick={() => handleRemoveFile(index)}
+                            disabled={loading}
+                            style={{ pointerEvents: "auto" }}
+                          >
+                            <IconX size={20} />
+                          </ActionIcon>
+                        </div>
                       </Card>
-                    ))}
-                  </Group>
-                </div>
-              )}
-            </Stack>
+                    </Tooltip>
+                  ))}
+                </Group>
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
