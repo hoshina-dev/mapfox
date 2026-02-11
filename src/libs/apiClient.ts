@@ -4,7 +4,7 @@ import "server-only";
 
 import { GraphQLClient } from "graphql-request";
 
-import { Configuration, OrganizationsApi } from "./generated/custapi";
+import { Configuration, OrganizationsApi, UsersApi } from "./generated/custapi";
 
 // Get GAPI URL from environment variable
 const GAPI_URL = process.env.GAPI_URL || "http://localhost:8080/query";
@@ -22,3 +22,4 @@ const configuration = new Configuration({
 });
 
 export const organizationsApi = new OrganizationsApi(configuration);
+export const usersApi = new UsersApi(configuration);

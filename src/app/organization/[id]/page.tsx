@@ -10,9 +10,11 @@ import {
 } from "@mantine/core";
 import { notFound } from "next/navigation";
 
+import { getUsersByOrganization } from "@/app/actions/getUsersByOrganization";
 import { BackToOrganizationsButton } from "@/components/organizations/BackToOrganizationsButton";
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
+import { OrganizationUsersList } from "@/components/organizations/OrganizationUsersList";
 import { organizationsApi } from "@/libs/apiClient";
 
 interface OrganizationPageProps {
@@ -50,6 +52,10 @@ export default async function OrganizationPage({
       </Container>
     );
   }
+
+  // Fetch users for this organization
+  const usersResult = await getUsersByOrganization(id);
+  const users = usersResult.success ? usersResult.data : [];
 
   const imageUrls = organization.imageUrls || [];
 
@@ -97,6 +103,13 @@ export default async function OrganizationPage({
             </Text>
           </Group>
         </OrganizationDetailSection>
+
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Stack gap="md">
+            <Title order={3}>Members ({users.length})</Title>
+            <OrganizationUsersList users={users} />
+          </Stack>
+        </Card>
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Stack gap="md">
