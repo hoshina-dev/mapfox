@@ -8,10 +8,11 @@ export async function filterOrganizationsByBoundary(
   organizations: OrganizationResponse[],
   boundaryId: string,
 ): Promise<OrganizationResponse[]> {
-  // Convert organizations to coordinate inputs
+  // Convert organizations to coordinate inputs with unique IDs
   const coordinates = organizations
-    .filter((org) => org.lat != null && org.lng != null)
+    .filter((org) => org.id != null && org.lat != null && org.lng != null)
     .map((org) => ({
+      id: org.id!,
       lat: org.lat!,
       lon: org.lng!, // Note: GraphQL uses 'lon' while custapi uses 'lng'
     }));
@@ -30,18 +31,14 @@ export async function filterOrganizationsByBoundary(
       },
     );
 
-    const filteredCoordinates = result.filterCoordinatesByBoundary;
+    const filteredIds = new Set(
+      result.filterCoordinatesByBoundary.map((coord) => coord.id),
+    );
 
-    // Map filtered coordinates back to organizations
-    const filteredOrgs = organizations.filter((org) => {
-      if (org.lat == null || org.lng == null) return false;
-
-      return filteredCoordinates.some(
-        (coord: { lat: number; lon: number }) =>
-          Math.abs(coord.lat - org.lat!) < 0.000001 &&
-          Math.abs(coord.lon - org.lng!) < 0.000001,
-      );
-    });
+    // Filter organizations by matching IDs from the query result
+    const filteredOrgs = organizations.filter(
+      (org) => org.id != null && filteredIds.has(org.id),
+    );
 
     return filteredOrgs;
   } catch (error) {
