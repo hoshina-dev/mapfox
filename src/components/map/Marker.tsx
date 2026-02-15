@@ -37,7 +37,7 @@ export function Marker({ lat, lng, organizationInfo }: MarkerProps) {
     // Create a React component for the popup content
     const PopupContent = () => {
       const imageUrl =
-        organizationInfo.imageUrls && organizationInfo.imageUrls.length > 0
+        organizationInfo.imageUrls.length > 0
           ? organizationInfo.imageUrls[0]
           : undefined;
 
@@ -48,7 +48,7 @@ export function Marker({ lat, lng, organizationInfo }: MarkerProps) {
               <Image
                 src={imageUrl}
                 width={200}
-                alt={organizationInfo.name || "Organization"}
+                alt={organizationInfo.name}
                 fallbackSrc="https://placehold.co/200x120?text=No+Image"
                 radius="sm"
               />
@@ -59,8 +59,8 @@ export function Marker({ lat, lng, organizationInfo }: MarkerProps) {
                 🌐
               </Text>
               <Text size="sm" c="dimmed">
-                {organizationInfo.lat!.toFixed(4)},{" "}
-                {organizationInfo.lng!.toFixed(4)}
+                {organizationInfo.lat.toFixed(4)},{" "}
+                {organizationInfo.lng.toFixed(4)}
               </Text>
             </Group>
             <Text size="xs" c="dimmed">

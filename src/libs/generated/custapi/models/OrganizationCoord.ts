@@ -24,25 +24,28 @@ export interface OrganizationCoord {
      * @type {string}
      * @memberof OrganizationCoord
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {number}
      * @memberof OrganizationCoord
      */
-    lat?: number;
+    lat: number;
     /**
      * 
      * @type {number}
      * @memberof OrganizationCoord
      */
-    lng?: number;
+    lng: number;
 }
 
 /**
  * Check if a given object implements the OrganizationCoord interface.
  */
 export function instanceOfOrganizationCoord(value: object): value is OrganizationCoord {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('lat' in value) || value['lat'] === undefined) return false;
+    if (!('lng' in value) || value['lng'] === undefined) return false;
     return true;
 }
 
@@ -56,9 +59,9 @@ export function OrganizationCoordFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'lat': json['lat'] == null ? undefined : json['lat'],
-        'lng': json['lng'] == null ? undefined : json['lng'],
+        'id': json['id'],
+        'lat': json['lat'],
+        'lng': json['lng'],
     };
 }
 

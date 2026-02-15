@@ -238,8 +238,8 @@ export function AreaModeMap({ organizations }: AreaModeMapProps) {
           {filteredOrganizations.map((org) => (
             <Marker
               key={org.id}
-              lat={org.lat ?? 0}
-              lng={org.lng ?? 0}
+              lat={org.lat}
+              lng={org.lng}
               organizationInfo={org}
             />
           ))}

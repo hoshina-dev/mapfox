@@ -75,7 +75,7 @@ export function SearchModeMap() {
 
   // Memoize center and zoom to prevent unnecessary map updates
   const mapCenter = useMemo(() => {
-    if (selectedOrg && selectedOrg.lat && selectedOrg.lng) {
+    if (selectedOrg) {
       return [selectedOrg.lng, selectedOrg.lat] as [number, number];
     }
     return undefined;
@@ -92,7 +92,7 @@ export function SearchModeMap() {
         value={searchValue}
         onChange={setSearchValue}
         onOptionSubmit={handleSelect}
-        data={searchResults.map((org) => org.name || "")}
+        data={searchResults.map((org) => org.name)}
         leftSection={<IconSearch size={16} />}
         limit={10}
         maxDropdownHeight={300}
@@ -102,7 +102,7 @@ export function SearchModeMap() {
       <Flex w="full" h="full" style={{ minHeight: "500px" }}>
         <Map>
           <MapController center={mapCenter} zoom={mapZoom} />
-          {selectedOrg && selectedOrg.lat && selectedOrg.lng && (
+          {selectedOrg && (
             <Marker
               key={selectedOrg.id}
               lat={selectedOrg.lat}

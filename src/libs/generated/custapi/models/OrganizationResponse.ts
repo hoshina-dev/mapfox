@@ -30,7 +30,7 @@ export interface OrganizationResponse {
      * @type {string}
      * @memberof OrganizationResponse
      */
-    createdAt?: string;
+    createdAt: string;
     /**
      * 
      * @type {string}
@@ -42,43 +42,50 @@ export interface OrganizationResponse {
      * @type {string}
      * @memberof OrganizationResponse
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {Array<string>}
      * @memberof OrganizationResponse
      */
-    imageUrls?: Array<string>;
+    imageUrls: Array<string>;
     /**
      * 
      * @type {number}
      * @memberof OrganizationResponse
      */
-    lat?: number;
+    lat: number;
     /**
      * 
      * @type {number}
      * @memberof OrganizationResponse
      */
-    lng?: number;
+    lng: number;
     /**
      * 
      * @type {string}
      * @memberof OrganizationResponse
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof OrganizationResponse
      */
-    updatedAt?: string;
+    updatedAt: string;
 }
 
 /**
  * Check if a given object implements the OrganizationResponse interface.
  */
 export function instanceOfOrganizationResponse(value: object): value is OrganizationResponse {
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('imageUrls' in value) || value['imageUrls'] === undefined) return false;
+    if (!('lat' in value) || value['lat'] === undefined) return false;
+    if (!('lng' in value) || value['lng'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -93,14 +100,14 @@ export function OrganizationResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'address': json['address'] == null ? undefined : json['address'],
-        'createdAt': json['created_at'] == null ? undefined : json['created_at'],
+        'createdAt': json['created_at'],
         'description': json['description'] == null ? undefined : json['description'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'imageUrls': json['image_urls'] == null ? undefined : json['image_urls'],
-        'lat': json['lat'] == null ? undefined : json['lat'],
-        'lng': json['lng'] == null ? undefined : json['lng'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'updatedAt': json['updated_at'] == null ? undefined : json['updated_at'],
+        'id': json['id'],
+        'imageUrls': json['image_urls'],
+        'lat': json['lat'],
+        'lng': json['lng'],
+        'name': json['name'],
+        'updatedAt': json['updated_at'],
     };
 }
 

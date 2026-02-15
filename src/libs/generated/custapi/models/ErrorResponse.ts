@@ -24,13 +24,14 @@ export interface ErrorResponse {
      * @type {string}
      * @memberof ErrorResponse
      */
-    error?: string;
+    error: string;
 }
 
 /**
  * Check if a given object implements the ErrorResponse interface.
  */
 export function instanceOfErrorResponse(value: object): value is ErrorResponse {
+    if (!('error' in value) || value['error'] === undefined) return false;
     return true;
 }
 
@@ -44,7 +45,7 @@ export function ErrorResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'error': json['error'] == null ? undefined : json['error'],
+        'error': json['error'],
     };
 }
 

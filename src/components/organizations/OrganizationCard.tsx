@@ -9,9 +9,7 @@ interface OrganizationCardProps {
 
 export function OrganizationCard({ organization }: OrganizationCardProps) {
   const imageUrl =
-    organization.imageUrls && organization.imageUrls.length > 0
-      ? organization.imageUrls[0]
-      : undefined;
+    organization.imageUrls.length > 0 ? organization.imageUrls[0] : undefined;
 
   return (
     <Card
@@ -28,7 +26,7 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
           <Image
             src={imageUrl}
             height={160}
-            alt={organization.name || "Organization"}
+            alt={organization.name}
             fallbackSrc="https://placehold.co/400x160?text=No+Image"
           />
         </Card.Section>
@@ -56,16 +54,14 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
           </Group>
         )}
 
-        {organization.lat !== undefined && organization.lng !== undefined && (
-          <Group gap="xs">
-            <Text size="sm" fw={500}>
-              🌐
-            </Text>
-            <Text size="sm" c="dimmed">
-              {organization.lat.toFixed(4)}, {organization.lng.toFixed(4)}
-            </Text>
-          </Group>
-        )}
+        <Group gap="xs">
+          <Text size="sm" fw={500}>
+            🌐
+          </Text>
+          <Text size="sm" c="dimmed">
+            {organization.lat.toFixed(4)}, {organization.lng.toFixed(4)}
+          </Text>
+        </Group>
       </Stack>
     </Card>
   );

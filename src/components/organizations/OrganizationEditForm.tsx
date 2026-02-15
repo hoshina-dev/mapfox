@@ -27,15 +27,15 @@ export function OrganizationEditForm({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [existingImageUrls, setExistingImageUrls] = useState<string[]>(
-    organization.imageUrls || [],
+    organization.imageUrls,
   );
   const [showMapPicker, setShowMapPicker] = useState(false);
   const resetFileInputRef = useRef<() => void>(null);
 
   const [formData, setFormData] = useState<UpdateOrganizationRequest>({
-    name: organization.name || "",
-    lat: organization.lat || 13.7388,
-    lng: organization.lng || 100.5322,
+    name: organization.name,
+    lat: organization.lat,
+    lng: organization.lng,
     address: organization.address || "",
     description: organization.description || "",
   });
@@ -111,16 +111,14 @@ export function OrganizationEditForm({
 
   // Check if any data has changed
   const hasDataChanged =
-    formData.name !== (organization.name || "") ||
-    formData.lat !== (organization.lat || 13.7388) ||
-    formData.lng !== (organization.lng || 100.5322) ||
+    formData.name !== organization.name ||
+    formData.lat !== organization.lat ||
+    formData.lng !== organization.lng ||
     formData.address !== (organization.address || "") ||
     formData.description !== (organization.description || "") ||
     selectedFiles.length > 0 ||
-    existingImageUrls.length !== (organization.imageUrls?.length || 0) ||
-    !existingImageUrls.every(
-      (url, idx) => url === organization.imageUrls?.[idx],
-    );
+    existingImageUrls.length !== organization.imageUrls.length ||
+    !existingImageUrls.every((url, idx) => url === organization.imageUrls[idx]);
 
   // Validation: must have at least one image and data must have changed
   const hasImages = existingImageUrls.length > 0 || selectedFiles.length > 0;
@@ -140,7 +138,7 @@ export function OrganizationEditForm({
 
     try {
       const result = await updateOrganization(
-        organization.id!,
+        organization.id,
         formData,
         selectedFiles.length > 0 ? selectedFiles : undefined,
         existingImageUrls,

@@ -33,7 +33,7 @@ export function OrganizationUsersList({ users }: OrganizationUsersListProps) {
             <Group gap="sm">
               <Avatar
                 src={user.avatarUrl}
-                alt={user.name || "User"}
+                alt={user.name}
                 radius="xl"
                 size="lg"
               />

@@ -57,7 +57,7 @@ export default async function OrganizationPage({
   const usersResult = await getUsersByOrganization(id);
   const users = usersResult.success ? usersResult.data : [];
 
-  const imageUrls = organization.imageUrls || [];
+  const imageUrls = organization.imageUrls;
 
   // Google Maps embed URL with marker
   const mapsEmbedUrl = `https://www.google.com/maps?q=${organization.lat},${organization.lng}&z=14&output=embed`;
@@ -80,7 +80,7 @@ export default async function OrganizationPage({
         {imageUrls.length > 0 && (
           <OrganizationImageCarousel
             imageUrls={imageUrls}
-            organizationName={organization.name || "Organization"}
+            organizationName={organization.name}
           />
         )}
 
@@ -99,7 +99,7 @@ export default async function OrganizationPage({
               🌐 Coordinates:
             </Text>
             <Text size="sm" c="dimmed">
-              {organization.lat!.toFixed(6)}, {organization.lng!.toFixed(6)}
+              {organization.lat.toFixed(6)}, {organization.lng.toFixed(6)}
             </Text>
           </Group>
         </OrganizationDetailSection>

@@ -30,7 +30,7 @@ export interface UserResponse {
      * @type {string}
      * @memberof UserResponse
      */
-    createdAt?: string;
+    createdAt: string;
     /**
      * 
      * @type {string}
@@ -42,31 +42,31 @@ export interface UserResponse {
      * @type {string}
      * @memberof UserResponse
      */
-    email?: string;
+    email: string;
     /**
      * 
      * @type {string}
      * @memberof UserResponse
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {boolean}
      * @memberof UserResponse
      */
-    isAdmin?: boolean;
+    isAdmin: boolean;
     /**
      * 
      * @type {string}
      * @memberof UserResponse
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof UserResponse
      */
-    organizationId?: string;
+    organizationId: string;
     /**
      * 
      * @type {string}
@@ -78,7 +78,7 @@ export interface UserResponse {
      * @type {Array<string>}
      * @memberof UserResponse
      */
-    researchCategories?: Array<string>;
+    researchCategories: Array<string>;
     /**
      * 
      * @type {string}
@@ -90,13 +90,21 @@ export interface UserResponse {
      * @type {string}
      * @memberof UserResponse
      */
-    updatedAt?: string;
+    updatedAt: string;
 }
 
 /**
  * Check if a given object implements the UserResponse interface.
  */
 export function instanceOfUserResponse(value: object): value is UserResponse {
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('isAdmin' in value) || value['isAdmin'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('organizationId' in value) || value['organizationId'] === undefined) return false;
+    if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -111,17 +119,17 @@ export function UserResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
-        'createdAt': json['created_at'] == null ? undefined : json['created_at'],
+        'createdAt': json['created_at'],
         'description': json['description'] == null ? undefined : json['description'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'isAdmin': json['is_admin'] == null ? undefined : json['is_admin'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'organizationId': json['organization_id'] == null ? undefined : json['organization_id'],
+        'email': json['email'],
+        'id': json['id'],
+        'isAdmin': json['is_admin'],
+        'name': json['name'],
+        'organizationId': json['organization_id'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
-        'researchCategories': json['research_categories'] == null ? undefined : json['research_categories'],
+        'researchCategories': json['research_categories'],
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
-        'updatedAt': json['updated_at'] == null ? undefined : json['updated_at'],
+        'updatedAt': json['updated_at'],
     };
 }
 

@@ -33,8 +33,8 @@ export function OrganizationMap({ organizations }: OrganizationMapProps) {
         // @ts-expect-error haiyaa
         data={modeData}
       />
-      {mode === "all" && <AllOrgMap organizations={organizations || []} />}
-      {mode === "area" && <AreaModeMap organizations={organizations || []} />}
+      {mode === "all" && <AllOrgMap organizations={organizations} />}
+      {mode === "area" && <AreaModeMap organizations={organizations} />}
       {mode === "search" && <SearchModeMap />}
     </Stack>
   );
