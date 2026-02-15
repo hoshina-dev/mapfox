@@ -95,7 +95,7 @@ export function CreateOrganizationForm() {
   // Validation: must have at least one image
   const isSubmitDisabled = selectedFiles.length === 0;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);

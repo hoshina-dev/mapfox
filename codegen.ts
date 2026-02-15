@@ -1,7 +1,7 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: "http://gapi.mapfox.svc.cluster.local:8080/query",
+  schema: "http://gapi.mapfox.hoshina.san/query",
   documents: ["src/graphql/**/*.gql"],
   ignoreNoDocuments: true,
   generates: {

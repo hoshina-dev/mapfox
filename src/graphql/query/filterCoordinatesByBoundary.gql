@@ -6,7 +6,6 @@ query FilterCoordinatesByBoundary(
     coordinates: $coordinates
     boundaryId: $boundaryId
   ) {
-    lat
-    lon
+    id
   }
 }

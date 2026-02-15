@@ -42,11 +42,13 @@ export type AdminArea = {
 
 export type Coordinate = {
   __typename?: "Coordinate";
+  id: Scalars["String"]["output"];
   lat: Scalars["Float"]["output"];
   lon: Scalars["Float"]["output"];
 };
 
 export type CoordinateInput = {
+  id: Scalars["String"]["input"];
   lat: Scalars["Float"]["input"];
   lon: Scalars["Float"]["input"];
 };
@@ -95,11 +97,7 @@ export type FilterCoordinatesByBoundaryQueryVariables = Exact<{
 
 export type FilterCoordinatesByBoundaryQuery = {
   __typename?: "Query";
-  filterCoordinatesByBoundary: Array<{
-    __typename?: "Coordinate";
-    lat: number;
-    lon: number;
-  }>;
+  filterCoordinatesByBoundary: Array<{ __typename?: "Coordinate"; id: string }>;
 };
 
 export type GetAdminAreaQueryVariables = Exact<{
@@ -247,8 +245,7 @@ export const FilterCoordinatesByBoundaryDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "lat" } },
-                { kind: "Field", name: { kind: "Name", value: "lon" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
               ],
             },
           },
