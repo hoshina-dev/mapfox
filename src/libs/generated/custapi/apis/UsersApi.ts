@@ -18,6 +18,7 @@ import type {
   CreateUserRequest,
   ErrorResponse,
   UpdateUserRequest,
+  UserDetailResponse,
   UserResponse,
 } from '../models/index';
 import {
@@ -27,19 +28,25 @@ import {
     ErrorResponseToJSON,
     UpdateUserRequestFromJSON,
     UpdateUserRequestToJSON,
+    UserDetailResponseFromJSON,
+    UserDetailResponseToJSON,
     UserResponseFromJSON,
     UserResponseToJSON,
 } from '../models/index';
 
-export interface UsersIdDeleteRequest {
+export interface UsersEmailEmailGetRequest {
+    email: string;
+}
+
+export interface UsersIdIdDeleteRequest {
     id: string;
 }
 
-export interface UsersIdGetRequest {
+export interface UsersIdIdGetRequest {
     id: string;
 }
 
-export interface UsersIdPatchRequest {
+export interface UsersIdIdPatchRequest {
     id: string;
     user: UpdateUserRequest;
 }
@@ -63,7 +70,46 @@ export interface UsersSearchGetRequest {
 export class UsersApi extends runtime.BaseAPI {
 
     /**
-     * Get a list of all users
+     * Get a single user by their email address
+     * Get a user by email
+     */
+    async usersEmailEmailGetRaw(requestParameters: UsersEmailEmailGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDetailResponse>> {
+        if (requestParameters['email'] == null) {
+            throw new runtime.RequiredError(
+                'email',
+                'Required parameter "email" was null or undefined when calling usersEmailEmailGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/users/email/{email}`;
+        urlPath = urlPath.replace(`{${"email"}}`, encodeURIComponent(String(requestParameters['email'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDetailResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a single user by their email address
+     * Get a user by email
+     */
+    async usersEmailEmailGet(email: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDetailResponse> {
+        const response = await this.usersEmailEmailGetRaw({ email: email }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns a list of all users
      * Get all users
      */
     async usersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
@@ -85,7 +131,7 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a list of all users
+     * Returns a list of all users
      * Get all users
      */
     async usersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
@@ -97,11 +143,11 @@ export class UsersApi extends runtime.BaseAPI {
      * Soft delete a user by ID
      * Delete a user
      */
-    async usersIdDeleteRaw(requestParameters: UsersIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async usersIdIdDeleteRaw(requestParameters: UsersIdIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling usersIdDelete().'
+                'Required parameter "id" was null or undefined when calling usersIdIdDelete().'
             );
         }
 
@@ -110,7 +156,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/users/{id}`;
+        let urlPath = `/users/id/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
         const response = await this.request({
@@ -127,19 +173,19 @@ export class UsersApi extends runtime.BaseAPI {
      * Soft delete a user by ID
      * Delete a user
      */
-    async usersIdDelete(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.usersIdDeleteRaw({ id: id }, initOverrides);
+    async usersIdIdDelete(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.usersIdIdDeleteRaw({ id: id }, initOverrides);
     }
 
     /**
-     * Get a single user by their ID
+     * Get a single user by their UUID
      * Get a user by ID
      */
-    async usersIdGetRaw(requestParameters: UsersIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
+    async usersIdIdGetRaw(requestParameters: UsersIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDetailResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling usersIdGet().'
+                'Required parameter "id" was null or undefined when calling usersIdIdGet().'
             );
         }
 
@@ -148,7 +194,7 @@ export class UsersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/users/{id}`;
+        let urlPath = `/users/id/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
         const response = await this.request({
@@ -158,15 +204,15 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDetailResponseFromJSON(jsonValue));
     }
 
     /**
-     * Get a single user by their ID
+     * Get a single user by their UUID
      * Get a user by ID
      */
-    async usersIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
-        const response = await this.usersIdGetRaw({ id: id }, initOverrides);
+    async usersIdIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDetailResponse> {
+        const response = await this.usersIdIdGetRaw({ id: id }, initOverrides);
         return await response.value();
     }
 
@@ -174,18 +220,18 @@ export class UsersApi extends runtime.BaseAPI {
      * Update an existing user by ID (partial updates supported)
      * Update a user
      */
-    async usersIdPatchRaw(requestParameters: UsersIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
+    async usersIdIdPatchRaw(requestParameters: UsersIdIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling usersIdPatch().'
+                'Required parameter "id" was null or undefined when calling usersIdIdPatch().'
             );
         }
 
         if (requestParameters['user'] == null) {
             throw new runtime.RequiredError(
                 'user',
-                'Required parameter "user" was null or undefined when calling usersIdPatch().'
+                'Required parameter "user" was null or undefined when calling usersIdIdPatch().'
             );
         }
 
@@ -196,7 +242,7 @@ export class UsersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
 
-        let urlPath = `/users/{id}`;
+        let urlPath = `/users/id/{id}`;
         urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
 
         const response = await this.request({
@@ -214,8 +260,8 @@ export class UsersApi extends runtime.BaseAPI {
      * Update an existing user by ID (partial updates supported)
      * Update a user
      */
-    async usersIdPatch(id: string, user: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
-        const response = await this.usersIdPatchRaw({ id: id, user: user }, initOverrides);
+    async usersIdIdPatch(id: string, user: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
+        const response = await this.usersIdIdPatchRaw({ id: id, user: user }, initOverrides);
         return await response.value();
     }
 

@@ -10,6 +10,7 @@ models/OrganizationCoord.ts
 models/OrganizationResponse.ts
 models/UpdateOrganizationRequest.ts
 models/UpdateUserRequest.ts
+models/UserDetailResponse.ts
 models/UserResponse.ts
 models/index.ts
 runtime.ts

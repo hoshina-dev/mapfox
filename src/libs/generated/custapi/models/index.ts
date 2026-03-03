@@ -8,4 +8,5 @@ export * from './OrganizationCoord';
 export * from './OrganizationResponse';
 export * from './UpdateOrganizationRequest';
 export * from './UpdateUserRequest';
+export * from './UserDetailResponse';
 export * from './UserResponse';
