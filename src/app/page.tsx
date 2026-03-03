@@ -9,12 +9,6 @@ const DEMOS = [
     description:
       "View list of all organizations and map that show marker of each organization",
   },
-  {
-    title: "Create User Demo",
-    href: "/users/create",
-    description:
-      "Create a new user account with organization assignment and avatar upload",
-  },
 ];
 
 export default function Home() {
