@@ -4,6 +4,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
+import { Navbar } from "@/components/navbar/Navbar";
+
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
@@ -19,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

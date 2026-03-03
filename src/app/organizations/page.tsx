@@ -16,18 +16,20 @@ import { IconBuildingCommunity, IconMap, IconPlus } from "@tabler/icons-react";
 import { OrganizationMap } from "@/components/map/OrganizationMap";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi } from "@/libs/apiClient";
+import { getSession } from "@/libs/dal";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrganizationsPage() {
-  let data;
-  let error;
+  const [session, orgResult] = await Promise.all([
+    getSession(),
+    organizationsApi
+      .organizationsGet()
+      .then((data) => ({ data, error: null }))
+      .catch((e: unknown) => ({ data: null, error: e })),
+  ]);
 
-  try {
-    data = await organizationsApi.organizationsGet();
-  } catch (e) {
-    error = e;
-  }
+  const { data, error } = orgResult;
 
   if (error) {
     return (
@@ -78,7 +80,10 @@ export default async function OrganizationsPage() {
 
           <TabsPanel value="all">
             <Stack gap="xl" pt="xl">
-              <OrganizationsList organizations={data || []} />
+              <OrganizationsList
+                organizations={data || []}
+                userOrganizationId={session?.organizationId}
+              />
 
               {data && data.length > 0 && (
                 <Text size="sm" c="dimmed" ta="center">
