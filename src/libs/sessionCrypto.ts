@@ -2,7 +2,7 @@ import { jwtVerify } from "jose";
 
 import type { SessionPayload } from "./definitions";
 
-const secretKey = process.env.SESSION_SECRET || process.env.JWT_SECRET;
+const secretKey = process.env.JWT_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function decryptSession(
