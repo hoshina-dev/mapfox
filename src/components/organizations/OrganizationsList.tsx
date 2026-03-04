@@ -8,9 +8,13 @@ import { OrganizationCard } from "./OrganizationCard";
 
 interface OrganizationsListProps {
   organizations: OrganizationResponse[];
+  userOrganizationId?: string;
 }
 
-export function OrganizationsList({ organizations }: OrganizationsListProps) {
+export function OrganizationsList({
+  organizations,
+  userOrganizationId,
+}: OrganizationsListProps) {
   if (!organizations || organizations.length === 0) {
     return (
       <Alert color="blue" title="No organizations found">
@@ -26,7 +30,13 @@ export function OrganizationsList({ organizations }: OrganizationsListProps) {
       verticalSpacing="lg"
     >
       {organizations.map((org) => (
-        <OrganizationCard key={org.id} organization={org} />
+        <OrganizationCard
+          key={org.id}
+          organization={org}
+          isUserOrganization={
+            !!userOrganizationId && org.id === userOrganizationId
+          }
+        />
       ))}
     </SimpleGrid>
   );

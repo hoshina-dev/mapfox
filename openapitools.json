@@ -7,7 +7,7 @@
       "custapi": {
         "generatorName": "typescript-fetch",
         "output": "src/libs/generated/custapi",
-        "inputSpec": "http://custapi.mapfox.hoshina.san/swagger/doc.json",
+        "inputSpec": "http://localhost:8080/swagger/doc.json",
         "additionalProperties": {
           "disallowAdditionalPropertiesIfNotPresent": false,
           "supportsES6": true,

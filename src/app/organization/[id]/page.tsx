@@ -1,6 +1,7 @@
 import {
   Alert,
   AspectRatio,
+  Badge,
   Card,
   Container,
   Group,
@@ -8,6 +9,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { IconUserCheck } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
 
 import { getUsersByOrganization } from "@/app/actions/getUsersByOrganization";
@@ -16,6 +18,7 @@ import { OrganizationDetailSection } from "@/components/organizations/Organizati
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
 import { OrganizationUsersList } from "@/components/organizations/OrganizationUsersList";
 import { organizationsApi } from "@/libs/apiClient";
+import { getSession } from "@/libs/dal";
 
 interface OrganizationPageProps {
   params: Promise<{
@@ -53,9 +56,14 @@ export default async function OrganizationPage({
     );
   }
 
-  // Fetch users for this organization
-  const usersResult = await getUsersByOrganization(id);
+  // Fetch users and session in parallel
+  const [usersResult, session] = await Promise.all([
+    getUsersByOrganization(id),
+    getSession(),
+  ]);
   const users = usersResult.success ? usersResult.data : [];
+  const isUserOrganization =
+    !!session?.organizationId && session.organizationId === organization.id;
 
   const imageUrls = organization.imageUrls;
 
@@ -69,6 +77,16 @@ export default async function OrganizationPage({
           <Group gap="sm" mb="xs">
             <BackToOrganizationsButton />
             <Title order={1}>{organization.name}</Title>
+            {isUserOrganization && (
+              <Badge
+                color="teal"
+                variant="light"
+                size="lg"
+                leftSection={<IconUserCheck size={14} />}
+              >
+                Your Organization
+              </Badge>
+            )}
           </Group>
           {organization.description && (
             <Text c="dimmed" size="lg">

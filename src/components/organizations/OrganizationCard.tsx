@@ -1,13 +1,18 @@
-import { Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
+import { Badge, Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
+import { IconUserCheck } from "@tabler/icons-react";
 import Link from "next/link";
 
 import type { OrganizationResponse } from "@/libs/generated/custapi";
 
 interface OrganizationCardProps {
   organization: OrganizationResponse;
+  isUserOrganization?: boolean;
 }
 
-export function OrganizationCard({ organization }: OrganizationCardProps) {
+export function OrganizationCard({
+  organization,
+  isUserOrganization,
+}: OrganizationCardProps) {
   const imageUrl =
     organization.imageUrls.length > 0 ? organization.imageUrls[0] : undefined;
 
@@ -33,7 +38,17 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
       )}
 
       <Stack gap="sm" mt="md">
-        <Flex direction="column" align="flex-start">
+        <Flex direction="column" align="flex-start" gap="xs">
+          {isUserOrganization && (
+            <Badge
+              color="teal"
+              variant="light"
+              size="sm"
+              leftSection={<IconUserCheck size={12} />}
+            >
+              Your Organization
+            </Badge>
+          )}
           <Text fw={500} size="lg">
             {organization.name}
           </Text>

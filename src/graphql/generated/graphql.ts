@@ -30,6 +30,15 @@ export type Scalars = {
   Map: { input: any; output: any };
 };
 
+export type AdminAddress = {
+  __typename?: "AdminAddress";
+  admin1?: Maybe<Scalars["String"]["output"]>;
+  admin2?: Maybe<Scalars["String"]["output"]>;
+  admin3?: Maybe<Scalars["String"]["output"]>;
+  admin4?: Maybe<Scalars["String"]["output"]>;
+  country?: Maybe<Scalars["String"]["output"]>;
+};
+
 export type AdminArea = {
   __typename?: "AdminArea";
   adminLevel: Scalars["Int"]["output"];
@@ -53,6 +62,20 @@ export type CoordinateInput = {
   lon: Scalars["Float"]["input"];
 };
 
+export type LineWithAddress = {
+  __typename?: "LineWithAddress";
+  address?: Maybe<AdminAddress>;
+  line: OsmLine;
+};
+
+export type OsmLine = {
+  __typename?: "OSMLine";
+  centroid: Coordinate;
+  geometry: Scalars["Map"]["output"];
+  name?: Maybe<Scalars["String"]["output"]>;
+  nameEn?: Maybe<Scalars["String"]["output"]>;
+};
+
 export type Query = {
   __typename?: "Query";
   adminArea?: Maybe<AdminArea>;
@@ -60,6 +83,9 @@ export type Query = {
   adminAreas: Array<AdminArea>;
   childrenByCode: Array<AdminArea>;
   filterCoordinatesByBoundary: Array<Coordinate>;
+  getAddressByRoadName: Array<LineWithAddress>;
+  nearbyRoads: Array<OsmLine>;
+  searchRoadName: Array<OsmLine>;
 };
 
 export type QueryAdminAreaArgs = {
@@ -88,6 +114,23 @@ export type QueryChildrenByCodeArgs = {
 export type QueryFilterCoordinatesByBoundaryArgs = {
   boundaryId: Scalars["String"]["input"];
   coordinates: Array<CoordinateInput>;
+};
+
+export type QueryGetAddressByRoadNameArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  searchTerm: Scalars["String"]["input"];
+};
+
+export type QueryNearbyRoadsArgs = {
+  lat: Scalars["Float"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  lon: Scalars["Float"]["input"];
+  radius: Scalars["Float"]["input"];
+};
+
+export type QuerySearchRoadNameArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  searchTerm: Scalars["String"]["input"];
 };
 
 export type FilterCoordinatesByBoundaryQueryVariables = Exact<{
