@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-
 import { Alert, SimpleGrid, Text } from "@mantine/core";
+import { useMemo } from "react";
 
 import type { OrganizationResponse } from "@/libs/generated/custapi";
 
