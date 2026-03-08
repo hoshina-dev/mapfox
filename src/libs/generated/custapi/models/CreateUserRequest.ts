@@ -39,22 +39,10 @@ export interface CreateUserRequest {
     email: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof CreateUserRequest
-     */
-    isAdmin?: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof CreateUserRequest
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUserRequest
-     */
-    organizationId: string;
     /**
      * 
      * @type {string}
@@ -87,7 +75,6 @@ export interface CreateUserRequest {
 export function instanceOfCreateUserRequest(value: object): value is CreateUserRequest {
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('organizationId' in value) || value['organizationId'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     return true;
 }
@@ -105,9 +92,7 @@ export function CreateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
         'description': json['description'] == null ? undefined : json['description'],
         'email': json['email'],
-        'isAdmin': json['is_admin'] == null ? undefined : json['is_admin'],
         'name': json['name'],
-        'organizationId': json['organization_id'],
         'password': json['password'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'] == null ? undefined : json['research_categories'],
@@ -129,9 +114,7 @@ export function CreateUserRequestToJSONTyped(value?: CreateUserRequest | null, i
         'avatar_url': value['avatarUrl'],
         'description': value['description'],
         'email': value['email'],
-        'is_admin': value['isAdmin'],
         'name': value['name'],
-        'organization_id': value['organizationId'],
         'password': value['password'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],

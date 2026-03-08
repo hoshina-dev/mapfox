@@ -15,14 +15,19 @@
 
 import * as runtime from '../runtime';
 import type {
+  AddMemberRequest,
   CreateOrganizationRequest,
   ErrorResponse,
   GetOrganizationsByIDsRequest,
   OrganizationCoord,
   OrganizationResponse,
+  SetRoleRequest,
   UpdateOrganizationRequest,
+  UserWithRoleResponse,
 } from '../models/index';
 import {
+    AddMemberRequestFromJSON,
+    AddMemberRequestToJSON,
     CreateOrganizationRequestFromJSON,
     CreateOrganizationRequestToJSON,
     ErrorResponseFromJSON,
@@ -33,8 +38,12 @@ import {
     OrganizationCoordToJSON,
     OrganizationResponseFromJSON,
     OrganizationResponseToJSON,
+    SetRoleRequestFromJSON,
+    SetRoleRequestToJSON,
     UpdateOrganizationRequestFromJSON,
     UpdateOrganizationRequestToJSON,
+    UserWithRoleResponseFromJSON,
+    UserWithRoleResponseToJSON,
 } from '../models/index';
 
 export interface OrganizationsBatchPostRequest {
@@ -47,6 +56,26 @@ export interface OrganizationsIdDeleteRequest {
 
 export interface OrganizationsIdGetRequest {
     id: string;
+}
+
+export interface OrganizationsIdMembersGetRequest {
+    id: string;
+}
+
+export interface OrganizationsIdMembersPostRequest {
+    id: string;
+    req: AddMemberRequest;
+}
+
+export interface OrganizationsIdMembersUserIdDeleteRequest {
+    id: string;
+    userId: string;
+}
+
+export interface OrganizationsIdMembersUserIdPatchRequest {
+    id: string;
+    userId: string;
+    req: SetRoleRequest;
 }
 
 export interface OrganizationsIdPatchRequest {
@@ -246,6 +275,191 @@ export class OrganizationsApi extends runtime.BaseAPI {
     async organizationsIdGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OrganizationResponse> {
         const response = await this.organizationsIdGetRaw({ id: id }, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Get all users that belong to an organization
+     * Get members of an organization
+     */
+    async organizationsIdMembersGetRaw(requestParameters: OrganizationsIdMembersGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserWithRoleResponse>>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling organizationsIdMembersGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/organizations/{id}/members`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserWithRoleResponseFromJSON));
+    }
+
+    /**
+     * Get all users that belong to an organization
+     * Get members of an organization
+     */
+    async organizationsIdMembersGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserWithRoleResponse>> {
+        const response = await this.organizationsIdMembersGetRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Add an existing user to an organization with an optional admin role
+     * Add a member to an organization
+     */
+    async organizationsIdMembersPostRaw(requestParameters: OrganizationsIdMembersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling organizationsIdMembersPost().'
+            );
+        }
+
+        if (requestParameters['req'] == null) {
+            throw new runtime.RequiredError(
+                'req',
+                'Required parameter "req" was null or undefined when calling organizationsIdMembersPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/organizations/{id}/members`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AddMemberRequestToJSON(requestParameters['req']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Add an existing user to an organization with an optional admin role
+     * Add a member to an organization
+     */
+    async organizationsIdMembersPost(id: string, req: AddMemberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.organizationsIdMembersPostRaw({ id: id, req: req }, initOverrides);
+    }
+
+    /**
+     * Remove a member from an organization
+     */
+    async organizationsIdMembersUserIdDeleteRaw(requestParameters: OrganizationsIdMembersUserIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling organizationsIdMembersUserIdDelete().'
+            );
+        }
+
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling organizationsIdMembersUserIdDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/organizations/{id}/members/{user_id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Remove a member from an organization
+     */
+    async organizationsIdMembersUserIdDelete(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.organizationsIdMembersUserIdDeleteRaw({ id: id, userId: userId }, initOverrides);
+    }
+
+    /**
+     * Update a member\'s admin role
+     */
+    async organizationsIdMembersUserIdPatchRaw(requestParameters: OrganizationsIdMembersUserIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling organizationsIdMembersUserIdPatch().'
+            );
+        }
+
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling organizationsIdMembersUserIdPatch().'
+            );
+        }
+
+        if (requestParameters['req'] == null) {
+            throw new runtime.RequiredError(
+                'req',
+                'Required parameter "req" was null or undefined when calling organizationsIdMembersUserIdPatch().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/organizations/{id}/members/{user_id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SetRoleRequestToJSON(requestParameters['req']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update a member\'s admin role
+     */
+    async organizationsIdMembersUserIdPatch(id: string, userId: string, req: SetRoleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.organizationsIdMembersUserIdPatchRaw({ id: id, userId: userId, req: req }, initOverrides);
     }
 
     /**

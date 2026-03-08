@@ -16,8 +16,8 @@ import { getUsersByOrganization } from "@/app/actions/getUsersByOrganization";
 import { BackToOrganizationsButton } from "@/components/organizations/BackToOrganizationsButton";
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
-import { OrganizationUsersList } from "@/components/organizations/OrganizationUsersList";
-import { organizationsApi } from "@/libs/apiClient";
+import { OrganizationMembersSection } from "@/components/organizations/OrganizationMembersSection";
+import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
 interface OrganizationPageProps {
@@ -62,8 +62,24 @@ export default async function OrganizationPage({
     getSession(),
   ]);
   const users = usersResult.success ? usersResult.data : [];
-  const isUserOrganization =
-    !!session?.organizationId && session.organizationId === organization.id;
+
+  // Check if user belongs to this organization and their role
+  let isUserOrganization = false;
+  let isAdmin = false;
+  if (session?.userId) {
+    try {
+      const memberships = await usersApi.usersIdIdOrganizationsGet(
+        session.userId,
+      );
+      const membership = memberships.find(
+        (m) => m.organizationId === organization.id,
+      );
+      isUserOrganization = !!membership;
+      isAdmin = membership?.role === "admin";
+    } catch {
+      // Ignore errors
+    }
+  }
 
   const imageUrls = organization.imageUrls;
 
@@ -122,12 +138,12 @@ export default async function OrganizationPage({
           </Group>
         </OrganizationDetailSection>
 
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Stack gap="md">
-            <Title order={3}>Members ({users.length})</Title>
-            <OrganizationUsersList users={users} />
-          </Stack>
-        </Card>
+        <OrganizationMembersSection
+          organizationId={organization.id}
+          users={users}
+          isAdmin={isAdmin}
+          currentUserId={session?.userId}
+        />
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Stack gap="md">

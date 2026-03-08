@@ -39,22 +39,10 @@ export interface UpdateUserRequest {
     email?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof UpdateUserRequest
-     */
-    isAdmin?: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof UpdateUserRequest
      */
     name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateUserRequest
-     */
-    organizationId?: string;
     /**
      * 
      * @type {string}
@@ -101,9 +89,7 @@ export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
         'description': json['description'] == null ? undefined : json['description'],
         'email': json['email'] == null ? undefined : json['email'],
-        'isAdmin': json['is_admin'] == null ? undefined : json['is_admin'],
         'name': json['name'] == null ? undefined : json['name'],
-        'organizationId': json['organization_id'] == null ? undefined : json['organization_id'],
         'password': json['password'] == null ? undefined : json['password'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'] == null ? undefined : json['research_categories'],
@@ -125,9 +111,7 @@ export function UpdateUserRequestToJSONTyped(value?: UpdateUserRequest | null, i
         'avatar_url': value['avatarUrl'],
         'description': value['description'],
         'email': value['email'],
-        'is_admin': value['isAdmin'],
         'name': value['name'],
-        'organization_id': value['organizationId'],
         'password': value['password'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],

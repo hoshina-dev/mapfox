@@ -39,7 +39,6 @@ export async function createSession(user: {
   name: string;
   email: string;
   avatarUrl?: string;
-  organizationId: string;
 }): Promise<void> {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({
@@ -47,7 +46,6 @@ export async function createSession(user: {
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
-    organizationId: user.organizationId,
     expiresAt,
   });
 
