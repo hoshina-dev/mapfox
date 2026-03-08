@@ -8,12 +8,12 @@ import { OrganizationCard } from "./OrganizationCard";
 
 interface OrganizationsListProps {
   organizations: OrganizationResponse[];
-  userOrganizationId?: string;
+  userOrganizationIds?: string[];
 }
 
 export function OrganizationsList({
   organizations,
-  userOrganizationId,
+  userOrganizationIds,
 }: OrganizationsListProps) {
   if (!organizations || organizations.length === 0) {
     return (
@@ -34,7 +34,7 @@ export function OrganizationsList({
           key={org.id}
           organization={org}
           isUserOrganization={
-            !!userOrganizationId && org.id === userOrganizationId
+            !!userOrganizationIds && userOrganizationIds.includes(org.id)
           }
         />
       ))}

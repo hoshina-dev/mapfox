@@ -17,7 +17,7 @@ import { BackToOrganizationsButton } from "@/components/organizations/BackToOrga
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
 import { OrganizationUsersList } from "@/components/organizations/OrganizationUsersList";
-import { organizationsApi } from "@/libs/apiClient";
+import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
 interface OrganizationPageProps {
@@ -62,8 +62,21 @@ export default async function OrganizationPage({
     getSession(),
   ]);
   const users = usersResult.success ? usersResult.data : [];
-  const isUserOrganization =
-    !!session?.organizationId && session.organizationId === organization.id;
+
+  // Check if user belongs to this organization
+  let isUserOrganization = false;
+  if (session?.userId) {
+    try {
+      const memberships = await usersApi.usersIdIdOrganizationsGet(
+        session.userId,
+      );
+      isUserOrganization = memberships.some(
+        (m) => m.organizationId === organization.id,
+      );
+    } catch {
+      // Ignore errors
+    }
+  }
 
   const imageUrls = organization.imageUrls;
 

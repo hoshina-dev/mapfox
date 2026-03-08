@@ -1,10 +1,11 @@
 "use server";
 
-import { usersApi } from "@/libs/apiClient";
+import { organizationsApi } from "@/libs/apiClient";
 
 export async function getUsersByOrganization(organizationId: string) {
   try {
-    const users = await usersApi.usersOrganizationOrgIdGet(organizationId);
+    const users =
+      await organizationsApi.organizationsIdMembersGet(organizationId);
     return { success: true, data: users };
   } catch (error) {
     return {

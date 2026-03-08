@@ -8,10 +8,10 @@ import {
   Text,
 } from "@mantine/core";
 
-import type { UserResponse } from "@/libs/generated/custapi";
+import type { UserWithRoleResponse } from "@/libs/generated/custapi";
 
 interface OrganizationUsersListProps {
-  users: UserResponse[];
+  users: UserWithRoleResponse[];
 }
 
 export function OrganizationUsersList({ users }: OrganizationUsersListProps) {
@@ -47,7 +47,7 @@ export function OrganizationUsersList({ users }: OrganizationUsersListProps) {
               </div>
             </Group>
 
-            {user.isAdmin && (
+            {user.role === "admin" && (
               <Badge color="blue" variant="light" size="sm">
                 Admin
               </Badge>

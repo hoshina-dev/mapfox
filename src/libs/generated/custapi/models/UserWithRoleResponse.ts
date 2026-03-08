@@ -13,99 +13,108 @@
  */
 
 import { mapValues } from '../runtime';
+import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+import {
+    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON,
+    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSONTyped,
+    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON,
+    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSONTyped,
+} from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+
 /**
  * 
  * @export
- * @interface UserDetailResponse
+ * @interface UserWithRoleResponse
  */
-export interface UserDetailResponse {
+export interface UserWithRoleResponse {
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     avatarUrl?: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     createdAt: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     description?: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     email: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
-     */
-    password: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     phoneNumber?: string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     researchCategories: Array<string>;
     /**
      * 
+     * @type {GithubComHoshinaDevCustapiInternalModelsMemberRole}
+     * @memberof UserWithRoleResponse
+     */
+    role?: GithubComHoshinaDevCustapiInternalModelsMemberRole;
+    /**
+     * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     socialMedia?: string;
     /**
      * 
      * @type {string}
-     * @memberof UserDetailResponse
+     * @memberof UserWithRoleResponse
      */
     updatedAt: string;
 }
 
+
+
 /**
- * Check if a given object implements the UserDetailResponse interface.
+ * Check if a given object implements the UserWithRoleResponse interface.
  */
-export function instanceOfUserDetailResponse(value: object): value is UserDetailResponse {
+export function instanceOfUserWithRoleResponse(value: object): value is UserWithRoleResponse {
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('password' in value) || value['password'] === undefined) return false;
     if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
-export function UserDetailResponseFromJSON(json: any): UserDetailResponse {
-    return UserDetailResponseFromJSONTyped(json, false);
+export function UserWithRoleResponseFromJSON(json: any): UserWithRoleResponse {
+    return UserWithRoleResponseFromJSONTyped(json, false);
 }
 
-export function UserDetailResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserDetailResponse {
+export function UserWithRoleResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserWithRoleResponse {
     if (json == null) {
         return json;
     }
@@ -117,19 +126,19 @@ export function UserDetailResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'email': json['email'],
         'id': json['id'],
         'name': json['name'],
-        'password': json['password'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
+        'role': json['role'] == null ? undefined : GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON(json['role']),
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
         'updatedAt': json['updated_at'],
     };
 }
 
-export function UserDetailResponseToJSON(json: any): UserDetailResponse {
-    return UserDetailResponseToJSONTyped(json, false);
+export function UserWithRoleResponseToJSON(json: any): UserWithRoleResponse {
+    return UserWithRoleResponseToJSONTyped(json, false);
 }
 
-export function UserDetailResponseToJSONTyped(value?: UserDetailResponse | null, ignoreDiscriminator: boolean = false): any {
+export function UserWithRoleResponseToJSONTyped(value?: UserWithRoleResponse | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
@@ -142,9 +151,9 @@ export function UserDetailResponseToJSONTyped(value?: UserDetailResponse | null,
         'email': value['email'],
         'id': value['id'],
         'name': value['name'],
-        'password': value['password'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
+        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON(value['role']),
         'social_media': value['socialMedia'],
         'updated_at': value['updatedAt'],
     };

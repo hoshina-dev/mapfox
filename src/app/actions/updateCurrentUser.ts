@@ -13,10 +13,7 @@ const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 export async function updateCurrentUser(
-  data: Omit<
-    UpdateUserRequest,
-    "avatarUrl" | "isAdmin" | "email" | "password" | "organizationId"
-  >,
+  data: Omit<UpdateUserRequest, "avatarUrl" | "email" | "password">,
   avatarFile?: File,
 ) {
   const session = await getSession();
@@ -67,7 +64,6 @@ export async function updateCurrentUser(
       name: result.name,
       email: result.email,
       avatarUrl: result.avatarUrl,
-      organizationId: result.organizationId,
     });
 
     revalidatePath("/home");

@@ -19,6 +19,7 @@ import type {
   ErrorResponse,
   UpdateUserRequest,
   UserDetailResponse,
+  UserMembershipResponse,
   UserResponse,
 } from '../models/index';
 import {
@@ -30,6 +31,8 @@ import {
     UpdateUserRequestToJSON,
     UserDetailResponseFromJSON,
     UserDetailResponseToJSON,
+    UserMembershipResponseFromJSON,
+    UserMembershipResponseToJSON,
     UserResponseFromJSON,
     UserResponseToJSON,
 } from '../models/index';
@@ -46,13 +49,13 @@ export interface UsersIdIdGetRequest {
     id: string;
 }
 
+export interface UsersIdIdOrganizationsGetRequest {
+    id: string;
+}
+
 export interface UsersIdIdPatchRequest {
     id: string;
     user: UpdateUserRequest;
-}
-
-export interface UsersOrganizationOrgIdGetRequest {
-    orgId: string;
 }
 
 export interface UsersPostRequest {
@@ -217,6 +220,45 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get all organizations a user belongs to with their role
+     * Get a user\'s organizations
+     */
+    async usersIdIdOrganizationsGetRaw(requestParameters: UsersIdIdOrganizationsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserMembershipResponse>>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling usersIdIdOrganizationsGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/users/id/{id}/organizations`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserMembershipResponseFromJSON));
+    }
+
+    /**
+     * Get all organizations a user belongs to with their role
+     * Get a user\'s organizations
+     */
+    async usersIdIdOrganizationsGet(id: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserMembershipResponse>> {
+        const response = await this.usersIdIdOrganizationsGetRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Update an existing user by ID (partial updates supported)
      * Update a user
      */
@@ -262,45 +304,6 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async usersIdIdPatch(id: string, user: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
         const response = await this.usersIdIdPatchRaw({ id: id, user: user }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get all users in a specific organization
-     * Get users by organization
-     */
-    async usersOrganizationOrgIdGetRaw(requestParameters: UsersOrganizationOrgIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserResponse>>> {
-        if (requestParameters['orgId'] == null) {
-            throw new runtime.RequiredError(
-                'orgId',
-                'Required parameter "orgId" was null or undefined when calling usersOrganizationOrgIdGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/users/organization/{org_id}`;
-        urlPath = urlPath.replace(`{${"org_id"}}`, encodeURIComponent(String(requestParameters['orgId'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserResponseFromJSON));
-    }
-
-    /**
-     * Get all users in a specific organization
-     * Get users by organization
-     */
-    async usersOrganizationOrgIdGet(orgId: string, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserResponse>> {
-        const response = await this.usersOrganizationOrgIdGetRaw({ orgId: orgId }, initOverrides);
         return await response.value();
     }
 

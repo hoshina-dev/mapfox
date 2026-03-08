@@ -43,18 +43,12 @@ export async function signup(
   }
 
   // 3. Create the user in CustAPI
-  // Note: organizationId is required by the API, we use a placeholder for signup
-  // Users can be assigned to organizations later
   let user;
   try {
     user = await usersApi.usersPost({
       name,
       email,
       password,
-      // todo: hardcode while waiting for HS-77
-      // https://github.com/hoshina-dev/custapi/pull/16
-      organizationId: "5679eee3-4e9f-4c53-9235-d37ed12d75b6",
-      isAdmin: false,
     });
   } catch (error) {
     if (error instanceof ResponseError) {
@@ -73,7 +67,6 @@ export async function signup(
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
-    organizationId: user.organizationId,
   });
 
   // 5. Redirect
@@ -122,7 +115,6 @@ export async function login(
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
-    organizationId: user.organizationId,
   });
 
   // 5. Redirect

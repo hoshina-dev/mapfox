@@ -268,11 +268,6 @@ export function HomeForm({ user }: HomeFormProps) {
                 <Text size="sm" c="dimmed">
                   {user.email}
                 </Text>
-                {user.isAdmin && (
-                  <Badge color="red" variant="light" size="sm">
-                    Admin
-                  </Badge>
-                )}
               </Stack>
             </Group>
 

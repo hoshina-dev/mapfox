@@ -15,7 +15,7 @@ import { IconBuildingCommunity, IconMap, IconPlus } from "@tabler/icons-react";
 
 import { OrganizationMap } from "@/components/map/OrganizationMap";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
-import { organizationsApi } from "@/libs/apiClient";
+import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +28,23 @@ export default async function OrganizationsPage() {
       .then((data) => ({ data, error: null }))
       .catch((e: unknown) => ({ data: null, error: e })),
   ]);
+
+  // Fetch user's organization memberships if logged in
+  const userOrganizationIds: string[] = [];
+  if (session?.userId) {
+    try {
+      const memberships = await usersApi.usersIdIdOrganizationsGet(
+        session.userId,
+      );
+      userOrganizationIds.push(
+        ...memberships
+          .map((m) => m.organizationId)
+          .filter((id): id is string => !!id),
+      );
+    } catch {
+      // Ignore errors fetching memberships
+    }
+  }
 
   const { data, error } = orgResult;
 
@@ -82,7 +99,7 @@ export default async function OrganizationsPage() {
             <Stack gap="xl" pt="xl">
               <OrganizationsList
                 organizations={data || []}
-                userOrganizationId={session?.organizationId}
+                userOrganizationIds={userOrganizationIds}
               />
 
               {data && data.length > 0 && (
