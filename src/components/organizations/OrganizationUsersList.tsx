@@ -12,9 +12,13 @@ import type { UserWithRoleResponse } from "@/libs/generated/custapi";
 
 interface OrganizationUsersListProps {
   users: UserWithRoleResponse[];
+  currentUserId?: string;
 }
 
-export function OrganizationUsersList({ users }: OrganizationUsersListProps) {
+export function OrganizationUsersList({
+  users,
+  currentUserId,
+}: OrganizationUsersListProps) {
   if (users.length === 0) {
     return (
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -47,10 +51,19 @@ export function OrganizationUsersList({ users }: OrganizationUsersListProps) {
               </div>
             </Group>
 
-            {user.role === "admin" && (
-              <Badge color="blue" variant="light" size="sm">
-                Admin
-              </Badge>
+            {(user.role === "admin" || currentUserId === user.id) && (
+              <Group gap="xs">
+                {user.role === "admin" && (
+                  <Badge color="blue" variant="light" size="sm">
+                    Admin
+                  </Badge>
+                )}
+                {currentUserId === user.id && (
+                  <Badge color="teal" variant="light" size="sm">
+                    You
+                  </Badge>
+                )}
+              </Group>
             )}
 
             {user.description && (

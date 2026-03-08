@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { Alert, SimpleGrid, Text } from "@mantine/core";
 
 import type { OrganizationResponse } from "@/libs/generated/custapi";
@@ -15,6 +17,18 @@ export function OrganizationsList({
   organizations,
   userOrganizationIds,
 }: OrganizationsListProps) {
+  const sorted = useMemo(() => {
+    if (!userOrganizationIds || userOrganizationIds.length === 0) {
+      return organizations;
+    }
+    const idSet = new Set(userOrganizationIds);
+    return [...organizations].sort((a, b) => {
+      const aIsMember = idSet.has(a.id) ? 0 : 1;
+      const bIsMember = idSet.has(b.id) ? 0 : 1;
+      return aIsMember - bIsMember;
+    });
+  }, [organizations, userOrganizationIds]);
+
   if (!organizations || organizations.length === 0) {
     return (
       <Alert color="blue" title="No organizations found">
@@ -29,7 +43,7 @@ export function OrganizationsList({
       spacing="lg"
       verticalSpacing="lg"
     >
-      {organizations.map((org) => (
+      {sorted.map((org) => (
         <OrganizationCard
           key={org.id}
           organization={org}
