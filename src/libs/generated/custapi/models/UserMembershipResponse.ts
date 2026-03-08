@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { MemberRole } from './MemberRole';
+import {
+    MemberRoleFromJSON,
+    MemberRoleFromJSONTyped,
+    MemberRoleToJSON,
+    MemberRoleToJSONTyped,
+} from './MemberRole';
 import type { OrganizationResponse } from './OrganizationResponse';
 import {
     OrganizationResponseFromJSON,
@@ -20,13 +27,6 @@ import {
     OrganizationResponseToJSON,
     OrganizationResponseToJSONTyped,
 } from './OrganizationResponse';
-import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
-import {
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSONTyped,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSONTyped,
-} from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
 
 /**
  * 
@@ -54,10 +54,10 @@ export interface UserMembershipResponse {
     organizationId?: string;
     /**
      * 
-     * @type {GithubComHoshinaDevCustapiInternalModelsMemberRole}
+     * @type {MemberRole}
      * @memberof UserMembershipResponse
      */
-    role?: GithubComHoshinaDevCustapiInternalModelsMemberRole;
+    role?: MemberRole;
 }
 
 
@@ -82,7 +82,7 @@ export function UserMembershipResponseFromJSONTyped(json: any, ignoreDiscriminat
         'createdAt': json['created_at'] == null ? undefined : json['created_at'],
         'organization': json['organization'] == null ? undefined : OrganizationResponseFromJSON(json['organization']),
         'organizationId': json['organization_id'] == null ? undefined : json['organization_id'],
-        'role': json['role'] == null ? undefined : GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON(json['role']),
+        'role': json['role'] == null ? undefined : MemberRoleFromJSON(json['role']),
     };
 }
 
@@ -100,7 +100,7 @@ export function UserMembershipResponseToJSONTyped(value?: UserMembershipResponse
         'created_at': value['createdAt'],
         'organization': OrganizationResponseToJSON(value['organization']),
         'organization_id': value['organizationId'],
-        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON(value['role']),
+        'role': MemberRoleToJSON(value['role']),
     };
 }
 

@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+import type { MemberRole } from './MemberRole';
 import {
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSONTyped,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSONTyped,
-} from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+    MemberRoleFromJSON,
+    MemberRoleFromJSONTyped,
+    MemberRoleToJSON,
+    MemberRoleToJSONTyped,
+} from './MemberRole';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface SetRoleRequest {
     /**
      * 
-     * @type {GithubComHoshinaDevCustapiInternalModelsMemberRole}
+     * @type {MemberRole}
      * @memberof SetRoleRequest
      */
-    role: GithubComHoshinaDevCustapiInternalModelsMemberRole;
+    role: MemberRole;
 }
 
 
@@ -55,7 +55,7 @@ export function SetRoleRequestFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON(json['role']),
+        'role': MemberRoleFromJSON(json['role']),
     };
 }
 
@@ -70,7 +70,7 @@ export function SetRoleRequestToJSONTyped(value?: SetRoleRequest | null, ignoreD
 
     return {
         
-        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON(value['role']),
+        'role': MemberRoleToJSON(value['role']),
     };
 }
 

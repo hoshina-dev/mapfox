@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+import type { MemberRole } from './MemberRole';
 import {
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSONTyped,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSONTyped,
-} from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+    MemberRoleFromJSON,
+    MemberRoleFromJSONTyped,
+    MemberRoleToJSON,
+    MemberRoleToJSONTyped,
+} from './MemberRole';
 
 /**
  * 
@@ -77,10 +77,10 @@ export interface UserWithRoleResponse {
     researchCategories: Array<string>;
     /**
      * 
-     * @type {GithubComHoshinaDevCustapiInternalModelsMemberRole}
+     * @type {MemberRole}
      * @memberof UserWithRoleResponse
      */
-    role?: GithubComHoshinaDevCustapiInternalModelsMemberRole;
+    role?: MemberRole;
     /**
      * 
      * @type {string}
@@ -128,7 +128,7 @@ export function UserWithRoleResponseFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
-        'role': json['role'] == null ? undefined : GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON(json['role']),
+        'role': json['role'] == null ? undefined : MemberRoleFromJSON(json['role']),
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
         'updatedAt': json['updated_at'],
     };
@@ -153,7 +153,7 @@ export function UserWithRoleResponseToJSONTyped(value?: UserWithRoleResponse | n
         'name': value['name'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
-        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON(value['role']),
+        'role': MemberRoleToJSON(value['role']),
         'social_media': value['socialMedia'],
         'updated_at': value['updatedAt'],
     };

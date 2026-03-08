@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+import type { MemberRole } from './MemberRole';
 import {
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSONTyped,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON,
-    GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSONTyped,
-} from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+    MemberRoleFromJSON,
+    MemberRoleFromJSONTyped,
+    MemberRoleToJSON,
+    MemberRoleToJSONTyped,
+} from './MemberRole';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface AddMemberRequest {
     /**
      * 
-     * @type {GithubComHoshinaDevCustapiInternalModelsMemberRole}
+     * @type {MemberRole}
      * @memberof AddMemberRequest
      */
-    role?: GithubComHoshinaDevCustapiInternalModelsMemberRole;
+    role?: MemberRole;
     /**
      * 
      * @type {string}
@@ -61,7 +61,7 @@ export function AddMemberRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'role': json['role'] == null ? undefined : GithubComHoshinaDevCustapiInternalModelsMemberRoleFromJSON(json['role']),
+        'role': json['role'] == null ? undefined : MemberRoleFromJSON(json['role']),
         'userId': json['user_id'],
     };
 }
@@ -77,7 +77,7 @@ export function AddMemberRequestToJSONTyped(value?: AddMemberRequest | null, ign
 
     return {
         
-        'role': GithubComHoshinaDevCustapiInternalModelsMemberRoleToJSON(value['role']),
+        'role': MemberRoleToJSON(value['role']),
         'user_id': value['userId'],
     };
 }

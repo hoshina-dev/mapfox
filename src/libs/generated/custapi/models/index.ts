@@ -5,7 +5,7 @@ export * from './CreateOrganizationRequest';
 export * from './CreateUserRequest';
 export * from './ErrorResponse';
 export * from './GetOrganizationsByIDsRequest';
-export * from './GithubComHoshinaDevCustapiInternalModelsMemberRole';
+export * from './MemberRole';
 export * from './OrganizationCoord';
 export * from './OrganizationResponse';
 export * from './SetRoleRequest';

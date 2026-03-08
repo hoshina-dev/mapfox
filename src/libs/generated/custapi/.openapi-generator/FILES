@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/OrganizationsApi.ts
 apis/UsersApi.ts
 apis/index.ts
@@ -7,7 +8,7 @@ models/CreateOrganizationRequest.ts
 models/CreateUserRequest.ts
 models/ErrorResponse.ts
 models/GetOrganizationsByIDsRequest.ts
-models/GithubComHoshinaDevCustapiInternalModelsMemberRole.ts
+models/MemberRole.ts
 models/OrganizationCoord.ts
 models/OrganizationResponse.ts
 models/SetRoleRequest.ts

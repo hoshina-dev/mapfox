@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 
 import { organizationsApi } from "@/libs/apiClient";
-import type { GithubComHoshinaDevCustapiInternalModelsMemberRole } from "@/libs/generated/custapi";
+import type { MemberRole } from "@/libs/generated/custapi";
 import { ResponseError } from "@/libs/generated/custapi";
 
 export async function addOrganizationMember(
   organizationId: string,
   userId: string,
-  role: GithubComHoshinaDevCustapiInternalModelsMemberRole,
+  role: MemberRole,
 ) {
   try {
     await organizationsApi.organizationsIdMembersPost(organizationId, {
