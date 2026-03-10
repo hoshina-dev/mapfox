@@ -1,0 +1,23 @@
+query GetManufacturers {
+  manufacturers {
+    id
+    name
+    countryOfOrigin
+  }
+}
+
+query GetManufacturer($id: UUID!) {
+  manufacturer(id: $id) {
+    id
+    name
+    countryOfOrigin
+  }
+}
+
+mutation CreateManufacturer($input: CreateManufacturerInput!) {
+  createManufacturer(input: $input) {
+    id
+    name
+    countryOfOrigin
+  }
+}

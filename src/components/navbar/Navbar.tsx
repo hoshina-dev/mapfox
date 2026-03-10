@@ -1,5 +1,11 @@
 import { Box, Button, Container, Group, Text } from "@mantine/core";
-import { IconBuildingCommunity, IconLogin, IconMap } from "@tabler/icons-react";
+import {
+  IconBuildingCommunity,
+  IconBuildingFactory2,
+  IconLogin,
+  IconMap,
+  IconPuzzle,
+} from "@tabler/icons-react";
 import Link from "next/link";
 
 import { getSession } from "@/libs/dal";
@@ -49,6 +55,24 @@ export async function Navbar() {
                 leftSection={<IconMap size={16} />}
               >
                 Map Explorer
+              </Button>
+              <Button
+                component="a"
+                href="/parts"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconPuzzle size={16} />}
+              >
+                Parts
+              </Button>
+              <Button
+                component="a"
+                href="/manufacturers"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconBuildingFactory2 size={16} />}
+              >
+                Manufacturers
               </Button>
             </Group>
           </Group>
