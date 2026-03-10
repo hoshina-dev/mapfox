@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { updateCurrentUser } from "@/app/actions/updateCurrentUser";
-import type { UserDetailResponse } from "@/libs/generated/custapi";
+import type { UserDetailResponse } from "@/libs/api/custapi";
 
 import { AvatarCropModal } from "./AvatarCropModal";
 

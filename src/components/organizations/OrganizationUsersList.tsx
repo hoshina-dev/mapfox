@@ -8,7 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 
-import type { UserWithRoleResponse } from "@/libs/generated/custapi";
+import type { UserWithRoleResponse } from "@/libs/api/custapi";
 
 interface OrganizationUsersListProps {
   users: UserWithRoleResponse[];

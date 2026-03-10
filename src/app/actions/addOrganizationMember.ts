@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 
+import type { MemberRole } from "@/libs/api/custapi";
+import { ResponseError } from "@/libs/api/custapi";
 import { organizationsApi } from "@/libs/apiClient";
-import type { MemberRole } from "@/libs/generated/custapi";
-import { ResponseError } from "@/libs/generated/custapi";
 
 export async function addOrganizationMember(
   organizationId: string,

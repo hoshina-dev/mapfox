@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { GetAdminAreasDocument } from "@/graphql/generated/graphql";
+import { GetAdminAreasDocument } from "@/libs/api/gapi/generated/graphql";
 import { gapiClient } from "@/libs/apiClient";
 
 export async function GET(request: NextRequest) {

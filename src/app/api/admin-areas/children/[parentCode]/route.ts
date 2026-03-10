@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { GetChildrenByCodeDocument } from "@/graphql/generated/graphql";
+import { GetChildrenByCodeDocument } from "@/libs/api/gapi/generated/graphql";
 import { gapiClient } from "@/libs/apiClient";
 
 export async function GET(

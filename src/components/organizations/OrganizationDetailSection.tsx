@@ -4,7 +4,7 @@ import { ActionIcon, Card, Group, Stack, Title } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 
-import type { OrganizationResponse } from "@/libs/generated/custapi";
+import type { OrganizationResponse } from "@/libs/api/custapi";
 
 import { OrganizationEditForm } from "./OrganizationEditForm";
 

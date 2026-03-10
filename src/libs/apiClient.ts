@@ -4,9 +4,10 @@ import "server-only";
 
 import { GraphQLClient } from "graphql-request";
 
-import { Configuration, OrganizationsApi, UsersApi } from "./generated/custapi";
+import { Configuration, OrganizationsApi, UsersApi } from "./api/custapi";
 
-// Get GAPI URL from environment variable
+// GraphQL
+
 const GAPI_URL = process.env.GAPI_URL || "http://localhost:8080/query";
 
 export const gapiClient = new GraphQLClient(GAPI_URL, {
@@ -14,6 +15,16 @@ export const gapiClient = new GraphQLClient(GAPI_URL, {
     "Content-Type": "application/json",
   },
 });
+
+const PASTA_URL = process.env.PASTA_URL || "http://localhost:8080/graphql";
+
+export const pastaClient = new GraphQLClient(PASTA_URL, {
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// REST
 
 const CUSTAPI_URL = process.env.CUSTAPI_URL || "http://localhost:8000/api/v1";
 

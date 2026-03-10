@@ -1,7 +1,7 @@
 import { Map } from "@hoshina/react-map";
 import { Flex } from "@mantine/core";
 
-import { OrganizationResponse } from "@/libs/generated/custapi";
+import { OrganizationResponse } from "@/libs/api/custapi";
 
 import { Marker } from "./Marker";
 

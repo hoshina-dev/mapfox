@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 
+import type { UpdateUserRequest } from "@/libs/api/custapi";
+import { ResponseError } from "@/libs/api/custapi";
 import { usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
-import type { UpdateUserRequest } from "@/libs/generated/custapi";
-import { ResponseError } from "@/libs/generated/custapi";
 import { uploadImageToS3 } from "@/libs/s3Client";
 import { createSession } from "@/libs/session";
 

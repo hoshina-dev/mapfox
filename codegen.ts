@@ -1,16 +1,25 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
+const sharedConfig = {
+  preset: "client" as const,
+  config: {
+    useTypeImports: true,
+    enumsAsTypes: true,
+  },
+};
+
 const config: CodegenConfig = {
-  schema: "http://gapi.mapfox.hoshina.san/query",
-  documents: ["src/graphql/**/*.gql"],
   ignoreNoDocuments: true,
   generates: {
-    "./src/graphql/generated/": {
-      preset: "client",
-      config: {
-        useTypeImports: true,
-        enumsAsTypes: true,
-      },
+    "./src/libs/api/gapi/generated/": {
+      ...sharedConfig,
+      schema: "http://gapi.mapfox.hoshina.san/query",
+      documents: ["src/libs/api/gapi/query/**/*.gql"],
+    },
+    "./src/libs/api/pasta/generated/": {
+      ...sharedConfig,
+      schema: "http://pasta.mapfox.hoshina.san/graphql",
+      documents: ["src/libs/api/pasta/query/**/*.gql"],
     },
   },
   hooks: {

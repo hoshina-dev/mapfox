@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import { OrganizationResponse } from "@/libs/generated/custapi";
+import { OrganizationResponse } from "@/libs/api/custapi";
 
 interface MarkerProps {
   lat: number;

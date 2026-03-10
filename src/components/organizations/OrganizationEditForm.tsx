@@ -7,7 +7,7 @@ import { updateOrganization } from "@/app/actions/updateOrganization";
 import type {
   OrganizationResponse,
   UpdateOrganizationRequest,
-} from "@/libs/generated/custapi";
+} from "@/libs/api/custapi";
 
 import { OrganizationFormFields } from "./OrganizationFormFields";
 

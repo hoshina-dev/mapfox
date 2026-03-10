@@ -3,7 +3,7 @@
 import { SegmentedControl, Stack } from "@mantine/core";
 import { useState } from "react";
 
-import { OrganizationResponse } from "@/libs/generated/custapi";
+import { OrganizationResponse } from "@/libs/api/custapi";
 
 import { AllOrgMap } from "./AllOrg";
 import { AreaModeMap } from "./AreaModeMap";

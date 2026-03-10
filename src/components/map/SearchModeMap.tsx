@@ -6,7 +6,7 @@ import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { searchOrganizations } from "@/app/actions/searchOrganizations";
-import { OrganizationResponse } from "@/libs/generated/custapi";
+import { OrganizationResponse } from "@/libs/api/custapi";
 
 import { MapController } from "./MapController";
 import { Marker } from "./Marker";

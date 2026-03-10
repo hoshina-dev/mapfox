@@ -4,7 +4,7 @@ import { Button, Card, Group, Stack, Title } from "@mantine/core";
 import { IconUserPlus } from "@tabler/icons-react";
 import { useState } from "react";
 
-import type { UserWithRoleResponse } from "@/libs/generated/custapi";
+import type { UserWithRoleResponse } from "@/libs/api/custapi";
 
 import { AddMemberModal } from "./AddMemberModal";
 import { OrganizationUsersList } from "./OrganizationUsersList";

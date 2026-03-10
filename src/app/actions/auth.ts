@@ -3,6 +3,7 @@
 import { compare } from "bcryptjs";
 import { redirect } from "next/navigation";
 
+import { ResponseError } from "@/libs/api/custapi";
 import { usersApi } from "@/libs/apiClient";
 import {
   LoginFormSchema,
@@ -10,7 +11,6 @@ import {
   SignupFormSchema,
   SignupFormState,
 } from "@/libs/definitions";
-import { ResponseError } from "@/libs/generated/custapi";
 import { createSession, deleteSession } from "@/libs/session";
 
 export async function signup(

@@ -2,7 +2,7 @@ import { Badge, Card, Flex, Group, Image, Stack, Text } from "@mantine/core";
 import { IconUserCheck } from "@tabler/icons-react";
 import Link from "next/link";
 
-import type { OrganizationResponse } from "@/libs/generated/custapi";
+import type { OrganizationResponse } from "@/libs/api/custapi";
 
 interface OrganizationCardProps {
   organization: OrganizationResponse;

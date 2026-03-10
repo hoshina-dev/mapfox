@@ -1,8 +1,8 @@
 "use server";
 
-import { FilterCoordinatesByBoundaryDocument } from "@/graphql/generated/graphql";
+import { OrganizationResponse } from "@/libs/api/custapi";
+import { FilterCoordinatesByBoundaryDocument } from "@/libs/api/gapi/generated/graphql";
 import { gapiClient } from "@/libs/apiClient";
-import { OrganizationResponse } from "@/libs/generated/custapi";
 
 export async function filterOrganizationsByBoundary(
   organizations: OrganizationResponse[],

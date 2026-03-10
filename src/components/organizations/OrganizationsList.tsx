@@ -3,7 +3,7 @@
 import { Alert, SimpleGrid, Text } from "@mantine/core";
 import { useMemo } from "react";
 
-import type { OrganizationResponse } from "@/libs/generated/custapi";
+import type { OrganizationResponse } from "@/libs/api/custapi";
 
 import { OrganizationCard } from "./OrganizationCard";
 

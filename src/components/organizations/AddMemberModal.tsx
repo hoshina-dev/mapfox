@@ -23,7 +23,7 @@ import { useCallback, useState } from "react";
 
 import { addOrganizationMember } from "@/app/actions/addOrganizationMember";
 import { searchUsers } from "@/app/actions/searchUsers";
-import type { UserResponse } from "@/libs/generated/custapi";
+import type { UserResponse } from "@/libs/api/custapi";
 
 interface AddMemberModalProps {
   opened: boolean;

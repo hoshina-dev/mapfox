@@ -17,8 +17,8 @@ import type { FeatureCollection as GeoJsonFeatureCollection } from "geojson";
 import { useCallback, useEffect, useState } from "react";
 
 import { filterOrganizationsByBoundary } from "@/app/actions/filterOrganizations";
+import { OrganizationResponse } from "@/libs/api/custapi";
 import { ADMIN_LEVELS, LEVEL_STYLES } from "@/libs/areaDetail";
-import { OrganizationResponse } from "@/libs/generated/custapi";
 
 import { BoundaryHoverInfo } from "./BoundaryHoverInfo";
 import { BoundaryLayer } from "./BoundaryLayer";

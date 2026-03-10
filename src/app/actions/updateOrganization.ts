@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import type { UpdateOrganizationRequest } from "@/libs/api/custapi";
 import { organizationsApi } from "@/libs/apiClient";
-import type { UpdateOrganizationRequest } from "@/libs/generated/custapi";
 import { deleteImageFromS3, uploadImageToS3 } from "@/libs/s3Client";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes

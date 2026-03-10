@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import type { CreateOrganizationRequest } from "@/libs/api/custapi";
 import { organizationsApi } from "@/libs/apiClient";
-import type { CreateOrganizationRequest } from "@/libs/generated/custapi";
 import { uploadImageToS3 } from "@/libs/s3Client";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes

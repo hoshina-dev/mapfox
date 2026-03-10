@@ -1,8 +1,8 @@
 "use server";
 
+import { ResponseError } from "@/libs/api/custapi";
 import { usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
-import { ResponseError } from "@/libs/generated/custapi";
 
 export async function getCurrentUser() {
   const session = await getSession();

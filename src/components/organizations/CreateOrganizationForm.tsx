@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { createOrganization } from "@/app/actions/createOrganization";
-import type { CreateOrganizationRequest } from "@/libs/generated/custapi";
+import type { CreateOrganizationRequest } from "@/libs/api/custapi";
 
 import { OrganizationFormFields } from "./OrganizationFormFields";
 
