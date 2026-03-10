@@ -1,51 +1,34 @@
-import { Button, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-
-import { Welcome } from "@/components/demo/Welcome";
-
-const DEMOS = [
-  {
-    title: "Organization List Demo",
-    href: "/organizations",
-    description:
-      "View list of all organizations and map that show marker of each organization",
-  },
-];
+import { Button, Container, Group, Stack, Text, Title } from "@mantine/core";
 
 export default function Home() {
   return (
-    <Stack gap="xl" py="xl" px="md">
-      <Welcome />
+    <Container size="lg" py={80}>
+      <Stack align="center" gap="xl">
+        <Stack align="center" gap="md" maw={700}>
+          <Title order={1} ta="center" fz={{ base: 32, sm: 44 }}>
+            Mapfox Demo
+          </Title>
+          <Text c="dimmed" ta="center" size="lg" maw={560}>
+            Explore the current demo surfaces for organization browsing and map
+            interaction.
+          </Text>
+        </Stack>
 
-      <Stack gap="md" align="center">
-        <Title order={2} ta="center">
-          Demos
-        </Title>
-        <SimpleGrid cols={{ base: 1, sm: 1 }} spacing="md" maw={600} w="100%">
-          {DEMOS.map((demo) => (
-            <Stack
-              key={demo.href}
-              gap="md"
-              p="md"
-              style={{
-                border: "1px solid var(--mantine-color-gray-3)",
-                borderRadius: "var(--mantine-radius-md)",
-              }}
-            >
-              <div>
-                <Title order={3} size="h5">
-                  {demo.title}
-                </Title>
-                <Text size="sm" c="dimmed">
-                  {demo.description}
-                </Text>
-              </div>
-              <Button component="a" href={demo.href} variant="light" fullWidth>
-                Open Demo
-              </Button>
-            </Stack>
-          ))}
-        </SimpleGrid>
+        <Group gap="md">
+          <Button component="a" href="/organizations" size="md" radius="md">
+            Browse Organizations
+          </Button>
+          <Button
+            component="a"
+            href="/map"
+            size="md"
+            radius="md"
+            variant="light"
+          >
+            Open Map Explorer
+          </Button>
+        </Group>
       </Stack>
-    </Stack>
+    </Container>
   );
 }
