@@ -1,5 +1,11 @@
 import { Box, Button, Container, Group, Text } from "@mantine/core";
-import { IconLogin } from "@tabler/icons-react";
+import {
+  IconBuildingCommunity,
+  IconBuildingFactory2,
+  IconLogin,
+  IconMap,
+  IconPuzzle,
+} from "@tabler/icons-react";
 import Link from "next/link";
 
 import { getSession } from "@/libs/dal";
@@ -19,16 +25,57 @@ export async function Navbar() {
     >
       <Container size="xl" py="sm">
         <Group justify="space-between" align="center">
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Text
-              size="xl"
-              fw={800}
-              variant="gradient"
-              gradient={{ from: "blue", to: "teal", deg: 90 }}
-            >
-              Mapfox
-            </Text>
-          </Link>
+          <Group gap="xl">
+            <Link href="/" style={{ textDecoration: "none" }}>
+              <Text
+                size="xl"
+                fw={800}
+                variant="gradient"
+                gradient={{ from: "blue", to: "teal", deg: 90 }}
+              >
+                Mapfox
+              </Text>
+            </Link>
+
+            <Group gap="xs" visibleFrom="sm">
+              <Button
+                component="a"
+                href="/organizations"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconBuildingCommunity size={16} />}
+              >
+                Organizations
+              </Button>
+              <Button
+                component="a"
+                href="/map"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconMap size={16} />}
+              >
+                Map Explorer
+              </Button>
+              <Button
+                component="a"
+                href="/parts"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconPuzzle size={16} />}
+              >
+                Parts
+              </Button>
+              <Button
+                component="a"
+                href="/manufacturers"
+                variant="subtle"
+                size="sm"
+                leftSection={<IconBuildingFactory2 size={16} />}
+              >
+                Manufacturers
+              </Button>
+            </Group>
+          </Group>
 
           {session ? (
             <UserMenu name={session.name} avatarUrl={session.avatarUrl} />

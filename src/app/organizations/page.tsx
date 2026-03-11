@@ -4,16 +4,11 @@ import {
   Container,
   Flex,
   Stack,
-  Tabs,
-  TabsList,
-  TabsPanel,
-  TabsTab,
   Text,
   Title,
 } from "@mantine/core";
-import { IconBuildingCommunity, IconMap, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 
-import { OrganizationMap } from "@/components/map/OrganizationMap";
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
@@ -29,7 +24,6 @@ export default async function OrganizationsPage() {
       .catch((e: unknown) => ({ data: null, error: e })),
   ]);
 
-  // Fetch user's organization memberships if logged in
   const userOrganizationIds: string[] = [];
   if (session?.userId) {
     try {
@@ -70,7 +64,7 @@ export default async function OrganizationsPage() {
               Organizations
             </Title>
             <Text c="dimmed" size="lg">
-              Browse all organizations in the system
+              Browse and manage all organizations
             </Text>
           </div>
           <Button
@@ -82,39 +76,17 @@ export default async function OrganizationsPage() {
           </Button>
         </Flex>
 
-        <Tabs defaultValue="all">
-          <TabsList>
-            <TabsTab
-              value="all"
-              leftSection={<IconBuildingCommunity size={14} />}
-            >
-              All Organizations
-            </TabsTab>
-            <TabsTab value="map" leftSection={<IconMap size={14} />}>
-              Map
-            </TabsTab>
-          </TabsList>
+        <OrganizationsList
+          organizations={data || []}
+          userOrganizationIds={userOrganizationIds}
+        />
 
-          <TabsPanel value="all">
-            <Stack gap="xl" pt="xl">
-              <OrganizationsList
-                organizations={data || []}
-                userOrganizationIds={userOrganizationIds}
-              />
-
-              {data && data.length > 0 && (
-                <Text size="sm" c="dimmed" ta="center">
-                  Showing {data.length} organization
-                  {data.length !== 1 ? "s" : ""}
-                </Text>
-              )}
-            </Stack>
-          </TabsPanel>
-
-          <TabsPanel value="map">
-            <OrganizationMap organizations={data || []} />
-          </TabsPanel>
-        </Tabs>
+        {data && data.length > 0 && (
+          <Text size="sm" c="dimmed" ta="center">
+            Showing {data.length} organization
+            {data.length !== 1 ? "s" : ""}
+          </Text>
+        )}
       </Stack>
     </Container>
   );
