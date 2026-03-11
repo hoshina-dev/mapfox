@@ -8,14 +8,6 @@ import { Configuration, OrganizationsApi, UsersApi } from "./api/custapi";
 
 // GraphQL
 
-const GAPI_URL = process.env.GAPI_URL || "http://localhost:8080/query";
-
-export const gapiClient = new GraphQLClient(GAPI_URL, {
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 const PASTA_URL = process.env.PASTA_URL || "http://localhost:8080/graphql";
 
 export const pastaClient = new GraphQLClient(PASTA_URL, {

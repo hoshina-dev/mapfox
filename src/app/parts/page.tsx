@@ -1,13 +1,4 @@
-import {
-  Alert,
-  Button,
-  Container,
-  Flex,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Alert, Container, Flex, Stack, Text, Title } from "@mantine/core";
 
 import { getParts } from "@/app/actions/parts";
 import { PartsList } from "@/components/parts/PartsList";
@@ -47,13 +38,13 @@ export default async function PartsPage() {
               Browse and manage all parts
             </Text>
           </div>
-          <Button
+          {/* <Button
             component="a"
             href="/parts/create"
             leftSection={<IconPlus size={16} />}
           >
             Create Part
-          </Button>
+          </Button> */}
         </Flex>
 
         <PartsList parts={result.data} />

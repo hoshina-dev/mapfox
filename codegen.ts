@@ -11,11 +11,6 @@ const sharedConfig = {
 const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
-    "./src/libs/api/gapi/generated/": {
-      ...sharedConfig,
-      schema: "http://gapi.mapfox.hoshina.san/query",
-      documents: ["src/libs/api/gapi/query/**/*.gql"],
-    },
     "./src/libs/api/pasta/generated/": {
       ...sharedConfig,
       schema: "http://pasta.mapfox.hoshina.san/graphql",

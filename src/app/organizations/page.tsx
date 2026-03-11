@@ -1,13 +1,4 @@
-import {
-  Alert,
-  Button,
-  Container,
-  Flex,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Alert, Container, Flex, Stack, Text, Title } from "@mantine/core";
 
 import { OrganizationsList } from "@/components/organizations/OrganizationsList";
 import { organizationsApi, usersApi } from "@/libs/apiClient";
@@ -67,13 +58,13 @@ export default async function OrganizationsPage() {
               Browse and manage all organizations
             </Text>
           </div>
-          <Button
+          {/* <Button
             component="a"
             href="/organizations/create"
             leftSection={<IconPlus size={16} />}
           >
             Create Organization
-          </Button>
+          </Button> */}
         </Flex>
 
         <OrganizationsList
