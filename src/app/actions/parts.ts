@@ -4,16 +4,21 @@ import { revalidatePath } from "next/cache";
 
 import {
   CreatePartDocument,
+  type CreatePartInput,
   DeletePartDocument,
   GetPartDocument,
   GetPartsDocument,
   UpdatePartDocument,
+  type UpdatePartInput,
 } from "@/libs/api/pasta/generated/graphql";
 import { pastaClient } from "@/libs/apiClient";
 import { deleteImageFromS3, uploadImageToS3 } from "@/libs/s3Client";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+type CreatePartActionInput = Omit<CreatePartInput, "images">;
+type UpdatePartActionInput = Omit<UpdatePartInput, "images">;
 
 export async function getParts() {
   try {
@@ -43,18 +48,7 @@ export async function getPart(id: string) {
 }
 
 export async function createPart(
-  input: {
-    name: string;
-    partNumber: string;
-    description?: string;
-    condition: string;
-    isAvailable?: boolean;
-    temperatureStage?: string;
-    manufacturerId: string;
-    categoryIds: string[];
-    organizationId: string;
-    userId: string;
-  },
+  input: CreatePartActionInput,
   imageFiles?: File[],
 ) {
   try {
@@ -114,14 +108,7 @@ export async function createPart(
 
 export async function updatePart(
   id: string,
-  input: {
-    name?: string;
-    description?: string;
-    condition?: string;
-    isAvailable?: boolean;
-    temperatureStage?: string;
-    categoryIds?: string[];
-  },
+  input: UpdatePartActionInput,
   imageFiles?: File[],
   existingImageUrls?: string[],
   originalImageUrls?: string[],

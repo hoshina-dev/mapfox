@@ -1,5 +1,3 @@
-"use client";
-
 import { SimpleGrid, Text } from "@mantine/core";
 
 import type { GetManufacturersQuery } from "@/libs/api/pasta/generated/graphql";
