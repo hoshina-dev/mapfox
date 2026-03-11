@@ -1,34 +1,27 @@
-import { Button, Container, Group, Stack, Text, Title } from "@mantine/core";
+import { Alert, Container, Text } from "@mantine/core";
 
-export default function Home() {
-  return (
-    <Container size="lg" py={80}>
-      <Stack align="center" gap="xl">
-        <Stack align="center" gap="md" maw={700}>
-          <Title order={1} ta="center" fz={{ base: 32, sm: 44 }}>
-            Mapfox Demo
-          </Title>
-          <Text c="dimmed" ta="center" size="lg" maw={560}>
-            Explore the current demo surfaces for organization browsing and map
-            interaction.
-          </Text>
-        </Stack>
+import { LandingHero } from "@/components/landing/LandingHero";
+import { organizationsApi } from "@/libs/apiClient";
 
-        <Group gap="md">
-          <Button component="a" href="/organizations" size="md" radius="md">
-            Browse Organizations
-          </Button>
-          <Button
-            component="a"
-            href="/map"
-            size="md"
-            radius="md"
-            variant="light"
-          >
-            Open Map Explorer
-          </Button>
-        </Group>
-      </Stack>
-    </Container>
-  );
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const orgResult = await organizationsApi
+    .organizationsGet()
+    .then((data) => ({ data, error: null }))
+    .catch((e: unknown) => ({ data: null, error: e }));
+
+  const { data, error } = orgResult;
+
+  if (error) {
+    return (
+      <Container py="xl">
+        <Alert color="red" title="Error loading map data">
+          <Text>Failed to fetch organizations. Please try again later.</Text>
+        </Alert>
+      </Container>
+    );
+  }
+
+  return <LandingHero organizations={data || []} />;
 }

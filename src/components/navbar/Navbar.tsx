@@ -19,12 +19,33 @@ export async function Navbar() {
     <Box
       component="header"
       style={{
-        borderBottom: "1px solid var(--mantine-color-gray-3)",
-        backgroundColor: "var(--mantine-color-body)",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        padding: "12px 16px",
+        pointerEvents: "none",
       }}
     >
-      <Container size="xl" py="sm">
-        <Group justify="space-between" align="center">
+      <Container
+        size="xl"
+        py="xs"
+        px="md"
+        style={{
+          pointerEvents: "auto",
+          borderRadius: "9999px",
+          border:
+            "1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1))",
+          backgroundColor:
+            "light-dark(rgba(255, 255, 255, 0.7), rgba(30, 30, 30, 0.7))",
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          boxShadow:
+            "0 2px 16px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3))",
+        }}
+      >
+        <Group justify="space-between" align="center" px="md">
           <Group gap="xl">
             <Link href="/" style={{ textDecoration: "none" }}>
               <Text
