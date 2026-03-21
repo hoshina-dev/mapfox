@@ -1,3 +1,13 @@
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.1s,
+    color 0.1s,
+    border-color 0.1s,
+    box-shadow 0.1s;
+}
+
 .maplibregl-popup {
   max-width: 300px !important;
 }

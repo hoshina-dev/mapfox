@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { getSession } from "@/libs/dal";
 
+import { ThemeToggle } from "./ThemeToggle";
 import { UserMenu } from "./UserMenu";
 
 export async function Navbar() {
@@ -87,15 +88,18 @@ export async function Navbar() {
             </Group>
           </Group>
 
-          {session ? (
-            <UserMenu name={session.name} avatarUrl={session.avatarUrl} />
-          ) : (
-            <Link href="/login">
-              <Button variant="light" leftSection={<IconLogin size={16} />}>
-                Login
-              </Button>
-            </Link>
-          )}
+          <Group gap="xs">
+            <ThemeToggle />
+            {session ? (
+              <UserMenu name={session.name} avatarUrl={session.avatarUrl} />
+            ) : (
+              <Link href="/login">
+                <Button variant="light" leftSection={<IconLogin size={16} />}>
+                  Login
+                </Button>
+              </Link>
+            )}
+          </Group>
         </Group>
       </Container>
     </Box>

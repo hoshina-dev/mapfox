@@ -54,7 +54,7 @@ export function UserMenu({ name, avatarUrl }: UserMenuProps) {
   };
 
   return (
-    <Popover width={200} position="bottom-end" shadow="md">
+    <Popover width={200} position="bottom-end" shadow="md" zIndex={1100}>
       <PopoverTarget>
         <UnstyledButton>
           <Group gap="xs">

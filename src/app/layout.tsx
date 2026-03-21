@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "./globals.css";
 
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript defaultColorScheme="auto" />
+      </head>
       <body>
         <Providers>
           <Navbar />
