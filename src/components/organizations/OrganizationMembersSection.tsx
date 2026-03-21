@@ -12,14 +12,14 @@ import { OrganizationUsersList } from "./OrganizationUsersList";
 interface OrganizationMembersSectionProps {
   organizationId: string;
   users: UserWithRoleResponse[];
-  isAdmin: boolean;
+  isOrgManager: boolean;
   currentUserId?: string;
 }
 
 export function OrganizationMembersSection({
   organizationId,
   users,
-  isAdmin,
+  isOrgManager,
   currentUserId,
 }: OrganizationMembersSectionProps) {
   const [modalOpened, setModalOpened] = useState(false);
@@ -30,7 +30,7 @@ export function OrganizationMembersSection({
         <Stack gap="md">
           <Group justify="space-between" align="center">
             <Title order={3}>Members ({users.length})</Title>
-            {isAdmin && (
+            {isOrgManager && (
               <Button
                 leftSection={<IconUserPlus size={16} />}
                 variant="light"

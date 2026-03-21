@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { UserRole } from './UserRole';
+import {
+    UserRoleFromJSON,
+    UserRoleFromJSONTyped,
+    UserRoleToJSON,
+    UserRoleToJSONTyped,
+} from './UserRole';
+
 /**
  * 
  * @export
@@ -75,6 +83,12 @@ export interface UserDetailResponse {
     researchCategories: Array<string>;
     /**
      * 
+     * @type {UserRole}
+     * @memberof UserDetailResponse
+     */
+    role: UserRole;
+    /**
+     * 
      * @type {string}
      * @memberof UserDetailResponse
      */
@@ -87,6 +101,8 @@ export interface UserDetailResponse {
     updatedAt: string;
 }
 
+
+
 /**
  * Check if a given object implements the UserDetailResponse interface.
  */
@@ -97,6 +113,7 @@ export function instanceOfUserDetailResponse(value: object): value is UserDetail
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
@@ -120,6 +137,7 @@ export function UserDetailResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'password': json['password'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
+        'role': UserRoleFromJSON(json['role']),
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
         'updatedAt': json['updated_at'],
     };
@@ -145,6 +163,7 @@ export function UserDetailResponseToJSONTyped(value?: UserDetailResponse | null,
         'password': value['password'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
+        'role': UserRoleToJSON(value['role']),
         'social_media': value['socialMedia'],
         'updated_at': value['updatedAt'],
     };

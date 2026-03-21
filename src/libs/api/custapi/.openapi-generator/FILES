@@ -16,6 +16,7 @@ models/UpdateUserRequest.ts
 models/UserDetailResponse.ts
 models/UserMembershipResponse.ts
 models/UserResponse.ts
+models/UserRole.ts
 models/UserWithRoleResponse.ts
 models/index.ts
 runtime.ts

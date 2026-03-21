@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { UserRole } from './UserRole';
+import {
+    UserRoleFromJSON,
+    UserRoleFromJSONTyped,
+    UserRoleToJSON,
+    UserRoleToJSONTyped,
+} from './UserRole';
+
 /**
  * 
  * @export
@@ -69,6 +77,12 @@ export interface UserResponse {
     researchCategories: Array<string>;
     /**
      * 
+     * @type {UserRole}
+     * @memberof UserResponse
+     */
+    role: UserRole;
+    /**
+     * 
      * @type {string}
      * @memberof UserResponse
      */
@@ -81,6 +95,8 @@ export interface UserResponse {
     updatedAt: string;
 }
 
+
+
 /**
  * Check if a given object implements the UserResponse interface.
  */
@@ -90,6 +106,7 @@ export function instanceOfUserResponse(value: object): value is UserResponse {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
@@ -112,6 +129,7 @@ export function UserResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'name': json['name'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
+        'role': UserRoleFromJSON(json['role']),
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
         'updatedAt': json['updated_at'],
     };
@@ -136,6 +154,7 @@ export function UserResponseToJSONTyped(value?: UserResponse | null, ignoreDiscr
         'name': value['name'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
+        'role': UserRoleToJSON(value['role']),
         'social_media': value['socialMedia'],
         'updated_at': value['updatedAt'],
     };

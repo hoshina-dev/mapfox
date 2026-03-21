@@ -317,7 +317,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Add an existing user to an organization with an optional admin role
+     * Add an existing user to an organization with an optional manager role
      * Add a member to an organization
      */
     async organizationsIdMembersPostRaw(requestParameters: OrganizationsIdMembersPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -357,7 +357,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Add an existing user to an organization with an optional admin role
+     * Add an existing user to an organization with an optional manager role
      * Add a member to an organization
      */
     async organizationsIdMembersPost(id: string, req: AddMemberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -409,7 +409,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a member\'s admin role
+     * Update a member\'s role within an organization
      */
     async organizationsIdMembersUserIdPatchRaw(requestParameters: OrganizationsIdMembersUserIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['id'] == null) {
@@ -456,7 +456,7 @@ export class OrganizationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a member\'s admin role
+     * Update a member\'s role within an organization
      */
     async organizationsIdMembersUserIdPatch(id: string, userId: string, req: SetRoleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.organizationsIdMembersUserIdPatchRaw({ id: id, userId: userId, req: req }, initOverrides);

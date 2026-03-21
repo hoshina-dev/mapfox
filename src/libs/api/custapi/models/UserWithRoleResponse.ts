@@ -20,6 +20,13 @@ import {
     MemberRoleToJSON,
     MemberRoleToJSONTyped,
 } from './MemberRole';
+import type { UserRole } from './UserRole';
+import {
+    UserRoleFromJSON,
+    UserRoleFromJSONTyped,
+    UserRoleToJSON,
+    UserRoleToJSONTyped,
+} from './UserRole';
 
 /**
  * 
@@ -59,6 +66,12 @@ export interface UserWithRoleResponse {
     id: string;
     /**
      * 
+     * @type {MemberRole}
+     * @memberof UserWithRoleResponse
+     */
+    memberRole?: MemberRole;
+    /**
+     * 
      * @type {string}
      * @memberof UserWithRoleResponse
      */
@@ -77,10 +90,10 @@ export interface UserWithRoleResponse {
     researchCategories: Array<string>;
     /**
      * 
-     * @type {MemberRole}
+     * @type {UserRole}
      * @memberof UserWithRoleResponse
      */
-    role?: MemberRole;
+    role: UserRole;
     /**
      * 
      * @type {string}
@@ -106,6 +119,7 @@ export function instanceOfUserWithRoleResponse(value: object): value is UserWith
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
@@ -125,10 +139,11 @@ export function UserWithRoleResponseFromJSONTyped(json: any, ignoreDiscriminator
         'description': json['description'] == null ? undefined : json['description'],
         'email': json['email'],
         'id': json['id'],
+        'memberRole': json['member_role'] == null ? undefined : MemberRoleFromJSON(json['member_role']),
         'name': json['name'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
-        'role': json['role'] == null ? undefined : MemberRoleFromJSON(json['role']),
+        'role': UserRoleFromJSON(json['role']),
         'socialMedia': json['social_media'] == null ? undefined : json['social_media'],
         'updatedAt': json['updated_at'],
     };
@@ -150,10 +165,11 @@ export function UserWithRoleResponseToJSONTyped(value?: UserWithRoleResponse | n
         'description': value['description'],
         'email': value['email'],
         'id': value['id'],
+        'member_role': MemberRoleToJSON(value['memberRole']),
         'name': value['name'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
-        'role': MemberRoleToJSON(value['role']),
+        'role': UserRoleToJSON(value['role']),
         'social_media': value['socialMedia'],
         'updated_at': value['updatedAt'],
     };

@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { updateCurrentUser } from "@/app/actions/updateCurrentUser";
-import type { UserDetailResponse } from "@/libs/api/custapi";
+import { type UserDetailResponse, UserRole } from "@/libs/api/custapi";
 
 import { AvatarCropModal } from "./AvatarCropModal";
 
@@ -262,9 +262,16 @@ export function HomeForm({ user }: HomeFormProps) {
                 </FileButton>
               </div>
               <Stack gap={4}>
-                <Text size="lg" fw={600}>
-                  {user.name}
-                </Text>
+                <Group gap="xs" wrap="wrap" align="center">
+                  <Text size="lg" fw={600}>
+                    {user.name}
+                  </Text>
+                  {user.role === UserRole.UserRoleAdmin && (
+                    <Badge color="blue" variant="light" size="sm">
+                      Mapfox Admin
+                    </Badge>
+                  )}
+                </Group>
                 <Text size="sm" c="dimmed">
                   {user.email}
                 </Text>

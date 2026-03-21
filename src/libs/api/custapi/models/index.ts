@@ -14,4 +14,5 @@ export * from './UpdateUserRequest';
 export * from './UserDetailResponse';
 export * from './UserMembershipResponse';
 export * from './UserResponse';
+export * from './UserRole';
 export * from './UserWithRoleResponse';

@@ -23,7 +23,7 @@ import { useCallback, useState } from "react";
 
 import { addOrganizationMember } from "@/app/actions/addOrganizationMember";
 import { searchUsers } from "@/app/actions/searchUsers";
-import type { UserResponse } from "@/libs/api/custapi";
+import type { MemberRole, UserResponse } from "@/libs/api/custapi";
 
 interface AddMemberModalProps {
   opened: boolean;
@@ -43,7 +43,7 @@ export function AddMemberModal({
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<UserResponse[]>([]);
   const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null);
-  const [role, setRole] = useState<"admin" | "user">("user");
+  const [role, setRole] = useState<MemberRole>("user");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchPerformed, setSearchPerformed] = useState(false);
@@ -194,7 +194,7 @@ export function AddMemberModal({
               <RadioGroup
                 label="Role"
                 value={role}
-                onChange={(v) => setRole(v as "admin" | "user")}
+                onChange={(v) => setRole(v as "manager" | "user")}
               >
                 <Stack gap="xs" mt="xs">
                   <Radio
@@ -203,8 +203,8 @@ export function AddMemberModal({
                     description="Can view organization details and participate as a member."
                   />
                   <Radio
-                    value="admin"
-                    label="Admin"
+                    value="manager"
+                    label="Manager"
                     description="Can manage organization settings, add or remove members, and change roles."
                   />
                 </Stack>

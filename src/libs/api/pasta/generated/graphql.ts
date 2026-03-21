@@ -27,6 +27,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  Int64: { input: any; output: any };
   UUID: { input: any; output: any };
 };
 
@@ -59,6 +60,11 @@ export type CreatePartInput = {
   userId: Scalars["UUID"]["input"];
 };
 
+export type GenerateUploadUrlInput = {
+  contentType: Scalars["String"]["input"];
+  fileName: Scalars["String"]["input"];
+};
+
 export type Manufacturer = {
   __typename?: "Manufacturer";
   countryOfOrigin?: Maybe<Scalars["String"]["output"]>;
@@ -72,6 +78,7 @@ export type Mutation = {
   createManufacturer: Manufacturer;
   createPart: Part;
   deletePart: Scalars["Boolean"]["output"];
+  optimize3D: Optimize3DResponse;
   updatePart: Part;
 };
 
@@ -91,9 +98,28 @@ export type MutationDeletePartArgs = {
   id: Scalars["UUID"]["input"];
 };
 
+export type MutationOptimize3DArgs = {
+  input: Optimize3DInput;
+};
+
 export type MutationUpdatePartArgs = {
   id: Scalars["UUID"]["input"];
   input: UpdatePartInput;
+};
+
+export type Optimize3DInput = {
+  dracoCompressionLevel?: InputMaybe<Scalars["Int"]["input"]>;
+  dracoGenericQuantization?: InputMaybe<Scalars["Int"]["input"]>;
+  dracoNormalQuantization?: InputMaybe<Scalars["Int"]["input"]>;
+  dracoPositionQuantization?: InputMaybe<Scalars["Int"]["input"]>;
+  dracoTexcoordQuantization?: InputMaybe<Scalars["Int"]["input"]>;
+  sourceURL: Scalars["String"]["input"];
+};
+
+export type Optimize3DResponse = {
+  __typename?: "Optimize3DResponse";
+  jobID: Scalars["UUID"]["output"];
+  status: Scalars["String"]["output"];
 };
 
 export type Part = {
@@ -106,6 +132,7 @@ export type Part = {
   isAvailable: Scalars["Boolean"]["output"];
   manufacturer?: Maybe<Manufacturer>;
   manufacturerId: Scalars["UUID"]["output"];
+  models3D: Array<Part3DModel>;
   name: Scalars["String"]["output"];
   organizationId: Scalars["UUID"]["output"];
   partNumber: Scalars["String"]["output"];
@@ -113,14 +140,31 @@ export type Part = {
   userId: Scalars["UUID"]["output"];
 };
 
+export type Part3DModel = {
+  __typename?: "Part3DModel";
+  fileName: Scalars["String"]["output"];
+  fileSize?: Maybe<Scalars["Int64"]["output"]>;
+  id: Scalars["UUID"]["output"];
+  partId: Scalars["UUID"]["output"];
+  processedKey?: Maybe<Scalars["String"]["output"]>;
+  processedUrl?: Maybe<Scalars["String"]["output"]>;
+  rawUrl: Scalars["String"]["output"];
+  status: Scalars["String"]["output"];
+};
+
 export type Query = {
   __typename?: "Query";
   categories: Array<Category>;
+  generateUploadURL: UploadUrlResponse;
   manufacturer?: Maybe<Manufacturer>;
   manufacturers: Array<Manufacturer>;
   part?: Maybe<Part>;
   parts: Array<Part>;
   searchParts: Array<Part>;
+};
+
+export type QueryGenerateUploadUrlArgs = {
+  input: GenerateUploadUrlInput;
 };
 
 export type QueryManufacturerArgs = {
@@ -143,6 +187,12 @@ export type UpdatePartInput = {
   isAvailable?: InputMaybe<Scalars["Boolean"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   temperatureStage?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type UploadUrlResponse = {
+  __typename?: "UploadURLResponse";
+  fileKey: Scalars["String"]["output"];
+  uploadURL: Scalars["String"]["output"];
 };
 
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;

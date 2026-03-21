@@ -18,8 +18,8 @@
  * @export
  */
 export const MemberRole = {
-    RoleAdmin: 'admin',
-    RoleUser: 'user'
+    RoleManager: 'manager',
+    RoleMember: 'user'
 } as const;
 export type MemberRole = typeof MemberRole[keyof typeof MemberRole];
 

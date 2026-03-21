@@ -17,6 +17,7 @@ import { BackToOrganizationsButton } from "@/components/organizations/BackToOrga
 import { OrganizationDetailSection } from "@/components/organizations/OrganizationDetailSection";
 import { OrganizationImageCarousel } from "@/components/organizations/OrganizationImageCarousel";
 import { OrganizationMembersSection } from "@/components/organizations/OrganizationMembersSection";
+import { MemberRole } from "@/libs/api/custapi";
 import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
@@ -65,7 +66,7 @@ export default async function OrganizationPage({
 
   // Check if user belongs to this organization and their role
   let isUserOrganization = false;
-  let isAdmin = false;
+  let isOrgManager = false;
   if (session?.userId) {
     try {
       const memberships = await usersApi.usersIdIdOrganizationsGet(
@@ -75,7 +76,7 @@ export default async function OrganizationPage({
         (m) => m.organizationId === organization.id,
       );
       isUserOrganization = !!membership;
-      isAdmin = membership?.role === "admin";
+      isOrgManager = membership?.role === MemberRole.RoleManager;
     } catch {
       // Ignore errors
     }
@@ -141,7 +142,7 @@ export default async function OrganizationPage({
         <OrganizationMembersSection
           organizationId={organization.id}
           users={users}
-          isAdmin={isAdmin}
+          isOrgManager={isOrgManager}
           currentUserId={session?.userId}
         />
 

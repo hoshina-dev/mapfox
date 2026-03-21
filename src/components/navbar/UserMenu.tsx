@@ -11,7 +11,7 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
-import { IconHome, IconLogout } from "@tabler/icons-react";
+import { IconHome, IconLayoutDashboard, IconLogout } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
@@ -20,6 +20,7 @@ import { logout } from "@/app/actions/auth";
 interface UserMenuProps {
   name: string;
   avatarUrl?: string;
+  isAdmin?: boolean;
 }
 
 function getDisplayName(fullName: string): string {
@@ -40,7 +41,7 @@ function getInitials(fullName: string): string {
   );
 }
 
-export function UserMenu({ name, avatarUrl }: UserMenuProps) {
+export function UserMenu({ name, avatarUrl, isAdmin = false }: UserMenuProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -85,6 +86,17 @@ export function UserMenu({ name, avatarUrl }: UserMenuProps) {
           >
             Home
           </Button>
+          {isAdmin && (
+            <Button
+              variant="subtle"
+              leftSection={<IconLayoutDashboard size={16} />}
+              justify="start"
+              fullWidth
+              onClick={() => router.push("/backoffice")}
+            >
+              Backoffice
+            </Button>
+          )}
           <Button
             variant="subtle"
             color="red"

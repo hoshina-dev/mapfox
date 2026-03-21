@@ -6,6 +6,8 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 
+import { UserRole } from "@/libs/api/custapi";
+import { usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
 import { ThemeToggle } from "./ThemeToggle";
@@ -13,6 +15,16 @@ import { UserMenu } from "./UserMenu";
 
 export async function Navbar() {
   const session = await getSession();
+
+  let isAdmin = false;
+  if (session) {
+    try {
+      const user = await usersApi.usersIdIdGet(session.userId);
+      isAdmin = user.role === UserRole.UserRoleAdmin;
+    } catch {
+      // ignore
+    }
+  }
 
   return (
     <Box
@@ -91,7 +103,11 @@ export async function Navbar() {
           <Group gap="xs">
             <ThemeToggle />
             {session ? (
-              <UserMenu name={session.name} avatarUrl={session.avatarUrl} />
+              <UserMenu
+                name={session.name}
+                avatarUrl={session.avatarUrl}
+                isAdmin={isAdmin}
+              />
             ) : (
               <Link href="/login">
                 <Button variant="light" leftSection={<IconLogin size={16} />}>
