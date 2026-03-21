@@ -28,6 +28,25 @@ export default function Page() {
 }
 ```
 
+### Next.js: Mantine + `next/link` in Server Components
+
+Mantine controls such as `Button` and `ActionIcon` are **Client Components**. In a **Server Component** (default `page.tsx`, `layout.tsx`, `not-found.tsx`, etc.), you **must not** pass `Link` from `next/link` via the `component` prop (e.g. `Button component={Link}`). Next.js will error: functions cannot be passed to Client Components.
+
+**Do this instead:**
+
+1. **Wrap the control with `Link`** (same pattern as the login button in `src/components/navbar/Navbar.tsx`):
+
+```tsx
+import Link from "next/link";
+import { Button } from "@mantine/core";
+
+<Link href="/" style={{ textDecoration: "none" }}>
+  <Button variant="light">Back</Button>
+</Link>;
+```
+
+2. **Or** move the `component={Link}` usage into a small file marked `"use client"` (see `src/components/organizations/BackToOrganizationsButton.tsx`).
+
 ## Backend Components
 
 ### GAPI
