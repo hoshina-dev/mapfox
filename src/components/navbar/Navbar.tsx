@@ -1,15 +1,13 @@
-import { Box, Button, Container, Group, Text } from "@mantine/core";
-import {
-  IconBuildingCommunity,
-  IconLogin,
-  IconPuzzle,
-} from "@tabler/icons-react";
+import { Box, Container, Group, Text } from "@mantine/core";
 import Link from "next/link";
 
 import { UserRole } from "@/libs/api/custapi";
 import { usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
+import { NavbarAppLinks } from "./NavbarAppLinks";
+import { NavbarLoginLink } from "./NavbarLoginLink";
+import { NavbarMobileNav } from "./NavbarMobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { UserMenu } from "./UserMenu";
 
@@ -35,14 +33,14 @@ export async function Navbar() {
         left: 0,
         right: 0,
         zIndex: 1000,
-        padding: "12px 16px",
+        padding: "8px 10px",
         pointerEvents: "none",
       }}
     >
       <Container
         size="xl"
         py="xs"
-        px="md"
+        px={{ base: "xs", sm: "md" }}
         style={{
           pointerEvents: "auto",
           borderRadius: "9999px",
@@ -56,51 +54,32 @@ export async function Navbar() {
             "0 2px 16px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3))",
         }}
       >
-        <Group justify="space-between" align="center" px="md">
-          <Group gap="xl">
-            <Link href="/" style={{ textDecoration: "none" }}>
-              <Text
-                size="xl"
-                fw={800}
-                variant="gradient"
-                gradient={{ from: "blue", to: "teal", deg: 90 }}
-              >
-                Mapfox
-              </Text>
-            </Link>
+        <Group
+          justify="space-between"
+          align="center"
+          wrap="nowrap"
+          gap="xs"
+          px={{ base: "xs", sm: "md" }}
+        >
+          <Link
+            href="/"
+            style={{ textDecoration: "none", flexShrink: 0, minWidth: 0 }}
+          >
+            <Text
+              fw={800}
+              variant="gradient"
+              gradient={{ from: "blue", to: "teal", deg: 90 }}
+              fz={{ base: "1.05rem", sm: "1.25rem" }}
+              lh={1.2}
+              truncate
+            >
+              Mapfox
+            </Text>
+          </Link>
 
-            <Group gap="xs" visibleFrom="sm">
-              <Button
-                component="a"
-                href="/organizations"
-                variant="subtle"
-                size="sm"
-                leftSection={<IconBuildingCommunity size={16} />}
-              >
-                Organizations
-              </Button>
-              <Button
-                component="a"
-                href="/parts"
-                variant="subtle"
-                size="sm"
-                leftSection={<IconPuzzle size={16} />}
-              >
-                Parts Viewer
-              </Button>
-              {/* <Button
-                component="a"
-                href="/manufacturers"
-                variant="subtle"
-                size="sm"
-                leftSection={<IconBuildingFactory2 size={16} />}
-              >
-                Manufacturers
-              </Button> */}
-            </Group>
-          </Group>
-
-          <Group gap="xs">
+          <Group gap="xs" wrap="nowrap" justify="flex-end" style={{ flex: 1 }}>
+            <NavbarAppLinks />
+            <NavbarMobileNav />
             <ThemeToggle />
             {session ? (
               <UserMenu
@@ -109,11 +88,7 @@ export async function Navbar() {
                 isAdmin={isAdmin}
               />
             ) : (
-              <Link href="/login">
-                <Button variant="light" leftSection={<IconLogin size={16} />}>
-                  Login
-                </Button>
-              </Link>
+              <NavbarLoginLink />
             )}
           </Group>
         </Group>
