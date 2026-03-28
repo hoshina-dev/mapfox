@@ -1,0 +1,64 @@
+query GetParts {
+  parts {
+    id
+    name
+    partNumber
+    description
+    images
+    manufacturerId
+    specifications
+    temperatureStage
+    manufacturer {
+      id
+      name
+      countryOfOrigin
+    }
+    categories {
+      id
+      name
+      description
+    }
+  }
+}
+
+query GetPart($id: UUID!) {
+  part(id: $id) {
+    id
+    name
+    partNumber
+    description
+    images
+    manufacturerId
+    specifications
+    temperatureStage
+    manufacturer {
+      id
+      name
+      countryOfOrigin
+    }
+    categories {
+      id
+      name
+      description
+    }
+  }
+}
+
+query GetPartsInventory {
+  partsInventory {
+    id
+    partId
+    serialNumber
+    isAvailable
+    notes
+  }
+}
+
+query GetPartsInventoryByPart($partId: UUID!) {
+  partsInventoryByPart(partId: $partId) {
+    id
+    serialNumber
+    isAvailable
+    notes
+  }
+}

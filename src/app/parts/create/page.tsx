@@ -1,53 +1,29 @@
-import { Alert, Container, Stack, Text } from "@mantine/core";
-import { redirect } from "next/navigation";
-
-import { getCategories } from "@/app/actions/categories";
-import { getManufacturers } from "@/app/actions/manufacturers";
-import { CreatePartForm } from "@/components/parts/CreatePartForm";
-import { getSession } from "@/libs/dal";
+import { Alert, Anchor, Container, Stack, Text, Title } from "@mantine/core";
+import Link from "next/link";
 
 export const metadata = {
   title: "Create Part | Mapfox",
   description: "Create a new part",
 };
 
-export default async function CreatePartPage() {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
-  }
-
-  const [manufacturersResult, categoriesResult] = await Promise.all([
-    getManufacturers(),
-    getCategories(),
-  ]);
-
-  if (!manufacturersResult.success) {
-    return (
-      <Container py="xl">
-        <Alert color="red" title="Error">
-          <Text>Failed to load manufacturers. Please try again later.</Text>
-        </Alert>
-      </Container>
-    );
-  }
-
+export default function CreatePartPage() {
   return (
     <Container size="md" py="xl">
-      <Stack gap="xl">
-        <div>
-          <Text component="h1" size="xl" fw={700} mb="sm">
-            Create New Part
+      <Stack gap="md">
+        <Title order={1}>Create Part</Title>
+        <Text c="dimmed">
+          Creating and editing parts is handled in the backoffice. This catalog
+          view will stay read-only here until that flow is wired up.
+        </Text>
+        <Alert color="blue" title="Read-only catalog">
+          <Text size="sm">
+            Browse parts from the{" "}
+            <Anchor component={Link} href="/parts">
+              parts list
+            </Anchor>
+            .
           </Text>
-          <Text c="dimmed">Fill in the details below to create a new part</Text>
-        </div>
-
-        <CreatePartForm
-          manufacturers={manufacturersResult.data}
-          categories={categoriesResult.success ? categoriesResult.data : []}
-          organizationId={session.userId}
-          userId={session.userId}
-        />
+        </Alert>
       </Stack>
     </Container>
   );

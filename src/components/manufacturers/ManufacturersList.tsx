@@ -2,7 +2,7 @@
 
 import { SimpleGrid, Text } from "@mantine/core";
 
-import type { GetManufacturersQuery } from "@/libs/api/pasta/generated/graphql";
+import type { GetManufacturersQuery } from "@/libs/api/papi/generated/graphql";
 
 import { ManufacturerCard } from "./ManufacturerCard";
 
@@ -16,7 +16,7 @@ export function ManufacturersList({ manufacturers }: ManufacturersListProps) {
   if (manufacturers.length === 0) {
     return (
       <Text c="dimmed" ta="center" py="xl">
-        No manufacturers found. Create one to get started.
+        No manufacturers in the catalog yet.
       </Text>
     );
   }

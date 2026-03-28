@@ -35,7 +35,7 @@ export default async function PartsPage() {
               Parts
             </Title>
             <Text c="dimmed" size="lg">
-              Browse and manage all parts
+              Browse the parts catalog and stock
             </Text>
           </div>
           {/* <Button

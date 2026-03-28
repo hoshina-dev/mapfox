@@ -1,17 +1,15 @@
 import { Badge, Card, Group, Image, Stack, Text } from "@mantine/core";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 
-import type { GetPartsQuery } from "@/libs/api/pasta/generated/graphql";
-
-type PartItem = GetPartsQuery["parts"][number];
+import type { PartListItem } from "@/app/actions/parts";
 
 interface PartCardProps {
-  part: PartItem;
+  part: PartListItem;
 }
 
 export function PartCard({ part }: PartCardProps) {
   const imageUrl = part.images.length > 0 ? part.images[0] : undefined;
+  const { inventoryAvailableCount, inventoryTotalCount } = part;
 
   return (
     <Card
@@ -59,19 +57,8 @@ export function PartCard({ part }: PartCardProps) {
         )}
 
         <Group gap="xs">
-          <Badge
-            color={part.isAvailable ? "green" : "red"}
-            variant="light"
-            size="sm"
-            leftSection={
-              part.isAvailable ? <IconCheck size={12} /> : <IconX size={12} />
-            }
-          >
-            {part.isAvailable ? "Available" : "Unavailable"}
-          </Badge>
-
-          <Badge variant="light" size="sm" color="blue">
-            {part.condition}
+          <Badge variant="light" size="sm" color="gray">
+            Stock: {inventoryAvailableCount}/{inventoryTotalCount} available
           </Badge>
         </Group>
 

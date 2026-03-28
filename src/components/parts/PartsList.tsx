@@ -14,25 +14,19 @@ import {
   TableThead,
   TableTr,
   Text,
+  ThemeIcon,
   Tooltip,
 } from "@mantine/core";
-import {
-  IconCheck,
-  IconLayoutGrid,
-  IconList,
-  IconX,
-} from "@tabler/icons-react";
+import { IconLayoutGrid, IconList, IconPackage } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import type { GetPartsQuery } from "@/libs/api/pasta/generated/graphql";
+import type { PartListItem } from "@/app/actions/parts";
 
 import { PartCard } from "./PartCard";
 
-type PartItem = GetPartsQuery["parts"][number];
-
 interface PartsListProps {
-  parts: PartItem[];
+  parts: PartListItem[];
 }
 
 export function PartsList({ parts }: PartsListProps) {
@@ -42,7 +36,7 @@ export function PartsList({ parts }: PartsListProps) {
   if (parts.length === 0) {
     return (
       <Text c="dimmed" ta="center" py="xl">
-        No parts found. Create one to get started.
+        No parts in the catalog yet.
       </Text>
     );
   }
@@ -92,8 +86,7 @@ export function PartsList({ parts }: PartsListProps) {
                 <TableTh>Name</TableTh>
                 <TableTh>Part #</TableTh>
                 <TableTh>Manufacturer</TableTh>
-                <TableTh>Condition</TableTh>
-                <TableTh>Status</TableTh>
+                <TableTh>Inventory</TableTh>
                 <TableTh>Categories</TableTh>
               </TableTr>
             </TableThead>
@@ -129,7 +122,15 @@ export function PartsList({ parts }: PartsListProps) {
                           <Avatar src={imageUrl} size="sm" radius="sm" />
                         </Tooltip>
                       ) : (
-                        <Avatar size="sm" radius="sm" />
+                        <ThemeIcon
+                          size="sm"
+                          radius="sm"
+                          variant="light"
+                          color="gray"
+                          aria-label="No part image"
+                        >
+                          <IconPackage size={14} stroke={1.5} />
+                        </ThemeIcon>
                       )}
                     </TableTd>
                     <TableTd>
@@ -146,25 +147,18 @@ export function PartsList({ parts }: PartsListProps) {
                       <Text size="sm">{part.manufacturer?.name ?? "—"}</Text>
                     </TableTd>
                     <TableTd>
-                      <Badge variant="light" size="sm" color="blue">
-                        {part.condition}
-                      </Badge>
-                    </TableTd>
-                    <TableTd>
-                      <Badge
-                        color={part.isAvailable ? "green" : "red"}
-                        variant="light"
-                        size="sm"
-                        leftSection={
-                          part.isAvailable ? (
-                            <IconCheck size={12} />
-                          ) : (
-                            <IconX size={12} />
-                          )
-                        }
-                      >
-                        {part.isAvailable ? "Available" : "Unavailable"}
-                      </Badge>
+                      <Text size="sm">
+                        {part.inventoryTotalCount === 0 ? (
+                          <Text span c="dimmed" size="sm">
+                            No units
+                          </Text>
+                        ) : (
+                          <>
+                            {part.inventoryAvailableCount} available /{" "}
+                            {part.inventoryTotalCount} total
+                          </>
+                        )}
+                      </Text>
                     </TableTd>
                     <TableTd>
                       {part.categories && part.categories.length > 0 ? (

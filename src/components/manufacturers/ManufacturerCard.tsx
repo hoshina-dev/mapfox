@@ -1,7 +1,7 @@
-import { Badge, Card, Group, Stack, Text } from "@mantine/core";
+import { Badge, Card, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 
-import type { GetManufacturersQuery } from "@/libs/api/pasta/generated/graphql";
+import type { GetManufacturersQuery } from "@/libs/api/papi/generated/graphql";
 
 type ManufacturerItem = GetManufacturersQuery["manufacturers"][number];
 
@@ -26,14 +26,9 @@ export function ManufacturerCard({ manufacturer }: ManufacturerCardProps) {
         </Text>
 
         {manufacturer.countryOfOrigin && (
-          <Group gap="xs">
-            <Text size="sm" fw={500}>
-              🌐
-            </Text>
-            <Badge variant="light" size="sm">
-              {manufacturer.countryOfOrigin}
-            </Badge>
-          </Group>
+          <Badge variant="light" size="sm">
+            {manufacturer.countryOfOrigin}
+          </Badge>
         )}
       </Stack>
     </Card>

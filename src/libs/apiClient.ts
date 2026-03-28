@@ -8,9 +8,9 @@ import { Configuration, OrganizationsApi, UsersApi } from "./api/custapi";
 
 // GraphQL
 
-const PASTA_URL = process.env.PASTA_URL || "http://localhost:8080/graphql";
+const PAPI_URL = process.env.PAPI_URL || "http://localhost:8080/graphql";
 
-export const pastaClient = new GraphQLClient(PASTA_URL, {
+export const papiClient = new GraphQLClient(PAPI_URL, {
   headers: {
     "Content-Type": "application/json",
   },

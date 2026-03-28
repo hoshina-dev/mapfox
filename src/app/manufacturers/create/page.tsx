@@ -1,26 +1,29 @@
-import { Container, Stack, Text } from "@mantine/core";
-
-import { CreateManufacturerForm } from "@/components/manufacturers/CreateManufacturerForm";
+import { Alert, Anchor, Container, Stack, Text, Title } from "@mantine/core";
+import Link from "next/link";
 
 export const metadata = {
   title: "Create Manufacturer | Mapfox",
-  description: "Create a new manufacturer",
+  description: "Create a manufacturer",
 };
 
 export default function CreateManufacturerPage() {
   return (
     <Container size="md" py="xl">
-      <Stack gap="xl">
-        <div>
-          <Text component="h1" size="xl" fw={700} mb="sm">
-            Create New Manufacturer
+      <Stack gap="md">
+        <Title order={1}>Create Manufacturer</Title>
+        <Text c="dimmed">
+          Manufacturer administration will live in the backoffice. This app only
+          displays catalog data for now.
+        </Text>
+        <Alert color="blue" title="Read-only catalog">
+          <Text size="sm">
+            View manufacturers on the{" "}
+            <Anchor component={Link} href="/manufacturers">
+              manufacturers list
+            </Anchor>
+            .
           </Text>
-          <Text c="dimmed">
-            Fill in the details below to create a new manufacturer
-          </Text>
-        </div>
-
-        <CreateManufacturerForm />
+        </Alert>
       </Stack>
     </Container>
   );

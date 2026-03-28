@@ -13,11 +13,3 @@ query GetManufacturer($id: UUID!) {
     countryOfOrigin
   }
 }
-
-mutation CreateManufacturer($input: CreateManufacturerInput!) {
-  createManufacturer(input: $input) {
-    id
-    name
-    countryOfOrigin
-  }
-}

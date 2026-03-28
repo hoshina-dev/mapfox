@@ -10,12 +10,8 @@ import {
 import { IconArrowLeft } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
 
-import { getCategories } from "@/app/actions/categories";
 import { getPart } from "@/app/actions/parts";
-import {
-  PartDeleteButton,
-  PartDetailSection,
-} from "@/components/parts/PartDetailSection";
+import { PartDetailSection } from "@/components/parts/PartDetailSection";
 import { PartImageCarousel } from "@/components/parts/PartImageCarousel";
 
 interface PartPageProps {
@@ -26,10 +22,7 @@ interface PartPageProps {
 
 export default async function PartPage({ params }: PartPageProps) {
   const { id } = await params;
-  const [partResult, categoriesResult] = await Promise.all([
-    getPart(id),
-    getCategories(),
-  ]);
+  const partResult = await getPart(id);
 
   if (!partResult.success) {
     if (partResult.error === "Part not found") {
@@ -46,7 +39,7 @@ export default async function PartPage({ params }: PartPageProps) {
     );
   }
 
-  const part = partResult.data;
+  const { part, partsInventory } = partResult.data;
 
   return (
     <Container size="lg" py="xl">
@@ -70,14 +63,7 @@ export default async function PartPage({ params }: PartPageProps) {
           <PartImageCarousel imageUrls={part.images} partName={part.name} />
         )}
 
-        <PartDetailSection
-          part={part}
-          categories={categoriesResult.success ? categoriesResult.data : []}
-        />
-
-        <Group justify="flex-end">
-          <PartDeleteButton partId={part.id} />
-        </Group>
+        <PartDetailSection part={part} partsInventory={partsInventory} />
       </Stack>
     </Container>
   );

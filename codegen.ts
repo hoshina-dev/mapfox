@@ -11,10 +11,10 @@ const sharedConfig = {
 const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
-    "./src/libs/api/pasta/generated/": {
+    "./src/libs/api/papi/generated/": {
       ...sharedConfig,
-      schema: "http://pasta.mapfox.hoshina.san/graphql",
-      documents: ["src/libs/api/pasta/query/**/*.gql"],
+      schema: process.env.PAPI_URL || "http://localhost:8080/graphql",
+      documents: ["src/libs/api/papi/query/**/*.gql"],
     },
   },
   hooks: {
