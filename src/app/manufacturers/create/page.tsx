@@ -1,4 +1,4 @@
-import { Alert, Anchor, Container, Stack, Text, Title } from "@mantine/core";
+import { Alert, Container, Stack, Text, Title } from "@mantine/core";
 import Link from "next/link";
 
 export const metadata = {
@@ -18,9 +18,15 @@ export default function CreateManufacturerPage() {
         <Alert color="blue" title="Read-only catalog">
           <Text size="sm">
             View manufacturers on the{" "}
-            <Anchor component={Link} href="/manufacturers">
+            <Link
+              href="/manufacturers"
+              style={{
+                textDecoration: "underline",
+                color: "var(--mantine-color-anchor)",
+              }}
+            >
               manufacturers list
-            </Anchor>
+            </Link>
             .
           </Text>
         </Alert>
