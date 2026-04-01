@@ -1,0 +1,75 @@
+query GetProducts {
+  products {
+    id
+    name
+    description
+    version
+    parts {
+      id
+      partId
+      quantity
+      notes
+      part {
+        id
+        name
+        partNumber
+      }
+    }
+  }
+}
+
+query GetProduct($id: UUID!) {
+  product(id: $id) {
+    id
+    name
+    description
+    version
+    parts {
+      id
+      partId
+      quantity
+      notes
+      part {
+        id
+        name
+        partNumber
+      }
+    }
+  }
+}
+
+mutation CreateProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    id
+    name
+    description
+    version
+  }
+}
+
+mutation AddProductPart($input: AddProductPartInput!) {
+  addProductPart(input: $input) {
+    id
+    productId
+    partId
+    quantity
+    notes
+  }
+}
+
+mutation RemoveProductPart($id: UUID!) {
+  removeProductPart(id: $id)
+}
+
+mutation UpdateProduct($id: UUID!, $input: UpdateProductInput!) {
+  updateProduct(id: $id, input: $input) {
+    id
+    name
+    description
+    version
+  }
+}
+
+mutation DeleteProduct($id: UUID!) {
+  deleteProduct(id: $id)
+}

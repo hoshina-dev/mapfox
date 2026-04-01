@@ -15,6 +15,18 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
+  // Protect /backoffice routes: require authentication + admin role
+  const isBackoffice = req.nextUrl.pathname.startsWith("/backoffice");
+
+  if (isBackoffice) {
+    if (!payload?.userId) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl));
+    }
+    if (payload.role !== "admin") {
+      return NextResponse.redirect(new URL("/", req.nextUrl));
+    }
+  }
+
   // Refresh session expiry on every request if session exists
   if (payload?.userId) {
     const res = NextResponse.next();

@@ -60,7 +60,7 @@ export default async function OrganizationsPage() {
           </div>
           {/* <Button
             component="a"
-            href="/organizations/create"
+            href="/backoffice/organizations/create"
             leftSection={<IconPlus size={16} />}
           >
             Create Organization

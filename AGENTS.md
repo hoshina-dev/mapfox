@@ -30,7 +30,7 @@ export default function Page() {
 
 ### Next.js: Mantine + `next/link` in Server Components
 
-Mantine controls such as `Button` and `ActionIcon` are **Client Components**. In a **Server Component** (default `page.tsx`, `layout.tsx`, `not-found.tsx`, etc.), you **must not** pass `Link` from `next/link` via the `component` prop (e.g. `Button component={Link}`). Next.js will error: functions cannot be passed to Client Components.
+Mantine controls such as `Button`, `ActionIcon`, `Anchor`, and `Text` are **Client Components**. In a **Server Component** (default `page.tsx`, `layout.tsx`, `not-found.tsx`, etc.), you **must not** pass `Link` from `next/link` via the `component` prop (e.g. `Button component={Link}`, `Anchor component={Link}`, `Text component={Link}`). Next.js will error: functions cannot be passed to Client Components.
 
 **Do this instead:**
 
@@ -42,6 +42,19 @@ import { Button } from "@mantine/core";
 
 <Link href="/" style={{ textDecoration: "none" }}>
   <Button variant="light">Back</Button>
+</Link>;
+```
+
+For text links, wrap `Text` or plain children (not `Anchor component={Link}`):
+
+```tsx
+import Link from "next/link";
+import { Text } from "@mantine/core";
+
+<Link href="/backoffice/parts" style={{ textDecoration: "none", color: "var(--mantine-color-anchor)" }}>
+  <Text size="sm" component="span">
+    Parts
+  </Text>
 </Link>;
 ```
 

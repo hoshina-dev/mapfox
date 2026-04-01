@@ -1,8 +1,6 @@
 import { Box, Container, Group, Text } from "@mantine/core";
 import Link from "next/link";
 
-import { UserRole } from "@/libs/api/custapi";
-import { usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
 import { NavbarAppLinks } from "./NavbarAppLinks";
@@ -14,15 +12,7 @@ import { UserMenu } from "./UserMenu";
 export async function Navbar() {
   const session = await getSession();
 
-  let isAdmin = false;
-  if (session) {
-    try {
-      const user = await usersApi.usersIdIdGet(session.userId);
-      isAdmin = user.role === UserRole.UserRoleAdmin;
-    } catch {
-      // ignore
-    }
-  }
+  const isAdmin = session?.role === "admin";
 
   return (
     <Box

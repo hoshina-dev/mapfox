@@ -13,7 +13,7 @@ const config: CodegenConfig = {
   generates: {
     "./src/libs/api/papi/generated/": {
       ...sharedConfig,
-      schema: process.env.PAPI_URL || "http://localhost:8080/graphql",
+      schema: "http://papi.mapfox.hoshina.san/graphql",
       documents: ["src/libs/api/papi/query/**/*.gql"],
     },
   },

@@ -13,3 +13,23 @@ query GetManufacturer($id: UUID!) {
     countryOfOrigin
   }
 }
+
+mutation CreateManufacturer($input: CreateManufacturerInput!) {
+  createManufacturer(input: $input) {
+    id
+    name
+    countryOfOrigin
+  }
+}
+
+mutation UpdateManufacturer($id: UUID!, $input: UpdateManufacturerInput!) {
+  updateManufacturer(id: $id, input: $input) {
+    id
+    name
+    countryOfOrigin
+  }
+}
+
+mutation DeleteManufacturer($id: UUID!) {
+  deleteManufacturer(id: $id)
+}

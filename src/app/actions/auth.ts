@@ -67,6 +67,7 @@ export async function signup(
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
+    role: user.role,
   });
 
   // 5. Redirect
@@ -115,6 +116,7 @@ export async function login(
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
+    role: user.role,
   });
 
   // 5. Redirect

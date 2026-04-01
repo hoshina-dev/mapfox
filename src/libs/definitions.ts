@@ -5,6 +5,7 @@ export interface SessionPayload {
   name: string;
   email: string;
   avatarUrl?: string;
+  role?: string;
   expiresAt: Date;
 }
 

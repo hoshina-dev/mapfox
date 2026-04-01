@@ -62,3 +62,33 @@ query GetPartsInventoryByPart($partId: UUID!) {
     notes
   }
 }
+
+mutation CreatePart($input: CreatePartInput!) {
+  createPart(input: $input) {
+    id
+    name
+    partNumber
+    description
+    images
+    manufacturerId
+    specifications
+    temperatureStage
+  }
+}
+
+mutation UpdatePart($id: UUID!, $input: UpdatePartInput!) {
+  updatePart(id: $id, input: $input) {
+    id
+    name
+    partNumber
+    description
+    images
+    manufacturerId
+    specifications
+    temperatureStage
+  }
+}
+
+mutation DeletePart($id: UUID!) {
+  deletePart(id: $id)
+}

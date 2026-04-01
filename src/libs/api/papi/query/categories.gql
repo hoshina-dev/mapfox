@@ -5,3 +5,23 @@ query GetCategories {
     description
   }
 }
+
+mutation CreateCategory($input: CreateCategoryInput!) {
+  createCategory(input: $input) {
+    id
+    name
+    description
+  }
+}
+
+mutation UpdateCategory($id: UUID!, $input: UpdateCategoryInput!) {
+  updateCategory(id: $id, input: $input) {
+    id
+    name
+    description
+  }
+}
+
+mutation DeleteCategory($id: UUID!) {
+  deleteCategory(id: $id)
+}
