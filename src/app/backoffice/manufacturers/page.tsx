@@ -18,6 +18,7 @@ import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { getManufacturers } from "@/app/actions/manufacturers";
+import { getCountryName } from "@/libs/countries";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +87,10 @@ export default async function BackofficeManufacturersPage() {
                     </TableTd>
                     <TableTd>
                       {m.countryOfOrigin ? (
-                        <Badge variant="light">{m.countryOfOrigin}</Badge>
+                        <Badge variant="light">
+                          {getCountryName(m.countryOfOrigin) ??
+                            m.countryOfOrigin}
+                        </Badge>
                       ) : (
                         <Text c="dimmed" size="sm">
                           —

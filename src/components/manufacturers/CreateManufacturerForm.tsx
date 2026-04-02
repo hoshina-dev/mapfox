@@ -1,10 +1,11 @@
 "use client";
 
-import { Alert, Button, Group, Stack, TextInput } from "@mantine/core";
+import { Alert, Button, Group, Select, Stack, TextInput } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { createManufacturer } from "@/app/actions/manufacturers";
+import { countryOptionsFilter, countrySelectData } from "@/libs/countries";
 
 export function CreateManufacturerForm() {
   const router = useRouter();
@@ -60,12 +61,16 @@ export function CreateManufacturerForm() {
             description="The name of the manufacturer"
           />
 
-          <TextInput
+          <Select
             label="Country of Origin"
-            placeholder="e.g., Japan, Germany, USA"
-            value={countryOfOrigin}
-            onChange={(e) => setCountryOfOrigin(e.currentTarget.value)}
+            placeholder="Search for a country"
+            data={countrySelectData}
+            value={countryOfOrigin || null}
+            onChange={(val) => setCountryOfOrigin(val ?? "")}
             description="The country where the manufacturer is based"
+            filter={countryOptionsFilter}
+            searchable
+            clearable
           />
 
           <Group justify="flex-end" pt="md">

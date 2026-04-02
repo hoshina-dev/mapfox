@@ -20,6 +20,7 @@ import type {
   GetPartQuery,
   GetPartsInventoryByPartQuery,
 } from "@/libs/api/papi/generated/graphql";
+import { getCountryName } from "@/libs/countries";
 
 type PartData = NonNullable<GetPartQuery["part"]>;
 type PartsInventoryRow =
@@ -77,7 +78,8 @@ export function PartDetailSection({
                 <Text fw={500}>{part.manufacturer.name}</Text>
                 {part.manufacturer.countryOfOrigin && (
                   <Badge variant="light" size="sm" mt={4}>
-                    {part.manufacturer.countryOfOrigin}
+                    {getCountryName(part.manufacturer.countryOfOrigin) ??
+                      part.manufacturer.countryOfOrigin}
                   </Badge>
                 )}
               </div>
