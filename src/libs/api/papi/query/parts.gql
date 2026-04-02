@@ -51,6 +51,11 @@ query GetPartsInventory {
     serialNumber
     isAvailable
     notes
+    part {
+      id
+      name
+      partNumber
+    }
   }
 }
 
@@ -61,6 +66,45 @@ query GetPartsInventoryByPart($partId: UUID!) {
     isAvailable
     notes
   }
+}
+
+query GetPartsInventoryItem($id: UUID!) {
+  partsInventoryItem(id: $id) {
+    id
+    partId
+    serialNumber
+    isAvailable
+    notes
+    part {
+      id
+      name
+      partNumber
+    }
+  }
+}
+
+mutation CreatePartsInventory($input: CreatePartsInventoryInput!) {
+  createPartsInventory(input: $input) {
+    id
+    partId
+    serialNumber
+    isAvailable
+    notes
+  }
+}
+
+mutation UpdatePartsInventory($id: UUID!, $input: UpdatePartsInventoryInput!) {
+  updatePartsInventory(id: $id, input: $input) {
+    id
+    partId
+    serialNumber
+    isAvailable
+    notes
+  }
+}
+
+mutation DeletePartsInventory($id: UUID!) {
+  deletePartsInventory(id: $id)
 }
 
 mutation CreatePart($input: CreatePartInput!) {

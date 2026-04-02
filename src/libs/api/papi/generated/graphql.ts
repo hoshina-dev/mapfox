@@ -609,6 +609,12 @@ export type GetPartsInventoryQuery = {
     serialNumber: string;
     isAvailable: boolean;
     notes?: string | null;
+    part?: {
+      __typename?: "Part";
+      id: any;
+      name: string;
+      partNumber: string;
+    } | null;
   }>;
 };
 
@@ -625,6 +631,70 @@ export type GetPartsInventoryByPartQuery = {
     isAvailable: boolean;
     notes?: string | null;
   }>;
+};
+
+export type GetPartsInventoryItemQueryVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type GetPartsInventoryItemQuery = {
+  __typename?: "Query";
+  partsInventoryItem?: {
+    __typename?: "PartsInventory";
+    id: any;
+    partId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+    part?: {
+      __typename?: "Part";
+      id: any;
+      name: string;
+      partNumber: string;
+    } | null;
+  } | null;
+};
+
+export type CreatePartsInventoryMutationVariables = Exact<{
+  input: CreatePartsInventoryInput;
+}>;
+
+export type CreatePartsInventoryMutation = {
+  __typename?: "Mutation";
+  createPartsInventory: {
+    __typename?: "PartsInventory";
+    id: any;
+    partId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+  };
+};
+
+export type UpdatePartsInventoryMutationVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+  input: UpdatePartsInventoryInput;
+}>;
+
+export type UpdatePartsInventoryMutation = {
+  __typename?: "Mutation";
+  updatePartsInventory: {
+    __typename?: "PartsInventory";
+    id: any;
+    partId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+  };
+};
+
+export type DeletePartsInventoryMutationVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type DeletePartsInventoryMutation = {
+  __typename?: "Mutation";
+  deletePartsInventory: boolean;
 };
 
 export type CreatePartMutationVariables = Exact<{
@@ -792,6 +862,164 @@ export type DeleteProductMutationVariables = Exact<{
 export type DeleteProductMutation = {
   __typename?: "Mutation";
   deleteProduct: boolean;
+};
+
+export type GetProductInventoryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductInventoryQuery = {
+  __typename?: "Query";
+  productInventory: Array<{
+    __typename?: "ProductInventory";
+    id: any;
+    productId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+    product?: {
+      __typename?: "Product";
+      id: any;
+      name: string;
+      version?: string | null;
+    } | null;
+    partsUsed?: Array<{
+      __typename?: "PartsInventory";
+      id: any;
+      partId: any;
+      serialNumber: string;
+      isAvailable: boolean;
+      part?: {
+        __typename?: "Part";
+        id: any;
+        name: string;
+        partNumber: string;
+      } | null;
+    }> | null;
+  }>;
+};
+
+export type GetProductInventoryByProductQueryVariables = Exact<{
+  productId: Scalars["UUID"]["input"];
+}>;
+
+export type GetProductInventoryByProductQuery = {
+  __typename?: "Query";
+  productInventoryByProduct: Array<{
+    __typename?: "ProductInventory";
+    id: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+    partsUsed?: Array<{
+      __typename?: "PartsInventory";
+      id: any;
+      partId: any;
+      serialNumber: string;
+      isAvailable: boolean;
+      part?: {
+        __typename?: "Part";
+        id: any;
+        name: string;
+        partNumber: string;
+      } | null;
+    }> | null;
+  }>;
+};
+
+export type GetProductInventoryItemQueryVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type GetProductInventoryItemQuery = {
+  __typename?: "Query";
+  productInventoryItem?: {
+    __typename?: "ProductInventory";
+    id: any;
+    productId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+    product?: {
+      __typename?: "Product";
+      id: any;
+      name: string;
+      version?: string | null;
+    } | null;
+    partsUsed?: Array<{
+      __typename?: "PartsInventory";
+      id: any;
+      partId: any;
+      serialNumber: string;
+      isAvailable: boolean;
+      part?: {
+        __typename?: "Part";
+        id: any;
+        name: string;
+        partNumber: string;
+      } | null;
+    }> | null;
+  } | null;
+};
+
+export type CreateProductInventoryMutationVariables = Exact<{
+  input: CreateProductInventoryInput;
+}>;
+
+export type CreateProductInventoryMutation = {
+  __typename?: "Mutation";
+  createProductInventory: {
+    __typename?: "ProductInventory";
+    id: any;
+    productId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+  };
+};
+
+export type UpdateProductInventoryMutationVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+  input: UpdateProductInventoryInput;
+}>;
+
+export type UpdateProductInventoryMutation = {
+  __typename?: "Mutation";
+  updateProductInventory: {
+    __typename?: "ProductInventory";
+    id: any;
+    productId: any;
+    serialNumber: string;
+    isAvailable: boolean;
+    notes?: string | null;
+  };
+};
+
+export type DeleteProductInventoryMutationVariables = Exact<{
+  id: Scalars["UUID"]["input"];
+}>;
+
+export type DeleteProductInventoryMutation = {
+  __typename?: "Mutation";
+  deleteProductInventory: boolean;
+};
+
+export type AddPartToProductInventoryMutationVariables = Exact<{
+  partsInventoryId: Scalars["UUID"]["input"];
+  productInventoryId: Scalars["UUID"]["input"];
+}>;
+
+export type AddPartToProductInventoryMutation = {
+  __typename?: "Mutation";
+  addPartToProductInventory: boolean;
+};
+
+export type RemovePartFromProductInventoryMutationVariables = Exact<{
+  partsInventoryId: Scalars["UUID"]["input"];
+  productInventoryId: Scalars["UUID"]["input"];
+}>;
+
+export type RemovePartFromProductInventoryMutation = {
+  __typename?: "Mutation";
+  removePartFromProductInventory: boolean;
 };
 
 export const GetCategoriesDocument = {
@@ -1439,6 +1667,21 @@ export const GetPartsInventoryDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
                 { kind: "Field", name: { kind: "Name", value: "notes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "part" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "partNumber" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -1506,6 +1749,256 @@ export const GetPartsInventoryByPartDocument = {
 } as unknown as DocumentNode<
   GetPartsInventoryByPartQuery,
   GetPartsInventoryByPartQueryVariables
+>;
+export const GetPartsInventoryItemDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetPartsInventoryItem" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "partsInventoryItem" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "partId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "part" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "partNumber" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPartsInventoryItemQuery,
+  GetPartsInventoryItemQueryVariables
+>;
+export const CreatePartsInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreatePartsInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CreatePartsInventoryInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createPartsInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "partId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreatePartsInventoryMutation,
+  CreatePartsInventoryMutationVariables
+>;
+export const UpdatePartsInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdatePartsInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpdatePartsInventoryInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updatePartsInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "partId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdatePartsInventoryMutation,
+  UpdatePartsInventoryMutationVariables
+>;
+export const DeletePartsInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeletePartsInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deletePartsInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeletePartsInventoryMutation,
+  DeletePartsInventoryMutationVariables
 >;
 export const CreatePartDocument = {
   kind: "Document",
@@ -2123,4 +2616,618 @@ export const DeleteProductDocument = {
 } as unknown as DocumentNode<
   DeleteProductMutation,
   DeleteProductMutationVariables
+>;
+export const GetProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetProductInventory" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "productInventory" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "productId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "product" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "version" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "partsUsed" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "partId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "serialNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isAvailable" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "part" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "partNumber" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProductInventoryQuery,
+  GetProductInventoryQueryVariables
+>;
+export const GetProductInventoryByProductDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetProductInventoryByProduct" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "productId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "productInventoryByProduct" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "productId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "productId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "partsUsed" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "partId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "serialNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isAvailable" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "part" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "partNumber" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProductInventoryByProductQuery,
+  GetProductInventoryByProductQueryVariables
+>;
+export const GetProductInventoryItemDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetProductInventoryItem" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "productInventoryItem" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "productId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "product" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "version" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "partsUsed" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "partId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "serialNumber" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isAvailable" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "part" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "partNumber" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProductInventoryItemQuery,
+  GetProductInventoryItemQueryVariables
+>;
+export const CreateProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateProductInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CreateProductInventoryInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createProductInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "productId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateProductInventoryMutation,
+  CreateProductInventoryMutationVariables
+>;
+export const UpdateProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateProductInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpdateProductInventoryInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateProductInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "productId" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "serialNumber" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "isAvailable" } },
+                { kind: "Field", name: { kind: "Name", value: "notes" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateProductInventoryMutation,
+  UpdateProductInventoryMutationVariables
+>;
+export const DeleteProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteProductInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteProductInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteProductInventoryMutation,
+  DeleteProductInventoryMutationVariables
+>;
+export const AddPartToProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AddPartToProductInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "partsInventoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "productInventoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "addPartToProductInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "partsInventoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "partsInventoryId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "productInventoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "productInventoryId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AddPartToProductInventoryMutation,
+  AddPartToProductInventoryMutationVariables
+>;
+export const RemovePartFromProductInventoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RemovePartFromProductInventory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "partsInventoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "productInventoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "removePartFromProductInventory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "partsInventoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "partsInventoryId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "productInventoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "productInventoryId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemovePartFromProductInventoryMutation,
+  RemovePartFromProductInventoryMutationVariables
 >;

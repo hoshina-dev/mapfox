@@ -3,15 +3,24 @@
 import { revalidatePath } from "next/cache";
 
 import {
+  AddPartToProductInventoryDocument,
   AddProductPartDocument,
   type AddProductPartInput,
   CreateProductDocument,
   type CreateProductInput,
+  CreateProductInventoryDocument,
+  type CreateProductInventoryInput,
   DeleteProductDocument,
+  DeleteProductInventoryDocument,
   GetProductDocument,
+  GetProductInventoryDocument,
+  GetProductInventoryItemDocument,
   GetProductsDocument,
+  RemovePartFromProductInventoryDocument,
   UpdateProductDocument,
   type UpdateProductInput,
+  UpdateProductInventoryDocument,
+  type UpdateProductInventoryInput,
 } from "@/libs/api/papi/generated/graphql";
 import { papiClient } from "@/libs/apiClient";
 
@@ -96,6 +105,151 @@ export async function deleteProduct(id: string) {
       success: false as const,
       error:
         error instanceof Error ? error.message : "Failed to delete product",
+    };
+  }
+}
+
+// --- Product Inventory CRUD ---
+
+export async function getAllProductInventory() {
+  try {
+    const data = await papiClient.request(GetProductInventoryDocument);
+    return { success: true as const, data: data.productInventory };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch product inventory",
+    };
+  }
+}
+
+export async function getProductInventoryItem(id: string) {
+  try {
+    const data = await papiClient.request(GetProductInventoryItemDocument, {
+      id,
+    });
+    if (!data.productInventoryItem) {
+      return {
+        success: false as const,
+        error: "Product inventory item not found",
+      };
+    }
+    return { success: true as const, data: data.productInventoryItem };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch product inventory item",
+    };
+  }
+}
+
+export async function createProductInventoryItem(
+  input: CreateProductInventoryInput,
+) {
+  try {
+    const data = await papiClient.request(CreateProductInventoryDocument, {
+      input,
+    });
+    revalidatePath("/backoffice/inventory");
+    revalidatePath("/backoffice/products");
+    return { success: true as const, data: data.createProductInventory };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to create product inventory item",
+    };
+  }
+}
+
+export async function updateProductInventoryItem(
+  id: string,
+  input: UpdateProductInventoryInput,
+) {
+  try {
+    const data = await papiClient.request(UpdateProductInventoryDocument, {
+      id,
+      input,
+    });
+    revalidatePath("/backoffice/inventory");
+    revalidatePath("/backoffice/products");
+    return { success: true as const, data: data.updateProductInventory };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update product inventory item",
+    };
+  }
+}
+
+export async function deleteProductInventoryItem(id: string) {
+  try {
+    await papiClient.request(DeleteProductInventoryDocument, { id });
+    revalidatePath("/backoffice/inventory");
+    revalidatePath("/backoffice/products");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to delete product inventory item",
+    };
+  }
+}
+
+export async function linkPartToProductUnit(
+  partsInventoryId: string,
+  productInventoryId: string,
+) {
+  try {
+    await papiClient.request(AddPartToProductInventoryDocument, {
+      partsInventoryId,
+      productInventoryId,
+    });
+    revalidatePath("/backoffice/inventory");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to link part to product unit",
+    };
+  }
+}
+
+export async function unlinkPartFromProductUnit(
+  partsInventoryId: string,
+  productInventoryId: string,
+) {
+  try {
+    await papiClient.request(RemovePartFromProductInventoryDocument, {
+      partsInventoryId,
+      productInventoryId,
+    });
+    revalidatePath("/backoffice/inventory");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to unlink part from product unit",
     };
   }
 }

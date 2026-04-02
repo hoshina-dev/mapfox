@@ -73,3 +73,122 @@ mutation UpdateProduct($id: UUID!, $input: UpdateProductInput!) {
 mutation DeleteProduct($id: UUID!) {
   deleteProduct(id: $id)
 }
+
+query GetProductInventory {
+  productInventory {
+    id
+    productId
+    serialNumber
+    isAvailable
+    notes
+    product {
+      id
+      name
+      version
+    }
+    partsUsed {
+      id
+      partId
+      serialNumber
+      isAvailable
+      part {
+        id
+        name
+        partNumber
+      }
+    }
+  }
+}
+
+query GetProductInventoryByProduct($productId: UUID!) {
+  productInventoryByProduct(productId: $productId) {
+    id
+    serialNumber
+    isAvailable
+    notes
+    partsUsed {
+      id
+      partId
+      serialNumber
+      isAvailable
+      part {
+        id
+        name
+        partNumber
+      }
+    }
+  }
+}
+
+query GetProductInventoryItem($id: UUID!) {
+  productInventoryItem(id: $id) {
+    id
+    productId
+    serialNumber
+    isAvailable
+    notes
+    product {
+      id
+      name
+      version
+    }
+    partsUsed {
+      id
+      partId
+      serialNumber
+      isAvailable
+      part {
+        id
+        name
+        partNumber
+      }
+    }
+  }
+}
+
+mutation CreateProductInventory($input: CreateProductInventoryInput!) {
+  createProductInventory(input: $input) {
+    id
+    productId
+    serialNumber
+    isAvailable
+    notes
+  }
+}
+
+mutation UpdateProductInventory(
+  $id: UUID!
+  $input: UpdateProductInventoryInput!
+) {
+  updateProductInventory(id: $id, input: $input) {
+    id
+    productId
+    serialNumber
+    isAvailable
+    notes
+  }
+}
+
+mutation DeleteProductInventory($id: UUID!) {
+  deleteProductInventory(id: $id)
+}
+
+mutation AddPartToProductInventory(
+  $partsInventoryId: UUID!
+  $productInventoryId: UUID!
+) {
+  addPartToProductInventory(
+    partsInventoryId: $partsInventoryId
+    productInventoryId: $productInventoryId
+  )
+}
+
+mutation RemovePartFromProductInventory(
+  $partsInventoryId: UUID!
+  $productInventoryId: UUID!
+) {
+  removePartFromProductInventory(
+    partsInventoryId: $partsInventoryId
+    productInventoryId: $productInventoryId
+  )
+}

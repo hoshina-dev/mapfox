@@ -119,7 +119,7 @@ export default function BackofficePage() {
             icon={<IconBuildingWarehouse size={20} />}
             title="Inventory"
             description="Track stock levels of parts and products"
-            badge="Coming soon"
+            href="/backoffice/inventory"
           />
         </SimpleGrid>
       </Stack>

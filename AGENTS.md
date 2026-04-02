@@ -51,7 +51,10 @@ For text links, wrap `Text` or plain children (not `Anchor component={Link}`):
 import Link from "next/link";
 import { Text } from "@mantine/core";
 
-<Link href="/backoffice/parts" style={{ textDecoration: "none", color: "var(--mantine-color-anchor)" }}>
+<Link
+  href="/backoffice/parts"
+  style={{ textDecoration: "none", color: "var(--mantine-color-anchor)" }}
+>
   <Text size="sm" component="span">
     Parts
   </Text>
