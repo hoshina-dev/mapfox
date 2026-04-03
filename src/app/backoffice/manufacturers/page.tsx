@@ -1,13 +1,11 @@
 import {
   Alert,
-  Badge,
   Button,
   Container,
   Group,
   Stack,
   Table,
   TableTbody,
-  TableTd,
   TableTh,
   TableThead,
   TableTr,
@@ -18,7 +16,7 @@ import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { getManufacturers } from "@/app/actions/manufacturers";
-import { getCountryName } from "@/libs/countries";
+import { ManufacturerRow } from "@/components/manufacturers/ManufacturerRow";
 
 export const dynamic = "force-dynamic";
 
@@ -77,27 +75,12 @@ export default async function BackofficeManufacturersPage() {
                 <TableTr>
                   <TableTh>Name</TableTh>
                   <TableTh>Country of Origin</TableTh>
+                  <TableTh style={{ width: 100 }} />
                 </TableTr>
               </TableThead>
               <TableTbody>
                 {result.data.map((m) => (
-                  <TableTr key={m.id}>
-                    <TableTd>
-                      <Text fw={500}>{m.name}</Text>
-                    </TableTd>
-                    <TableTd>
-                      {m.countryOfOrigin ? (
-                        <Badge variant="light">
-                          {getCountryName(m.countryOfOrigin) ??
-                            m.countryOfOrigin}
-                        </Badge>
-                      ) : (
-                        <Text c="dimmed" size="sm">
-                          —
-                        </Text>
-                      )}
-                    </TableTd>
-                  </TableTr>
+                  <ManufacturerRow key={m.id} manufacturer={m} />
                 ))}
               </TableTbody>
             </Table>

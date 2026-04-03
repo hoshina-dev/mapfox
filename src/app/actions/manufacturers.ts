@@ -8,6 +8,8 @@ import {
   DeleteManufacturerDocument,
   GetManufacturerDocument,
   GetManufacturersDocument,
+  UpdateManufacturerDocument,
+  type UpdateManufacturerInput,
 } from "@/libs/api/papi/generated/graphql";
 import { papiClient } from "@/libs/apiClient";
 
@@ -72,6 +74,28 @@ export async function deleteManufacturer(id: string) {
         error instanceof Error
           ? error.message
           : "Failed to delete manufacturer",
+    };
+  }
+}
+
+export async function updateManufacturer(
+  id: string,
+  input: UpdateManufacturerInput,
+) {
+  try {
+    const data = await papiClient.request(UpdateManufacturerDocument, {
+      id,
+      input,
+    });
+    revalidatePath("/backoffice/manufacturers");
+    return { success: true as const, data: data.updateManufacturer };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update manufacturer",
     };
   }
 }

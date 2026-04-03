@@ -6,7 +6,6 @@ import {
   Stack,
   Table,
   TableTbody,
-  TableTd,
   TableTh,
   TableThead,
   TableTr,
@@ -17,6 +16,7 @@ import { IconArrowLeft, IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { getCategories } from "@/app/actions/categories";
+import { CategoryRow } from "@/components/categories/CategoryRow";
 
 export const dynamic = "force-dynamic";
 
@@ -75,24 +75,12 @@ export default async function BackofficeCategoriesPage() {
                 <TableTr>
                   <TableTh>Name</TableTh>
                   <TableTh>Description</TableTh>
+                  <TableTh style={{ width: 100 }} />
                 </TableTr>
               </TableThead>
               <TableTbody>
                 {result.data.map((c) => (
-                  <TableTr key={c.id}>
-                    <TableTd>
-                      <Text fw={500}>{c.name}</Text>
-                    </TableTd>
-                    <TableTd>
-                      {c.description ? (
-                        <Text size="sm">{c.description}</Text>
-                      ) : (
-                        <Text c="dimmed" size="sm">
-                          —
-                        </Text>
-                      )}
-                    </TableTd>
-                  </TableTr>
+                  <CategoryRow key={c.id} category={c} />
                 ))}
               </TableTbody>
             </Table>
