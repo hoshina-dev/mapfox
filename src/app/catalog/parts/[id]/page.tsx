@@ -20,7 +20,7 @@ interface PartPageProps {
   }>;
 }
 
-export default async function PartPage({ params }: PartPageProps) {
+export default async function CatalogPartPage({ params }: PartPageProps) {
   const { id } = await params;
   const partResult = await getPart(id);
 
@@ -48,7 +48,7 @@ export default async function PartPage({ params }: PartPageProps) {
           <Group gap="sm" mb="xs">
             <Button
               component="a"
-              href="/parts"
+              href="/catalog/parts"
               variant="subtle"
               size="compact-sm"
               leftSection={<IconArrowLeft size={14} />}

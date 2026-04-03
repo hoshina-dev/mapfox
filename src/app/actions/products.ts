@@ -13,9 +13,12 @@ import {
   DeleteProductDocument,
   DeleteProductInventoryDocument,
   GetProductDocument,
+  GetProductInventoryByProductDocument,
   GetProductInventoryDocument,
+  type GetProductInventoryQuery,
   GetProductInventoryItemDocument,
   GetProductsDocument,
+  type GetProductsQuery,
   RemovePartFromProductInventoryDocument,
   UpdateProductDocument,
   type UpdateProductInput,
@@ -24,10 +27,48 @@ import {
 } from "@/libs/api/papi/generated/graphql";
 import { papiClient } from "@/libs/apiClient";
 
+export type ProductListItem = GetProductsQuery["products"][number] & {
+  inventoryAvailableCount: number;
+  inventoryTotalCount: number;
+};
+
+function mergeProductsWithInventorySummary(
+  products: GetProductsQuery["products"],
+  inventoryRows: GetProductInventoryQuery["productInventory"],
+): ProductListItem[] {
+  const counts = new Map<string, { total: number; available: number }>();
+  for (const row of inventoryRows) {
+    const pid = String(row.productId);
+    const cur = counts.get(pid) ?? { total: 0, available: 0 };
+    cur.total += 1;
+    if (row.isAvailable) cur.available += 1;
+    counts.set(pid, cur);
+  }
+
+  return products.map((p) => {
+    const c = counts.get(String(p.id)) ?? { total: 0, available: 0 };
+    return {
+      ...p,
+      inventoryAvailableCount: c.available,
+      inventoryTotalCount: c.total,
+    };
+  });
+}
+
 export async function getProducts() {
   try {
-    const data = await papiClient.request(GetProductsDocument);
-    return { success: true as const, data: data.products };
+    const [productsRes, invRes] = await Promise.all([
+      papiClient.request(GetProductsDocument),
+      papiClient.request(GetProductInventoryDocument).catch(() => null),
+    ]);
+
+    const inventoryRows = invRes?.productInventory ?? [];
+    const data = mergeProductsWithInventorySummary(
+      productsRes.products,
+      inventoryRows,
+    );
+
+    return { success: true as const, data };
   } catch (error) {
     return {
       success: false as const,
@@ -110,6 +151,27 @@ export async function deleteProduct(id: string) {
 }
 
 // --- Product Inventory CRUD ---
+
+export async function getProductInventoryByProduct(productId: string) {
+  try {
+    const data = await papiClient.request(
+      GetProductInventoryByProductDocument,
+      { productId },
+    );
+    return {
+      success: true as const,
+      data: data.productInventoryByProduct,
+    };
+  } catch (error) {
+    return {
+      success: false as const,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch product inventory",
+    };
+  }
+}
 
 export async function getAllProductInventory() {
   try {

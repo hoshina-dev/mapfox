@@ -18,7 +18,7 @@ export function PartCard({ part }: PartCardProps) {
       radius="md"
       withBorder
       component={Link}
-      href={`/parts/${part.id}`}
+      href={`/catalog/parts/${part.id}`}
       style={{ cursor: "pointer", textDecoration: "none", color: "inherit" }}
     >
       {imageUrl && (

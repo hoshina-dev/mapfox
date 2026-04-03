@@ -146,7 +146,7 @@ export async function createPart(
       },
     });
 
-    revalidatePath("/parts");
+    revalidatePath("/catalog/parts");
     revalidatePath("/backoffice/parts");
     return { success: true as const, data: data.createPart };
   } catch (error) {
@@ -160,7 +160,7 @@ export async function createPart(
 export async function updatePart(id: string, input: UpdatePartInput) {
   try {
     const data = await papiClient.request(UpdatePartDocument, { id, input });
-    revalidatePath("/parts");
+    revalidatePath("/catalog/parts");
     revalidatePath("/backoffice/parts");
     return { success: true as const, data: data.updatePart };
   } catch (error) {
@@ -174,7 +174,7 @@ export async function updatePart(id: string, input: UpdatePartInput) {
 export async function deletePart(id: string) {
   try {
     await papiClient.request(DeletePartDocument, { id });
-    revalidatePath("/parts");
+    revalidatePath("/catalog/parts");
     revalidatePath("/backoffice/parts");
     return { success: true as const };
   } catch (error) {

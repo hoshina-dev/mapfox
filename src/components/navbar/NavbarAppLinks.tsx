@@ -23,13 +23,13 @@ export function NavbarAppLinks() {
             <IconBuildingCommunity size={20} />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label="Parts Viewer" position="bottom" zIndex={1100}>
+        <Tooltip label="Catalog" position="bottom" zIndex={1100}>
           <ActionIcon
             component={Link}
-            href="/parts"
+            href="/catalog"
             variant="subtle"
             size="lg"
-            aria-label="Parts Viewer"
+            aria-label="Catalog"
           >
             <IconPuzzle size={20} />
           </ActionIcon>
@@ -59,12 +59,12 @@ export function NavbarAppLinks() {
         </Button>
         <Button
           component={Link}
-          href="/parts"
+          href="/catalog"
           variant="subtle"
           size="sm"
           leftSection={<IconPuzzle size={16} />}
         >
-          Parts Viewer
+          Catalog
         </Button>
         <Button
           component={Link}

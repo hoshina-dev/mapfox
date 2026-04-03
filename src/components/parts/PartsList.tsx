@@ -97,7 +97,7 @@ export function PartsList({ parts }: PartsListProps) {
                 return (
                   <TableTr
                     key={part.id}
-                    onClick={() => router.push(`/parts/${part.id}`)}
+                    onClick={() => router.push(`/catalog/parts/${part.id}`)}
                     style={{
                       cursor: "pointer",
                     }}

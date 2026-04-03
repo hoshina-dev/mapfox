@@ -54,7 +54,7 @@ export function NavbarMobileNav() {
           </Button>
           <Button
             component={Link}
-            href="/parts"
+            href="/catalog"
             variant="subtle"
             justify="start"
             fullWidth
@@ -62,7 +62,7 @@ export function NavbarMobileNav() {
             leftSection={<IconPuzzle size={16} />}
             onClick={close}
           >
-            Parts Viewer
+            Catalog
           </Button>
           <Button
             component={Link}
