@@ -1,6 +1,13 @@
 "use client";
 
-import { Burger, Button, Drawer, Stack } from "@mantine/core";
+import {
+  Burger,
+  Button,
+  Popover,
+  PopoverDropdown,
+  PopoverTarget,
+  Stack,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   Icon3dCubeSphere,
@@ -13,30 +20,34 @@ export function NavbarMobileNav() {
   const [opened, { toggle, close }] = useDisclosure(false);
 
   return (
-    <>
-      <Burger
-        opened={opened}
-        onClick={toggle}
-        hiddenFrom="sm"
-        size="sm"
-        aria-label={opened ? "Close navigation menu" : "Open navigation menu"}
-      />
-      <Drawer
-        opened={opened}
-        onClose={close}
-        title="Navigation"
-        padding="md"
-        position="right"
-        zIndex={1100}
-      >
-        <Stack gap="xs">
+    <Popover
+      opened={opened}
+      onClose={close}
+      position="bottom-start"
+      zIndex={1100}
+      shadow="md"
+      withinPortal
+    >
+      <PopoverTarget>
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          size="sm"
+          hiddenFrom="sm"
+          color="var(--mantine-color-blue-filled)"
+          aria-label={opened ? "Close navigation menu" : "Open navigation menu"}
+        />
+      </PopoverTarget>
+      <PopoverDropdown p="xs" style={{ minWidth: 200 }}>
+        <Stack gap={4}>
           <Button
             component={Link}
             href="/organizations"
             variant="subtle"
             justify="start"
             fullWidth
-            leftSection={<IconBuildingCommunity size={18} />}
+            size="sm"
+            leftSection={<IconBuildingCommunity size={16} />}
             onClick={close}
           >
             Organizations
@@ -47,7 +58,8 @@ export function NavbarMobileNav() {
             variant="subtle"
             justify="start"
             fullWidth
-            leftSection={<IconPuzzle size={18} />}
+            size="sm"
+            leftSection={<IconPuzzle size={16} />}
             onClick={close}
           >
             Parts Viewer
@@ -58,13 +70,14 @@ export function NavbarMobileNav() {
             variant="subtle"
             justify="start"
             fullWidth
-            leftSection={<Icon3dCubeSphere size={18} />}
+            size="sm"
+            leftSection={<Icon3dCubeSphere size={16} />}
             onClick={close}
           >
             Demo: 3D Viewer
           </Button>
         </Stack>
-      </Drawer>
-    </>
+      </PopoverDropdown>
+    </Popover>
   );
 }

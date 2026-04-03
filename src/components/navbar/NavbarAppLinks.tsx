@@ -11,7 +11,7 @@ import Link from "next/link";
 export function NavbarAppLinks() {
   return (
     <>
-      <Group gap={4} visibleFrom="sm" hiddenFrom="lg" wrap="nowrap">
+      <Group gap={4} visibleFrom="sm" hiddenFrom="md" wrap="nowrap">
         <Tooltip label="Organizations" position="bottom" zIndex={1100}>
           <ActionIcon
             component={Link}
@@ -47,7 +47,7 @@ export function NavbarAppLinks() {
         </Tooltip>
       </Group>
 
-      <Group gap="xs" visibleFrom="lg" wrap="nowrap">
+      <Group gap="xs" visibleFrom="md" wrap="nowrap">
         <Button
           component={Link}
           href="/organizations"

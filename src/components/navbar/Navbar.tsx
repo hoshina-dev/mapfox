@@ -51,25 +51,27 @@ export async function Navbar() {
           gap="xs"
           px={{ base: "xs", sm: "md" }}
         >
-          <Link
-            href="/"
-            style={{ textDecoration: "none", flexShrink: 0, minWidth: 0 }}
-          >
-            <Text
-              fw={800}
-              variant="gradient"
-              gradient={{ from: "blue", to: "teal", deg: 90 }}
-              fz={{ base: "1.05rem", sm: "1.25rem" }}
-              lh={1.2}
-              truncate
+          <Group gap="xs" wrap="nowrap" align="center">
+            <Link
+              href="/"
+              style={{ textDecoration: "none", flexShrink: 0, minWidth: 0 }}
             >
-              Mapfox
-            </Text>
-          </Link>
-
-          <Group gap="xs" wrap="nowrap" justify="flex-end" style={{ flex: 1 }}>
+              <Text
+                fw={800}
+                variant="gradient"
+                gradient={{ from: "blue", to: "teal", deg: 90 }}
+                fz={{ base: "1.05rem", sm: "1.25rem" }}
+                lh={1.2}
+                truncate
+              >
+                Mapfox
+              </Text>
+            </Link>
             <NavbarAppLinks />
             <NavbarMobileNav />
+          </Group>
+
+          <Group gap="xs" wrap="nowrap" justify="flex-end">
             <ThemeToggle />
             {session ? (
               <UserMenu
