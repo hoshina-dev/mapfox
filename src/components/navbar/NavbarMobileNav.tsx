@@ -2,7 +2,11 @@
 
 import { Burger, Button, Drawer, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBuildingCommunity, IconPuzzle } from "@tabler/icons-react";
+import {
+  Icon3dCubeSphere,
+  IconBuildingCommunity,
+  IconPuzzle,
+} from "@tabler/icons-react";
 import Link from "next/link";
 
 export function NavbarMobileNav() {
@@ -47,6 +51,17 @@ export function NavbarMobileNav() {
             onClick={close}
           >
             Parts Viewer
+          </Button>
+          <Button
+            component={Link}
+            href="/demo/models"
+            variant="subtle"
+            justify="start"
+            fullWidth
+            leftSection={<Icon3dCubeSphere size={18} />}
+            onClick={close}
+          >
+            Demo: 3D Viewer
           </Button>
         </Stack>
       </Drawer>

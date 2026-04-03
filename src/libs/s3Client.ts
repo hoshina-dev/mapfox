@@ -1,8 +1,11 @@
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // Initialize S3 client for R2/S3
 const s3Client = new S3Client({
@@ -83,4 +86,103 @@ export async function deleteImageFromS3(imageUrl: string): Promise<void> {
   });
 
   await s3Client.send(command);
+}
+
+export interface S3File {
+  key: string;
+  size: number;
+  lastModified: string | null;
+  url: string;
+}
+
+export interface S3Part {
+  part: string;
+  files: S3File[];
+}
+
+export interface S3ListResult {
+  bucket: string;
+  prefix: string | null;
+  count: number;
+  parts: S3Part[];
+}
+
+function extractPart(key: string, prefix: string): string {
+  const stripped = prefix ? key.slice(prefix.length) : key;
+  const firstSlash = stripped.indexOf("/");
+  if (firstSlash === -1) return "root";
+  return stripped.slice(0, firstSlash) || "root";
+}
+
+export async function listS3FilesByPart(
+  prefix?: string,
+): Promise<S3ListResult> {
+  const bucketName = process.env.S3_BUCKET_NAME;
+  if (!bucketName) {
+    throw new Error("S3_BUCKET_NAME is not configured");
+  }
+
+  const effectivePrefix = prefix || "";
+  const command = new ListObjectsV2Command({
+    Bucket: bucketName,
+    Prefix: effectivePrefix || undefined,
+  });
+
+  const response = await s3Client.send(command);
+  const contents = response.Contents || [];
+  const baseUrl = process.env.S3_PUBLIC_URL || process.env.S3_ENDPOINT || "";
+
+  const groupMap = new Map<string, S3File[]>();
+
+  for (const obj of contents) {
+    if (!obj.Key) continue;
+    // Skip the prefix folder itself
+    if (obj.Key === effectivePrefix) continue;
+
+    const part = extractPart(obj.Key, effectivePrefix);
+    const file: S3File = {
+      key: obj.Key,
+      size: obj.Size || 0,
+      lastModified: obj.LastModified?.toISOString() ?? null,
+      url: baseUrl ? `${baseUrl}/${obj.Key}` : obj.Key,
+    };
+
+    const existing = groupMap.get(part);
+    if (existing) {
+      existing.push(file);
+    } else {
+      groupMap.set(part, [file]);
+    }
+  }
+
+  const parts: S3Part[] = Array.from(groupMap.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([part, files]) => ({
+      part,
+      files: files.sort((a, b) => a.key.localeCompare(b.key)),
+    }));
+
+  return {
+    bucket: bucketName,
+    prefix: effectivePrefix || null,
+    count: contents.length,
+    parts,
+  };
+}
+
+export async function getPresignedUrl(
+  key: string,
+  expiresIn = 3600,
+): Promise<string> {
+  const bucketName = process.env.S3_BUCKET_NAME;
+  if (!bucketName) {
+    throw new Error("S3_BUCKET_NAME is not configured");
+  }
+
+  const command = new GetObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+
+  return getSignedUrl(s3Client, command, { expiresIn });
 }
