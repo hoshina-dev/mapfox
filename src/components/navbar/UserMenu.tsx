@@ -11,6 +11,7 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconHome, IconLayoutDashboard, IconLogout } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -44,20 +45,37 @@ function getInitials(fullName: string): string {
 export function UserMenu({ name, avatarUrl, isAdmin = false }: UserMenuProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [opened, { close, toggle }] = useDisclosure(false);
 
   const displayName = getDisplayName(name);
   const initials = getInitials(name);
 
+  const handleNavigate = (path: string) => {
+    close();
+    router.push(path);
+  };
+
   const handleLogout = () => {
+    close();
     startTransition(async () => {
       await logout();
     });
   };
 
   return (
-    <Popover width={200} position="bottom-end" shadow="md" zIndex={1100}>
+    <Popover
+      width={200}
+      position="bottom-end"
+      shadow="md"
+      zIndex={1100}
+      opened={opened}
+      onChange={(o) => {
+        if (!o) close();
+      }}
+      middlewares={{ flip: false, shift: { padding: 8 } }}
+    >
       <PopoverTarget>
-        <UnstyledButton>
+        <UnstyledButton onClick={toggle}>
           <Group gap="xs">
             <Avatar
               src={avatarUrl}
@@ -82,7 +100,7 @@ export function UserMenu({ name, avatarUrl, isAdmin = false }: UserMenuProps) {
             leftSection={<IconHome size={16} />}
             justify="start"
             fullWidth
-            onClick={() => router.push("/home")}
+            onClick={() => handleNavigate("/home")}
           >
             Home
           </Button>
@@ -92,7 +110,7 @@ export function UserMenu({ name, avatarUrl, isAdmin = false }: UserMenuProps) {
               leftSection={<IconLayoutDashboard size={16} />}
               justify="start"
               fullWidth
-              onClick={() => router.push("/backoffice")}
+              onClick={() => handleNavigate("/backoffice")}
             >
               Backoffice
             </Button>
