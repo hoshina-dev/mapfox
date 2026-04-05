@@ -11,11 +11,13 @@ import { OrganizationEditForm } from "./OrganizationEditForm";
 interface OrganizationDetailSectionProps {
   organization: OrganizationResponse;
   children: React.ReactNode;
+  isOrgManager?: boolean;
 }
 
 export function OrganizationDetailSection({
   organization,
   children,
+  isOrgManager,
 }: OrganizationDetailSectionProps) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -38,15 +40,17 @@ export function OrganizationDetailSection({
       <Stack gap="md">
         <Group justify="space-between" align="center">
           <Title order={3}>Details</Title>
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            size="lg"
-            onClick={() => setIsEditing(true)}
-            aria-label="Edit organization"
-          >
-            <IconPencil size={20} />
-          </ActionIcon>
+          {isOrgManager && (
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="lg"
+              onClick={() => setIsEditing(true)}
+              aria-label="Edit organization"
+            >
+              <IconPencil size={20} />
+            </ActionIcon>
+          )}
         </Group>
         {children}
       </Stack>

@@ -119,7 +119,10 @@ export default async function OrganizationPage({
           />
         )}
 
-        <OrganizationDetailSection organization={organization}>
+        <OrganizationDetailSection
+          organization={organization}
+          isOrgManager={isOrgManager}
+        >
           {organization.address && (
             <Group gap="xs">
               <Text size="sm" fw={500}>

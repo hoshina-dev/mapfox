@@ -111,7 +111,7 @@ export function AddMemberModal({
   };
 
   return (
-    <ModalRoot opened={opened} onClose={handleClose} size="md">
+    <ModalRoot opened={opened} onClose={handleClose} size="md" zIndex={1100}>
       <ModalContent>
         <ModalHeader>
           <ModalTitle fw={600}>Add Member</ModalTitle>

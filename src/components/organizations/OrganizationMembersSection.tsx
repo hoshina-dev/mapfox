@@ -41,7 +41,12 @@ export function OrganizationMembersSection({
               </Button>
             )}
           </Group>
-          <OrganizationUsersList users={users} currentUserId={currentUserId} />
+          <OrganizationUsersList
+            users={users}
+            currentUserId={currentUserId}
+            isOrgManager={isOrgManager}
+            organizationId={organizationId}
+          />
         </Stack>
       </Card>
 

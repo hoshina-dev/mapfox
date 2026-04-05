@@ -157,9 +157,49 @@ export async function createPart(
   }
 }
 
-export async function updatePart(id: string, input: UpdatePartInput) {
+export async function updatePart(
+  id: string,
+  input: Omit<UpdatePartInput, "images">,
+  existingImageUrls?: string[],
+  newImageFiles?: File[],
+) {
   try {
-    const data = await papiClient.request(UpdatePartDocument, { id, input });
+    let uploadedImageUrls: string[] = [];
+
+    if (newImageFiles && newImageFiles.length > 0) {
+      for (const file of newImageFiles) {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          return {
+            success: false as const,
+            error: `Invalid file type: ${file.name}. Only JPEG, PNG, and WebP are allowed.`,
+          };
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          return {
+            success: false as const,
+            error: `File ${file.name} exceeds 1MB limit.`,
+          };
+        }
+      }
+
+      const uploadPromises = newImageFiles.map(async (file) => {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        return uploadImageToS3(buffer, file.name, file.type, "part-image");
+      });
+
+      uploadedImageUrls = await Promise.all(uploadPromises);
+    }
+
+    const images =
+      existingImageUrls || newImageFiles
+        ? [...(existingImageUrls ?? []), ...uploadedImageUrls]
+        : undefined;
+
+    const data = await papiClient.request(UpdatePartDocument, {
+      id,
+      input: { ...input, images },
+    });
     revalidatePath("/catalog/parts");
     revalidatePath("/backoffice/parts");
     return { success: true as const, data: data.updatePart };

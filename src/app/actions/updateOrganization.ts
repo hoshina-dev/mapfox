@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 
-import type { UpdateOrganizationRequest } from "@/libs/api/custapi";
-import { organizationsApi } from "@/libs/apiClient";
+import { MemberRole, type UpdateOrganizationRequest } from "@/libs/api/custapi";
+import { organizationsApi, usersApi } from "@/libs/apiClient";
+import { getSession } from "@/libs/dal";
 import { deleteImageFromS3, uploadImageToS3 } from "@/libs/s3Client";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -17,6 +18,22 @@ export async function updateOrganization(
   originalImageUrls?: string[],
 ) {
   try {
+    // Verify the current user is a manager of this organization
+    const session = await getSession();
+    if (!session?.userId) {
+      return { success: false, error: "Not authenticated" };
+    }
+    const memberships = await usersApi.usersIdIdOrganizationsGet(
+      session.userId,
+    );
+    const membership = memberships.find((m) => m.organizationId === id);
+    if (membership?.role !== MemberRole.RoleManager) {
+      return {
+        success: false,
+        error: "Only organization managers can update organization details",
+      };
+    }
+
     let uploadedImageUrls: string[] = [...(existingImageUrls || [])];
 
     // Upload new images to S3 if any are provided

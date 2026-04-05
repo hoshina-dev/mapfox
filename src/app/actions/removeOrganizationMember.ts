@@ -2,18 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import {
-  MemberRole,
-  type MemberRole as MemberRoleType,
-} from "@/libs/api/custapi";
-import { ResponseError } from "@/libs/api/custapi";
+import { MemberRole, ResponseError } from "@/libs/api/custapi";
 import { organizationsApi, usersApi } from "@/libs/apiClient";
 import { getSession } from "@/libs/dal";
 
-export async function addOrganizationMember(
+export async function removeOrganizationMember(
   organizationId: string,
   userId: string,
-  role: MemberRoleType,
 ) {
   try {
     // Verify the current user is a manager of this organization
@@ -30,14 +25,14 @@ export async function addOrganizationMember(
     if (membership?.role !== MemberRole.RoleManager) {
       return {
         success: false,
-        error: "Only organization managers can add members",
+        error: "Only organization managers can remove members",
       };
     }
 
-    await organizationsApi.organizationsIdMembersPost(organizationId, {
+    await organizationsApi.organizationsIdMembersUserIdDelete(
+      organizationId,
       userId,
-      role,
-    });
+    );
 
     revalidatePath(`/organization/${organizationId}`);
 
@@ -47,13 +42,13 @@ export async function addOrganizationMember(
       const errorText = await error.response.text();
       return {
         success: false,
-        error: `Failed to add member: ${error.response.status} - ${errorText}`,
+        error: `Failed to remove member: ${error.response.status} - ${errorText}`,
       };
     }
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to add member",
+      error: error instanceof Error ? error.message : "Failed to remove member",
     };
   }
 }
