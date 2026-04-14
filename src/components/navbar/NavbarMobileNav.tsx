@@ -9,11 +9,7 @@ import {
   Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  Icon3dCubeSphere,
-  IconBuildingCommunity,
-  IconPuzzle,
-} from "@tabler/icons-react";
+import { IconBuildingCommunity, IconPuzzle } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function NavbarMobileNav() {
@@ -63,18 +59,6 @@ export function NavbarMobileNav() {
             onClick={close}
           >
             Catalog
-          </Button>
-          <Button
-            component={Link}
-            href="/demo/models"
-            variant="subtle"
-            justify="start"
-            fullWidth
-            size="sm"
-            leftSection={<Icon3dCubeSphere size={16} />}
-            onClick={close}
-          >
-            Demo: 3D Viewer
           </Button>
         </Stack>
       </PopoverDropdown>

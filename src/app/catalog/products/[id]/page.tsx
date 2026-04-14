@@ -15,6 +15,7 @@ import {
   getProductInventoryByProduct,
 } from "@/app/actions/products";
 import { ProductDetailSection } from "@/components/products/ProductDetailSection";
+import { Models3DSection } from "@/components/viewer/Models3DSection";
 
 interface ProductPageProps {
   params: Promise<{
@@ -70,6 +71,7 @@ export default async function CatalogProductPage({ params }: ProductPageProps) {
             inventoryResult.success ? inventoryResult.data : undefined
           }
         />
+        <Models3DSection models3D={product.models3D} />
       </Stack>
     </Container>
   );

@@ -101,6 +101,7 @@ export function CreateProductForm({ parts }: CreateProductFormProps) {
           name,
           description: description || undefined,
           version: version || undefined,
+          images: [],
         },
         validParts.length > 0 ? validParts : undefined,
       );

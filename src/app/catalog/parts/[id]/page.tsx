@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { getPart } from "@/app/actions/parts";
 import { PartDetailSection } from "@/components/parts/PartDetailSection";
 import { PartImageCarousel } from "@/components/parts/PartImageCarousel";
+import { Models3DSection } from "@/components/viewer/Models3DSection";
 
 interface PartPageProps {
   params: Promise<{
@@ -64,6 +65,7 @@ export default async function CatalogPartPage({ params }: PartPageProps) {
         )}
 
         <PartDetailSection part={part} partsInventory={partsInventory} />
+        <Models3DSection models3D={part.models3D} />
       </Stack>
     </Container>
   );

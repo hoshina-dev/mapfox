@@ -28,6 +28,7 @@ query GetPart($id: UUID!) {
     partNumber
     description
     images
+    models3D
     manufacturerId
     specifications
     temperatureStage

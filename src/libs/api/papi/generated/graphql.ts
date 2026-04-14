@@ -75,6 +75,7 @@ export type CreatePartsInventoryInput = {
 
 export type CreateProductInput = {
   description?: InputMaybe<Scalars["String"]["input"]>;
+  images: Array<Scalars["String"]["input"]>;
   name: Scalars["String"]["input"];
   version?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -95,6 +96,15 @@ export type Manufacturer = {
   countryOfOrigin?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["UUID"]["output"];
   name: Scalars["String"]["output"];
+};
+
+export type Model3DResult = {
+  __typename?: "Model3DResult";
+  downloadURL?: Maybe<Scalars["String"]["output"]>;
+  jobID: Scalars["UUID"]["output"];
+  partID?: Maybe<Scalars["UUID"]["output"]>;
+  productID?: Maybe<Scalars["UUID"]["output"]>;
+  status: Scalars["String"]["output"];
 };
 
 export type Mutation = {
@@ -236,6 +246,8 @@ export type Optimize3DInput = {
   dracoNormalQuantization?: InputMaybe<Scalars["Int"]["input"]>;
   dracoPositionQuantization?: InputMaybe<Scalars["Int"]["input"]>;
   dracoTexcoordQuantization?: InputMaybe<Scalars["Int"]["input"]>;
+  partID?: InputMaybe<Scalars["UUID"]["input"]>;
+  productID?: InputMaybe<Scalars["UUID"]["input"]>;
   sourceURL: Scalars["String"]["input"];
 };
 
@@ -253,17 +265,11 @@ export type Part = {
   images: Array<Scalars["String"]["output"]>;
   manufacturer?: Maybe<Manufacturer>;
   manufacturerId: Scalars["UUID"]["output"];
+  models3D: Array<Scalars["String"]["output"]>;
   name: Scalars["String"]["output"];
   partNumber: Scalars["String"]["output"];
   specifications?: Maybe<Scalars["JSON"]["output"]>;
   temperatureStage?: Maybe<Scalars["String"]["output"]>;
-};
-
-export type Part3DModelResult = {
-  __typename?: "Part3DModelResult";
-  downloadURL?: Maybe<Scalars["String"]["output"]>;
-  jobID: Scalars["UUID"]["output"];
-  status: Scalars["String"]["output"];
 };
 
 export type PartsInventory = {
@@ -280,6 +286,8 @@ export type Product = {
   __typename?: "Product";
   description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["UUID"]["output"];
+  images: Array<Scalars["String"]["output"]>;
+  models3D: Array<Scalars["String"]["output"]>;
   name: Scalars["String"]["output"];
   parts?: Maybe<Array<ProductPart>>;
   version?: Maybe<Scalars["String"]["output"]>;
@@ -311,7 +319,7 @@ export type Query = {
   categories: Array<Category>;
   category?: Maybe<Category>;
   generateUploadURL: UploadUrlResponse;
-  getPart3DModel?: Maybe<Part3DModelResult>;
+  getPart3DModel?: Maybe<Model3DResult>;
   manufacturer?: Maybe<Manufacturer>;
   manufacturers: Array<Manufacturer>;
   part?: Maybe<Part>;
@@ -403,6 +411,7 @@ export type UpdatePartsInventoryInput = {
 
 export type UpdateProductInput = {
   description?: InputMaybe<Scalars["String"]["input"]>;
+  images?: InputMaybe<Array<Scalars["String"]["input"]>>;
   name?: InputMaybe<Scalars["String"]["input"]>;
   version?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -580,6 +589,7 @@ export type GetPartQuery = {
     partNumber: string;
     description?: string | null;
     images: Array<string>;
+    models3D: Array<string>;
     manufacturerId: any;
     specifications?: any | null;
     temperatureStage?: string | null;
@@ -783,6 +793,7 @@ export type GetProductQuery = {
     name: string;
     description?: string | null;
     version?: string | null;
+    models3D: Array<string>;
     parts?: Array<{
       __typename?: "ProductPart";
       id: any;
@@ -1593,6 +1604,7 @@ export const GetPartDocument = {
                 { kind: "Field", name: { kind: "Name", value: "partNumber" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "images" } },
+                { kind: "Field", name: { kind: "Name", value: "models3D" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "manufacturerId" },
@@ -2297,6 +2309,7 @@ export const GetProductDocument = {
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "version" } },
+                { kind: "Field", name: { kind: "Name", value: "models3D" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "parts" },
