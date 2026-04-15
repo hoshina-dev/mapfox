@@ -11,6 +11,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { notFound } from "next/navigation";
 
 import { getPart } from "@/app/actions/parts";
+import { CatalogDetailLayout } from "@/components/catalog/CatalogDetailLayout";
 import { PartDetailSection } from "@/components/parts/PartDetailSection";
 import { PartImageCarousel } from "@/components/parts/PartImageCarousel";
 import { Models3DSection } from "@/components/viewer/Models3DSection";
@@ -41,6 +42,10 @@ export default async function CatalogPartPage({ params }: PartPageProps) {
   }
 
   const { part, partsInventory } = partResult.data;
+  const hasMedia = part.images.length > 0 || part.models3D.length > 0;
+  const details = (
+    <PartDetailSection part={part} partsInventory={partsInventory} />
+  );
 
   return (
     <Container size="lg" py="xl">
@@ -60,12 +65,24 @@ export default async function CatalogPartPage({ params }: PartPageProps) {
           <Title order={1}>{part.name}</Title>
         </div>
 
-        {part.images.length > 0 && (
-          <PartImageCarousel imageUrls={part.images} partName={part.name} />
+        {hasMedia ? (
+          <CatalogDetailLayout
+            media={
+              <>
+                {part.images.length > 0 && (
+                  <PartImageCarousel
+                    imageUrls={part.images}
+                    partName={part.name}
+                  />
+                )}
+                <Models3DSection models3D={part.models3D} />
+              </>
+            }
+            details={details}
+          />
+        ) : (
+          details
         )}
-
-        <PartDetailSection part={part} partsInventory={partsInventory} />
-        <Models3DSection models3D={part.models3D} />
       </Stack>
     </Container>
   );

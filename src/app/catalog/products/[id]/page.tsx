@@ -14,6 +14,7 @@ import {
   getProduct,
   getProductInventoryByProduct,
 } from "@/app/actions/products";
+import { CatalogDetailLayout } from "@/components/catalog/CatalogDetailLayout";
 import { ProductDetailSection } from "@/components/products/ProductDetailSection";
 import { Models3DSection } from "@/components/viewer/Models3DSection";
 
@@ -46,6 +47,15 @@ export default async function CatalogProductPage({ params }: ProductPageProps) {
   }
 
   const product = result.data;
+  const hasMedia = product.models3D.length > 0;
+  const details = (
+    <ProductDetailSection
+      product={product}
+      productInventory={
+        inventoryResult.success ? inventoryResult.data : undefined
+      }
+    />
+  );
 
   return (
     <Container size="lg" py="xl">
@@ -65,13 +75,14 @@ export default async function CatalogProductPage({ params }: ProductPageProps) {
           <Title order={1}>{product.name}</Title>
         </div>
 
-        <ProductDetailSection
-          product={product}
-          productInventory={
-            inventoryResult.success ? inventoryResult.data : undefined
-          }
-        />
-        <Models3DSection models3D={product.models3D} />
+        {hasMedia ? (
+          <CatalogDetailLayout
+            media={<Models3DSection models3D={product.models3D} />}
+            details={details}
+          />
+        ) : (
+          details
+        )}
       </Stack>
     </Container>
   );
