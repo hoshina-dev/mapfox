@@ -51,7 +51,7 @@ export async function Navbar() {
           gap="xs"
           px={{ base: "xs", sm: "md" }}
         >
-          <Group gap="xs" wrap="nowrap" align="center">
+          <Group gap="lg" wrap="nowrap" align="center">
             <Link
               href="/"
               style={{ textDecoration: "none", flexShrink: 0, minWidth: 0 }}

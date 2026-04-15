@@ -32,7 +32,7 @@ export function NavbarAppLinks() {
         </Tooltip>
       </Group>
 
-      <Group gap="xs" visibleFrom="md" wrap="nowrap">
+      <Group gap={2} visibleFrom="md" wrap="nowrap">
         <Button
           component={Link}
           href="/organizations"
