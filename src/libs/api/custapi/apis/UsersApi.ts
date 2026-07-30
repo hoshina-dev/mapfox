@@ -21,6 +21,7 @@ import type {
   UserDetailResponse,
   UserMembershipResponse,
   UserResponse,
+  VerifyCredentialsRequest,
 } from '../models/index';
 import {
     CreateUserRequestFromJSON,
@@ -35,7 +36,13 @@ import {
     UserMembershipResponseToJSON,
     UserResponseFromJSON,
     UserResponseToJSON,
+    VerifyCredentialsRequestFromJSON,
+    VerifyCredentialsRequestToJSON,
 } from '../models/index';
+
+export interface AuthVerifyPostRequest {
+    credentials: VerifyCredentialsRequest;
+}
 
 export interface UsersEmailEmailGetRequest {
     email: string;
@@ -71,6 +78,47 @@ export interface UsersSearchGetRequest {
  * 
  */
 export class UsersApi extends runtime.BaseAPI {
+
+    /**
+     * Verify an email + password against the stored hash. Returns the user (without password) on success, 401 on failure. Used by the BFF for login so the password hash never leaves this service.
+     * Verify user credentials
+     */
+    async authVerifyPostRaw(requestParameters: AuthVerifyPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserResponse>> {
+        if (requestParameters['credentials'] == null) {
+            throw new runtime.RequiredError(
+                'credentials',
+                'Required parameter "credentials" was null or undefined when calling authVerifyPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/auth/verify`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: VerifyCredentialsRequestToJSON(requestParameters['credentials']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Verify an email + password against the stored hash. Returns the user (without password) on success, 401 on failure. Used by the BFF for login so the password hash never leaves this service.
+     * Verify user credentials
+     */
+    async authVerifyPost(credentials: VerifyCredentialsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
+        const response = await this.authVerifyPostRaw({ credentials: credentials }, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Get a single user by their email address

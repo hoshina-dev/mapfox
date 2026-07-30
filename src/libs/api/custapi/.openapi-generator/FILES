@@ -18,5 +18,6 @@ models/UserMembershipResponse.ts
 models/UserResponse.ts
 models/UserRole.ts
 models/UserWithRoleResponse.ts
+models/VerifyCredentialsRequest.ts
 models/index.ts
 runtime.ts

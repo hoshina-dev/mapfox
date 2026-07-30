@@ -1,6 +1,5 @@
 "use server";
 
-import { compare } from "bcryptjs";
 import { redirect } from "next/navigation";
 
 import { ResponseError } from "@/libs/api/custapi";
@@ -92,25 +91,19 @@ export async function login(
 
   const { email, password } = validatedFields.data;
 
-  // 2. Get user by email from CustAPI
+  // 2. Verify credentials inside CustAPI (POST /auth/verify) so the bcrypt
+  // hash never crosses the service boundary. Returns the user on success,
+  // 401 on bad email/password — treat any failure uniformly.
   let user;
   try {
-    user = await usersApi.usersEmailEmailGet(email);
+    user = await usersApi.authVerifyPost({ email, password });
   } catch {
     return {
       message: "Invalid email or password.",
     };
   }
 
-  // 3. Compare password hash
-  const passwordMatch = await compare(password, user.password);
-  if (!passwordMatch) {
-    return {
-      message: "Invalid email or password.",
-    };
-  }
-
-  // 4. Create session
+  // 3. Create session
   await createSession({
     id: user.id,
     name: user.name,
@@ -119,7 +112,7 @@ export async function login(
     role: user.role,
   });
 
-  // 5. Redirect
+  // 4. Redirect
   redirect("/");
 }
 

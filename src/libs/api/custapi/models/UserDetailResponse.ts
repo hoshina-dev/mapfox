@@ -68,12 +68,6 @@ export interface UserDetailResponse {
      * @type {string}
      * @memberof UserDetailResponse
      */
-    password: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserDetailResponse
-     */
     phoneNumber?: string;
     /**
      * 
@@ -111,7 +105,6 @@ export function instanceOfUserDetailResponse(value: object): value is UserDetail
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('password' in value) || value['password'] === undefined) return false;
     if (!('researchCategories' in value) || value['researchCategories'] === undefined) return false;
     if (!('role' in value) || value['role'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
@@ -134,7 +127,6 @@ export function UserDetailResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'email': json['email'],
         'id': json['id'],
         'name': json['name'],
-        'password': json['password'],
         'phoneNumber': json['phone_number'] == null ? undefined : json['phone_number'],
         'researchCategories': json['research_categories'],
         'role': UserRoleFromJSON(json['role']),
@@ -160,7 +152,6 @@ export function UserDetailResponseToJSONTyped(value?: UserDetailResponse | null,
         'email': value['email'],
         'id': value['id'],
         'name': value['name'],
-        'password': value['password'],
         'phone_number': value['phoneNumber'],
         'research_categories': value['researchCategories'],
         'role': UserRoleToJSON(value['role']),
