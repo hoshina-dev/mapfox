@@ -29,6 +29,7 @@ import { OrganizationResponse, UserResponse } from "@/libs/api/custapi";
 
 import { MapController } from "../map/MapController";
 import { Marker } from "../map/Marker";
+import { TileProviderFallback } from "../map/TileProviderFallback";
 import styles from "./LandingHero.module.css";
 
 function MapRefCapture({
@@ -286,6 +287,7 @@ export function LandingHero({ organizations }: LandingHeroProps) {
 
         <Flex className={styles.mapWrapper}>
           <Map>
+            <TileProviderFallback />
             <MapRefCapture mapRef={mapRef} />
             <MapController center={mapCenter} zoom={mapZoom} />
             {displayedMarkers.map((org) => (
