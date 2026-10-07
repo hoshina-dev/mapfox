@@ -5,6 +5,7 @@ import { Button, Group, Modal, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 
 import { LocationPicker } from "@/components/map/LocationPicker";
+import { TileProviderFallback } from "@/components/map/TileProviderFallback";
 
 interface LocationPickerModalProps {
   opened: boolean;
@@ -44,6 +45,7 @@ export function LocationPickerModal({
     >
       <Stack gap="md" style={{ height: "600px", display: "flex" }}>
         <Map style={{ flex: 1 }}>
+          <TileProviderFallback />
           <LocationPicker
             lat={selectedLat}
             lng={selectedLng}
